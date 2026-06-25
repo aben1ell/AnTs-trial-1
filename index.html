@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abenezer Tsion | Portfolio</title>
+    <title>Abenezer Tsion | Interactive</title>
     <style>
         /* Base Setup & Deep Black Theme */
         * {
@@ -66,8 +66,8 @@
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
-        /* Section 1: Welcome Screen */
-        .welcome-hero {
+        /* Welcome Section (Placeholder for entry text) */
+        .welcome-section {
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -77,174 +77,62 @@
             padding: 20px;
         }
 
-        .welcome-hero h1 {
+        .welcome-section h1 {
             font-size: 2.5rem;
             font-weight: 300;
             letter-spacing: 4px;
             margin-bottom: 15px;
         }
 
-        .welcome-hero p {
+        .welcome-section p {
             color: #666666;
             font-size: 1rem;
             letter-spacing: 1px;
         }
 
-        /* Section 2: Premium Portfolio Layout */
-        .portfolio-hero {
+        /* Interactive Robot Display Section */
+        .robot-display {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 100px 8%;
+            background-color: #020202; /* Slight contrast to pitch black */
             position: relative;
         }
 
-        .hero-left {
-            max-width: 55%;
-            z-index: 2;
-        }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #222222;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #888888;
-            margin-bottom: 25px;
-        }
-
-        .status-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: #00ff66;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #00ff66;
-        }
-
-        /* Main Headline Text */
-        .intro-text {
-            color: #888888;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .main-name {
-            font-size: 4.5rem;
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
-        }
-
-        .title-badge {
-            display: inline-block;
-            background-color: #111111;
-            border: 1px solid #222222;
-            padding: 6px 12px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #aaaaaa;
-            margin-bottom: 25px;
-        }
-
-        .description {
-            color: #888888;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 500px;
-        }
-
-        /* Action Buttons */
-        .cta-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 50px;
-        }
-
-        .btn-primary {
-            background-color: #ffffff;
-            color: #000000;
-            padding: 14px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-
-        .btn-primary:hover {
-            background-color: #dddddd;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            border: 1px solid #333333;
-            color: #ffffff;
-            padding: 14px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-
-        .btn-secondary:hover {
-            background-color: #111111;
-            border-color: #555555;
-        }
-
-        /* Tech Stack Tags */
-        .tech-tags {
-            display: flex;
-            gap: 20px;
-            color: #444444;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .tech-tags span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Hero Right Area containing the graphic from your second uploaded image */
-        .hero-right {
-            width: 40%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-        }
-
-        /* Premium CSS matching the exact design of your second uploaded image */
-        .robot-container {
-            width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, rgba(18, 18, 18, 0.6) 0%, rgba(0, 0, 0, 1) 70%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Main Container for the Interactive Visual */
+        .interactive-robot-container {
+            width: 600px;
+            height: 600px;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .premium-robot-head {
+        /* Robot Body (Generated through CSS pseudo-elements to maintain performance) */
+        .robot-body {
+            position: absolute;
+            bottom: 0;
+            width: 500px;
+            height: 400px;
+            background: linear-gradient(135deg, #101010 0%, #050505 100%);
+            border-radius: 60px 60px 20px 20px;
+            box-shadow: inset 0px 0px 25px rgba(0, 0, 0, 0.9), 0px 15px 35px rgba(0, 0, 0, 0.7);
+            border: 1px solid #1c1c1c;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 50px;
+        }
+
+        /* Robot Head (The element with the interactivity script) */
+        .interactive-head {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
             width: 150px;
             height: 170px;
             background: linear-gradient(145deg, #121212, #0a0a0a);
@@ -252,60 +140,58 @@
             border: 1px solid #1c1c1c;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding-top: 45px;
-            box-shadow: inset 0px 0px 25px rgba(0, 0, 0, 0.9), 0px 15px 35px rgba(0, 0, 0, 0.7);
+            align-items: center;
+            box-shadow: inset 0px 0px 25px rgba(0, 0, 0, 0.9);
+            z-index: 10;
         }
 
-        .premium-visor {
+        /* The Visor from your referenced image */
+        .cyber-visor {
             width: 95px;
             height: 28px;
             background: #030303;
             border-radius: 14px;
             border: 1px solid #141414;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            padding: 0 10px;
             box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.9);
         }
 
-        .glowing-core-eye {
+        /* Robot Eyes / Interactive Cores */
+        .eye-core {
             width: 8px;
             height: 8px;
             background-color: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 14px 4px rgba(255, 255, 255, 1), 0 0 5px 1px rgba(255, 255, 255, 0.8);
-            animation: pulseGlow 3.5s infinite ease-in-out;
+            box-shadow: 0 0 14px 4px rgba(255, 255, 255, 1);
+            position: relative;
         }
 
-        /* Clean neon pulsing glow animation */
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.85; box-shadow: 0 0 14px 4px rgba(255, 255, 255, 1); }
-            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 20px 7px rgba(255, 255, 255, 1), 0 0 8px 2px rgba(255, 255, 255, 0.6); }
-        }
-
-        /* Responsive design adjustments */
-        @media (max-width: 968px) {
-            .portfolio-hero {
-                flex-direction: column-reverse;
-                justify-content: center;
-                text-align: center;
-                padding-top: 140px;
+        /* Responsive design adjustments for mobile screens */
+        @media (max-width: 768px) {
+            .welcome-section h1 {
+                font-size: 2rem;
             }
-            .hero-left {
-                max-width: 100%;
-                margin-top: 40px;
+            .welcome-section p {
+                font-size: 0.9rem;
             }
-            .cta-group {
-                justify-content: center;
+            .interactive-robot-container {
+                width: 350px;
+                height: 350px;
             }
-            .tech-tags {
-                justify-content: center;
-                flex-wrap: wrap;
+            .robot-body {
+                width: 300px;
+                height: 250px;
             }
-            .description {
-                margin-left: auto;
-                margin-right: auto;
+            .interactive-head {
+                width: 110px;
+                height: 130px;
+            }
+            .cyber-visor {
+                width: 70px;
+                height: 22px;
             }
         }
     </style>
@@ -323,46 +209,25 @@
         </nav>
     </header>
 
-    <section class="welcome-hero">
+    <section class="welcome-section">
         <h1>WELCOME TO THE VOID</h1>
-        <p>Scroll down to explore</p>
+        <p>Scroll down to explore the creation.</p>
     </section>
 
-    <section id="about" class="portfolio-hero">
+    <section id="about" class="robot-display">
         
-        <div class="hero-left">
-            <div class="status-badge">Available for new projects</div>
+        <div class="interactive-robot-container">
             
-            <div class="intro-text">Hi there, I'm</div>
-            <h2 class="main-name">Abenezer Tsion</h2>
-            
-            <div class="title-badge">✦ Front-End Developer</div>
-            
-            <p class="description">
-                I create clean and modern web interfaces with responsive layouts, smooth interactions, and a strong focus on user experience.
-            </p>
-            
-            <div class="cta-group">
-                <a href="#projects" class="btn-primary">View My Work ➔</a>
-                <a href="#contact" class="btn-secondary">Get In Touch</a>
-            </div>
-            
-            <div class="tech-tags">
-                <span>◇ React</span>
-                <span>◇ Next.js</span>
-                <span>◇ Framer Motion</span>
-                <span>◇ Tailwind CSS</span>
-            </div>
-        </div>
-
-        <div class="hero-right">
-            <div class="robot-container">
-                <div class="premium-robot-head">
-                    <div class="premium-visor">
-                        <div class="glowing-core-eye"></div>
-                    </div>
+            <div id="robotHead" class="interactive-head">
+                <div class="cyber-visor">
+                    <div class="eye-core"></div>
+                    <div class="eye-core"></div>
                 </div>
             </div>
+
+            <div class="robot-body">
+                </div>
+
         </div>
 
     </section>

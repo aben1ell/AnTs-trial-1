@@ -107,7 +107,7 @@
             box-shadow: 0 0 8px #00ff66;
         }
 
-        /* Typography matching mock */
+        /* Typography */
         .intro-text {
             color: #888888;
             font-size: 1.25rem;
@@ -189,7 +189,7 @@
             border-color: #555555;
         }
 
-        /* Tech Stack Footer Style Tags */
+        /* Tech Tags */
         .tech-tags {
             display: flex;
             gap: 25px;
@@ -204,7 +204,7 @@
             gap: 6px;
         }
 
-        /* Right Side - Premium Interactive Robot Frame */
+        /* Right Side - Refined Mechanical Robot Frame */
         .hero-right {
             width: 45%;
             height: 750px;
@@ -224,7 +224,7 @@
             align-items: flex-end;
         }
 
-        /* Full Mechanical Body Assembly */
+        /* Full Mechanical Assembly based on image 2 */
         .robot-full-body {
             position: relative;
             width: 380px;
@@ -234,146 +234,136 @@
             align-items: center;
         }
 
-        /* Chrome Metallic Head Pod */
+        /* Premium Chrome Helmet Pod */
         .chrome-helmet-pod {
-            width: 110px;
-            height: 125px;
-            background: radial-gradient(circle at 35% 25%, #ffffff 0%, #b0b0b0 20%, #404040 60%, #151515 100%);
-            border-radius: 50% 50% 45% 45%;
-            border: 1px solid #555;
+            width: 105px;
+            height: 115px;
+            background: radial-gradient(circle at 45% 30%, #ffffff 0%, #d0d0d0 15%, #3a3a3a 55%, #111111 100%);
+            border-radius: 50% 50% 48% 48%;
+            border: 1px solid #444444;
             position: relative;
             z-index: 20;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            padding-bottom: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.7), inset -10px -10px 25px rgba(0,0,0,0.8);
+            padding-bottom: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7), inset -5px -5px 15px rgba(0,0,0,0.8);
             transition: transform 0.08s ease-out;
             will-change: transform;
         }
 
-        /* Grid Visor Unit */
+        /* White Dot Light Matrix Visor */
         .grid-visor-unit {
-            width: 76px;
-            height: 22px;
-            background: linear-gradient(180deg, #101010 0%, #000000 100%);
-            border: 1.5px solid #555555;
-            border-radius: 4px;
+            width: 80px;
+            height: 20px;
+            background: linear-gradient(180deg, #1d1d1d 0%, #080808 100%);
+            border: 1px solid #4f4f4f;
+            border-radius: 3px;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        /* Grid texturized layer pattern inside the visor */
-        .grid-visor-unit::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px),
-                              linear-gradient(0deg, rgba(255,255,255,0.15) 1px, transparent 1px);
-            background-size: 3px 3px;
-        }
-
-        /* Singular Central Tracking Core Eye */
+        /* The Singular Tracking Glowing Blueish/White Core Eye */
         .singular-core-eye {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background-color: #ffffff;
             border-radius: 50%;
             position: absolute;
-            top: -22px;
-            left: calc(50% - 3.5px);
-            box-shadow: 0 0 16px 5px rgba(255,255,255,1), 0 0 6px 1px rgba(120,180,255,0.8);
+            top: -24px;
+            left: calc(50% - 3px);
+            box-shadow: 0 0 14px 4px rgba(255,255,255,1), 0 0 6px 1px rgba(150,200,255,0.9);
             will-change: transform;
             transition: transform 0.05s ease-out;
         }
 
-        /* Mechanical Neck Column */
+        /* Neck Join Column */
         .neck-interconnect {
-            width: 24px;
-            height: 25px;
-            background: linear-gradient(90deg, #151515 0%, #333333 50%, #151515 100%);
-            border: 1px solid #222;
-            margin-top: -8px;
+            width: 22px;
+            height: 28px;
+            background: linear-gradient(90deg, #111111 0%, #2b2b2b 50%, #111111 100%);
+            border: 1px solid #1f1f1f;
+            margin-top: -6px;
             z-index: 15;
-            border-radius: 4px;
+            border-radius: 2px;
         }
 
         /* Matte Dark Torso Shield Component */
         .matte-torso-shield {
-            width: 210px;
-            height: 190px;
-            background: linear-gradient(145deg, #222222 0%, #0c0c0c 100%);
-            border-radius: 55px 55px 90px 90px;
-            border: 1px solid #292929;
-            box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), 0 15px 35px rgba(0,0,0,0.8);
+            width: 200px;
+            height: 195px;
+            background: linear-gradient(145deg, #1e1e1e 0%, #0a0a0a 100%);
+            border-radius: 50px 50px 85px 85px;
+            border: 1px solid #252525;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.08), 0 15px 35px rgba(0,0,0,0.8);
             position: relative;
             z-index: 10;
         }
 
-        /* Articulated Ball Shoulder Joints */
+        /* Segmented Arm Assemblies */
         .shoulder-joint {
             position: absolute;
-            top: 15px;
-            width: 44px;
-            height: 44px;
-            background: radial-gradient(circle at 35% 25%, #333 0%, #111 80%);
+            top: 18px;
+            width: 42px;
+            height: 42px;
+            background: radial-gradient(circle at 35% 25%, #2d2d2d 0%, #0d0d0d 80%);
             border-radius: 50%;
-            border: 1px solid #222;
+            border: 1px solid #1f1f1f;
         }
-        .shoulder-left { left: -25px; }
-        .shoulder-right { right: -25px; }
+        .shoulder-left { left: -24px; }
+        .shoulder-right { right: -24px; }
 
-        /* Segmented Arm Shell Components */
         .arm-segment-upper {
             position: absolute;
-            top: 40px;
-            width: 34px;
-            height: 95px;
-            background: linear-gradient(90deg, #1c1c1c 0%, #0a0a0a 100%);
-            border: 1px solid #252525;
-            border-radius: 14px;
-        }
-        .arm-left { left: -20px; transform: rotate(12deg); }
-        .arm-right { right: -20px; transform: rotate(-12deg); }
-
-        /* Lower Mechanical Core Chassis Assembly */
-        .pelvis-core-hub {
-            width: 90px;
-            height: 50px;
-            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
-            border: 1px solid #222;
+            top: 45px;
+            width: 32px;
+            height: 100px;
+            background: linear-gradient(90deg, #181818 0%, #080808 100%);
+            border: 1px solid #222222;
             border-radius: 12px;
-            margin-top: -5px;
+        }
+        .arm-left { left: -18px; transform: rotate(10deg); }
+        .arm-right { right: -18px; transform: rotate(-10deg); }
+
+        /* Lower Pelvis Frame */
+        .pelvis-core-hub {
+            width: 86px;
+            height: 52px;
+            background: linear-gradient(180deg, #141414 0%, #080808 100%);
+            border: 1px solid #1f1f1f;
+            border-radius: 10px;
+            margin-top: -4px;
             position: relative;
             z-index: 5;
             display: flex;
             justify-content: space-around;
-            padding: 0 10px;
+            padding: 0 8px;
         }
 
-        /* Hip Hub Nodes */
         .hip-hub {
-            width: 26px;
-            height: 26px;
-            background: #1e1e1e;
+            width: 24px;
+            height: 24px;
+            background: #1a1a1a;
             border-radius: 50%;
-            border: 1px solid #333;
-            margin-top: 12px;
+            border: 1px solid #2d2d2d;
+            margin-top: 14px;
         }
 
-        /* Solid Leg Column Struts */
+        /* Legs Structure */
         .leg-strut-container {
             display: flex;
             justify-content: space-between;
-            width: 140px;
-            height: 310px;
-            margin-top: -10px;
+            width: 135px;
+            height: 300px;
+            margin-top: -8px;
         }
 
         .leg-column {
-            width: 52px;
+            width: 48px;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -382,41 +372,40 @@
 
         .thigh-armor-panel {
             width: 100%;
-            height: 130px;
-            background: linear-gradient(145deg, #1a1a1a 0%, #080808 100%);
-            border: 1px solid #252525;
-            border-radius: 12px 12px 18px 18px;
+            height: 125px;
+            background: linear-gradient(145deg, #181818 0%, #060606 100%);
+            border: 1px solid #222222;
+            border-radius: 10px 10px 16px 16px;
         }
 
         .knee-node-disk {
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle, #2a2a2a 0%, #111 80%);
-            border: 1px solid #333;
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle, #252525 0%, #0f0f0f 80%);
+            border: 1px solid #2b2b2b;
             border-radius: 50%;
-            margin: -10px 0;
+            margin: -8px 0;
             z-index: 4;
         }
 
         .shin-armor-panel {
             width: 90%;
-            height: 140px;
-            background: linear-gradient(145deg, #161616 0%, #060606 100%);
-            border: 1px solid #222;
-            border-radius: 10px 10px 14px 14px;
+            height: 135px;
+            background: linear-gradient(145deg, #141414 0%, #050505 100%);
+            border: 1px solid #1f1f1f;
+            border-radius: 8px 8px 12px 12px;
         }
 
-        /* Base Floor Target Shoes */
         .ankle-terminal-foot {
-            width: 58px;
-            height: 28px;
-            background: linear-gradient(180deg, #222 0%, #0a0a0a 100%);
-            border: 1px solid #333;
-            border-radius: 6px 14px 4px 4px;
+            width: 54px;
+            height: 26px;
+            background: linear-gradient(180deg, #1f1f1f 0%, #080808 100%);
+            border: 1px solid #2d2d2d;
+            border-radius: 5px 12px 3px 3px;
             margin-top: 2px;
         }
 
-        /* Responsive UI Scaling rules */
+        /* Responsive Scales */
         @media (max-width: 1100px) {
             .portfolio-hero {
                 flex-direction: column-reverse;
@@ -488,7 +477,6 @@
 
             <div class="hero-right">
                 <div class="robot-canvas-frame">
-                    
                     <div class="robot-full-body">
                         
                         <div id="helmetNode" class="chrome-helmet-pod">
@@ -528,7 +516,6 @@
                         </div>
 
                     </div>
-
                 </div>
             </div>
 
@@ -548,16 +535,16 @@
             const deltaY = e.clientY - headCenterY;
             const angle = Math.atan2(deltaY, deltaX);
             
-            // Core eye tracking travel threshold bounds limits
-            const maxEyeTravel = 26;
+            // Constrain travel distance of the center element
+            const maxEyeTravel = 24;
             const eyeX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.12, maxEyeTravel);
             
-            // Subtle physical helmet structural vector leaning tilt bounds offsets
+            // Structural lean bounds values
             const maxTilt = 10;
             const tiltX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.03, maxTilt);
             const tiltY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.03, maxTilt);
 
-            // Synchronize transitions across DOM components
+            // Execute rendering properties
             coreEye.style.transform = `translateX(${eyeX}px)`;
             helmetNode.style.transform = `translate(${tiltX}px, ${tiltY}px)`;
         });

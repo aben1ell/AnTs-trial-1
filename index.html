@@ -66,7 +66,7 @@
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
-        /* Section 1: Welcome Hero (The original dark view) */
+        /* Section 1: Welcome Screen */
         .welcome-hero {
             height: 100vh;
             display: flex;
@@ -90,7 +90,7 @@
             letter-spacing: 1px;
         }
 
-        /* Section 2: Premium Portfolio Layout (From Image) */
+        /* Section 2: Premium Portfolio Layout */
         .portfolio-hero {
             min-height: 100vh;
             display: flex;
@@ -124,7 +124,7 @@
             content: '';
             width: 6px;
             height: 6px;
-            background-color: #00ff66; /* Neon green active dot */
+            background-color: #00ff66;
             border-radius: 50%;
             box-shadow: 0 0 8px #00ff66;
         }
@@ -224,7 +224,7 @@
             gap: 5px;
         }
 
-        /* Hero Right (3D Robot Graphic Placeholder) */
+        /* Hero Right Area containing the graphic from your second uploaded image */
         .hero-right {
             width: 40%;
             display: flex;
@@ -233,48 +233,55 @@
             z-index: 1;
         }
 
-        /* CSS-based sleek abstract robot/cyborg graphic mimicking the image */
-        .robot-graphic {
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 70%, #000000 100%);
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.03);
+        /* Premium CSS matching the exact design of your second uploaded image */
+        .robot-container {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(18, 18, 18, 0.6) 0%, rgba(0, 0, 0, 1) 70%);
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .robot-head {
-            width: 100px;
-            height: 120px;
-            background: linear-gradient(135deg, #222222, #111111);
-            border-radius: 40px 40px 50px 50px;
-            border: 2px solid #333333;
             position: relative;
         }
 
-        .robot-visor {
-            width: 70px;
-            height: 20px;
-            background: #000000;
-            border-radius: 10px;
-            margin: 25px auto 0;
-            position: relative;
-            border: 1px solid #222222;
+        .premium-robot-head {
+            width: 150px;
+            height: 170px;
+            background: linear-gradient(145deg, #121212, #0a0a0a);
+            border-radius: 55px 55px 65px 65px;
+            border: 1px solid #1c1c1c;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 45px;
+            box-shadow: inset 0px 0px 25px rgba(0, 0, 0, 0.9), 0px 15px 35px rgba(0, 0, 0, 0.7);
         }
 
-        .robot-light {
-            width: 6px;
-            height: 6px;
+        .premium-visor {
+            width: 95px;
+            height: 28px;
+            background: #030303;
+            border-radius: 14px;
+            border: 1px solid #141414;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.9);
+        }
+
+        .glowing-core-eye {
+            width: 8px;
+            height: 8px;
             background-color: #ffffff;
             border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-translate, -50%);
-            box-shadow: 0 0 10px #ffffff;
+            box-shadow: 0 0 14px 4px rgba(255, 255, 255, 1), 0 0 5px 1px rgba(255, 255, 255, 0.8);
+            animation: pulseGlow 3.5s infinite ease-in-out;
+        }
+
+        /* Clean neon pulsing glow animation */
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.85; box-shadow: 0 0 14px 4px rgba(255, 255, 255, 1); }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 20px 7px rgba(255, 255, 255, 1), 0 0 8px 2px rgba(255, 255, 255, 0.6); }
         }
 
         /* Responsive design adjustments */
@@ -349,10 +356,10 @@
         </div>
 
         <div class="hero-right">
-            <div class="robot-graphic">
-                <div class="robot-head">
-                    <div class="robot-visor">
-                        <div class="robot-light"></div>
+            <div class="robot-container">
+                <div class="premium-robot-head">
+                    <div class="premium-visor">
+                        <div class="glowing-core-eye"></div>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abenezer Tsion | Interactive Portfolio</title>
     <style>
-        /* Base Setup & Deep Black Theme */
+        /* Premium Core Reset & Typography */
         * {
             margin: 0;
             padding: 0;
@@ -17,10 +17,24 @@
         }
 
         body {
-            background-color: #000000;
+            background-color: #050505;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Dynamic Background Glow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vh;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* Fixed Navigation Header */
@@ -29,40 +43,45 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 25px 5%;
+            padding: 30px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(5, 5, 5, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
-            border-bottom: 1px solid #111111;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .logo {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 0%, #bbbbbb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 35px;
+            gap: 40px;
         }
 
         nav a {
-            color: #aaaaaa;
+            color: #888888;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
+            letter-spacing: 0.8px;
+            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.3s ease;
         }
 
         nav a:hover {
             color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         /* Portfolio Layout Area */
@@ -71,14 +90,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 120px 8% 60px 8%;
+            padding: 140px 8% 80px 8%;
             position: relative;
             max-width: 1600px;
             margin: 0 auto;
+            z-index: 1;
         }
 
         .hero-left {
-            max-width: 50%;
+            max-width: 52%;
             z-index: 2;
         }
 
@@ -86,128 +106,152 @@
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            border: 1px solid #222222;
-            background: rgba(20, 20, 20, 0.4);
-            padding: 8px 16px;
-            border-radius: 20px;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(20, 20, 20, 0.6);
+            padding: 10px 20px;
+            border-radius: 30px;
             font-size: 0.75rem;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #888888;
-            margin-bottom: 35px;
+            color: #999999;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
         }
 
         .status-badge::before {
             content: '';
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             background-color: #00ff66;
             border-radius: 50%;
-            box-shadow: 0 0 8px #00ff66;
+            box-shadow: 0 0 10px 2px #00ff66;
+            animation: pulseGlow 2s infinite ease-in-out;
         }
 
-        /* Typography */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; box-shadow: 0 0 8px 1px #00ff66; }
+            50% { opacity: 1; box-shadow: 0 0 14px 4px #00ff66; }
+        }
+
+        /* Typography Styles */
         .intro-text {
-            color: #888888;
-            font-size: 1.25rem;
+            color: #666666;
+            font-size: 1.3rem;
             margin-bottom: 15px;
             font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
         .main-name {
-            font-size: 5.5rem;
-            font-weight: 700;
-            line-height: 1.05;
-            letter-spacing: -1px;
+            font-size: 5.8rem;
+            font-weight: 800;
+            line-height: 1.02;
+            letter-spacing: -2px;
             margin-bottom: 25px;
+            background: linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .title-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background-color: #111111;
-            border: 1px solid #222222;
-            padding: 8px 16px;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #141414 0%, #0d0d0d 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 20px;
+            border-radius: 8px;
             font-size: 0.8rem;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
-            color: #aaaaaa;
-            margin-bottom: 30px;
+            color: #cccccc;
+            margin-bottom: 35px;
             font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .description {
-            color: #888888;
+            color: #949494;
             font-size: 1.15rem;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 45px;
+            max-width: 500px;
         }
 
-        /* Buttons */
+        /* Luxury Interactive Buttons */
         .cta-group {
             display: flex;
             gap: 20px;
             align-items: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
         .btn-primary {
             background-color: #ffffff;
             color: #000000;
-            padding: 16px 32px;
-            border-radius: 8px;
+            padding: 18px 36px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
             font-size: 1rem;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            transition: background-color 0.2s;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.08);
+            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, box-shadow 0.25s ease;
         }
 
         .btn-primary:hover {
-            background-color: #dddddd;
+            background-color: #ededed;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.15);
         }
 
         .btn-secondary {
-            border: 1px solid #333333;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: transparent;
             color: #ffffff;
-            padding: 16px 32px;
-            border-radius: 8px;
+            padding: 18px 36px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 500;
             font-size: 1rem;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .btn-secondary:hover {
-            background-color: #111111;
-            border-color: #555555;
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
-        /* Tech Tags */
+        /* Tech Stack Footer Tags */
         .tech-tags {
             display: flex;
-            gap: 25px;
+            gap: 30px;
             color: #555555;
             font-size: 0.9rem;
             letter-spacing: 1px;
+            font-weight: 500;
         }
 
         .tech-tags span {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            transition: color 0.3s ease;
         }
 
-        /* Right Side - Refined Mechanical Robot Frame */
+        .tech-tags span:hover {
+            color: #888888;
+        }
+
+        /* Right Side - Highly Aesthetic Robot Visual Container */
         .hero-right {
             width: 45%;
-            height: 750px;
+            height: 780px;
             display: flex;
             justify-content: center;
             align-items: flex-end;
@@ -224,146 +268,200 @@
             align-items: flex-end;
         }
 
-        /* Full Mechanical Assembly based on image 2 */
+        /* Dynamic Subtle Shadow Base under Robot */
+        .robot-canvas-frame::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            width: 240px;
+            height: 25px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
         .robot-full-body {
             position: relative;
             width: 380px;
-            height: 680px;
+            height: 700px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            z-index: 2;
         }
 
-        /* Premium Chrome Helmet Pod */
+        /* Ultra-Realistic Glossy Chrome Helmet Pod */
         .chrome-helmet-pod {
-            width: 105px;
-            height: 115px;
-            background: radial-gradient(circle at 45% 30%, #ffffff 0%, #d0d0d0 15%, #3a3a3a 55%, #111111 100%);
-            border-radius: 50% 50% 48% 48%;
-            border: 1px solid #444444;
+            width: 112px;
+            height: 122px;
+            background: 
+                radial-gradient(circle at 35% 25%, rgba(255,255,255,0.9) 0%, transparent 20%),
+                radial-gradient(circle at 50% 30%, #ffffff 0%, #e0e0e0 10%, #666666 45%, #1c1c1c 85%, #0a0a0a 100%);
+            border-radius: 52% 52% 48% 48%;
+            border-top: 1.5px solid rgba(255,255,255,0.4);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            border-right: 1px solid #222222;
+            border-bottom: 1px solid #111111;
             position: relative;
             z-index: 20;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            padding-bottom: 12px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.7), inset -5px -5px 15px rgba(0,0,0,0.8);
-            transition: transform 0.08s ease-out;
+            padding-bottom: 15px;
+            box-shadow: 
+                0 25px 40px rgba(0,0,0,0.85), 
+                inset -8px -8px 20px rgba(0,0,0,0.9),
+                inset 4px 4px 12px rgba(255,255,255,0.15);
+            transition: transform 0.1s cubic-bezier(0.25, 1, 0.5, 1);
             will-change: transform;
         }
 
-        /* White Dot Light Matrix Visor */
+        /* Aesthetic Visor Component with Scanlines */
         .grid-visor-unit {
-            width: 80px;
-            height: 20px;
-            background: linear-gradient(180deg, #1d1d1d 0%, #080808 100%);
-            border: 1px solid #4f4f4f;
-            border-radius: 3px;
+            width: 84px;
+            height: 22px;
+            background: linear-gradient(180deg, #181818 0%, #030303 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+            box-shadow: 
+                inset 0 3px 5px rgba(0,0,0,0.9),
+                0 0 12px rgba(255,255,255,0.02);
+            overflow: hidden;
         }
 
-        /* The Singular Tracking Glowing Blueish/White Core Eye */
+        /* Micro-horizontal scanlines inside visor */
+        .grid-visor-unit::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.4) 0px,
+                rgba(0,0,0,0.4) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+        }
+
+        /* High-Intensity Tracking Light Core Eye */
         .singular-core-eye {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             background-color: #ffffff;
             border-radius: 50%;
             position: absolute;
-            top: -24px;
-            left: calc(50% - 3px);
-            box-shadow: 0 0 14px 4px rgba(255,255,255,1), 0 0 6px 1px rgba(150,200,255,0.9);
+            top: -26px;
+            left: calc(50% - 2.5px);
+            box-shadow: 
+                0 0 12px 3px rgba(255,255,255,1), 
+                0 0 25px 8px rgba(160,210,255,0.8),
+                0 0 4px 1px rgba(255,255,255,0.8);
             will-change: transform;
-            transition: transform 0.05s ease-out;
+            transition: transform 0.06s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Neck Join Column */
+        /* Neck Hydraulic Column */
         .neck-interconnect {
-            width: 22px;
-            height: 28px;
-            background: linear-gradient(90deg, #111111 0%, #2b2b2b 50%, #111111 100%);
-            border: 1px solid #1f1f1f;
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(90deg, #0f0f0f 0%, #3a3a3a 35%, #555555 50%, #1c1c1c 75%, #0b0b0b 100%);
+            border: 1px solid #151515;
             margin-top: -6px;
             z-index: 15;
-            border-radius: 2px;
+            border-radius: 3px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
         }
 
-        /* Matte Dark Torso Shield Component */
+        /* Deep Matte-Metallic Ergonomic Torso Shell */
         .matte-torso-shield {
-            width: 200px;
-            height: 195px;
-            background: linear-gradient(145deg, #1e1e1e 0%, #0a0a0a 100%);
-            border-radius: 50px 50px 85px 85px;
-            border: 1px solid #252525;
-            box-shadow: inset 0 1px 3px rgba(255,255,255,0.08), 0 15px 35px rgba(0,0,0,0.8);
+            width: 206px;
+            height: 200px;
+            background: linear-gradient(145deg, #262626 0%, #141414 40%, #070707 100%);
+            border-radius: 55px 55px 90px 90px;
+            border: 1px solid #282828;
+            border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.05), 
+                0 20px 45px rgba(0,0,0,0.85);
             position: relative;
             z-index: 10;
         }
 
-        /* Segmented Arm Assemblies */
+        /* Realistic Segmented Limbs & Industrial Joints */
         .shoulder-joint {
             position: absolute;
-            top: 18px;
-            width: 42px;
-            height: 42px;
-            background: radial-gradient(circle at 35% 25%, #2d2d2d 0%, #0d0d0d 80%);
+            top: 16px;
+            width: 44px;
+            height: 44px;
+            background: 
+                radial-gradient(circle at 35% 25%, rgba(255,255,255,0.15) 0%, transparent 30%),
+                radial-gradient(circle at 40% 40%, #383838 0%, #141414 70%, #050505 100%);
             border-radius: 50%;
-            border: 1px solid #1f1f1f;
+            border: 1px solid #1c1c1c;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .shoulder-left { left: -24px; }
-        .shoulder-right { right: -24px; }
+        .shoulder-left { left: -25px; }
+        .shoulder-right { right: -25px; }
 
         .arm-segment-upper {
             position: absolute;
-            top: 45px;
-            width: 32px;
-            height: 100px;
-            background: linear-gradient(90deg, #181818 0%, #080808 100%);
-            border: 1px solid #222222;
-            border-radius: 12px;
+            top: 48px;
+            width: 34px;
+            height: 105px;
+            background: linear-gradient(90deg, #1d1d1d 0%, #282828 30%, #121212 70%, #060606 100%);
+            border: 1px solid #202020;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
         }
-        .arm-left { left: -18px; transform: rotate(10deg); }
-        .arm-right { right: -18px; transform: rotate(-10deg); }
+        .arm-left { left: -19px; transform: rotate(11deg); }
+        .arm-right { right: -19px; transform: rotate(-11deg); }
 
-        /* Lower Pelvis Frame */
+        /* Chassis Pelvic Core Hub */
         .pelvis-core-hub {
-            width: 86px;
-            height: 52px;
-            background: linear-gradient(180deg, #141414 0%, #080808 100%);
+            width: 88px;
+            height: 54px;
+            background: linear-gradient(180deg, #161616 0%, #0d0d0d 50%, #050505 100%);
             border: 1px solid #1f1f1f;
-            border-radius: 10px;
-            margin-top: -4px;
+            border-top: 1px solid #2c2c2c;
+            border-radius: 12px;
+            margin-top: -5px;
             position: relative;
             z-index: 5;
             display: flex;
             justify-content: space-around;
             padding: 0 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
         }
 
         .hip-hub {
-            width: 24px;
-            height: 24px;
-            background: #1a1a1a;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle at 40% 30%, #333333 0%, #111111 80%);
             border-radius: 50%;
-            border: 1px solid #2d2d2d;
+            border: 1px solid #282828;
             margin-top: 14px;
         }
 
-        /* Legs Structure */
+        /* Solid Structural Mechanical Lower Limbs */
         .leg-strut-container {
             display: flex;
             justify-content: space-between;
-            width: 135px;
-            height: 300px;
-            margin-top: -8px;
+            width: 140px;
+            height: 310px;
+            margin-top: -6px;
         }
 
         .leg-column {
-            width: 48px;
+            width: 50px;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -372,47 +470,53 @@
 
         .thigh-armor-panel {
             width: 100%;
-            height: 125px;
-            background: linear-gradient(145deg, #181818 0%, #060606 100%);
+            height: 130px;
+            background: linear-gradient(145deg, #222222 0%, #141414 45%, #050505 100%);
             border: 1px solid #222222;
-            border-radius: 10px 10px 16px 16px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px 12px 18px 18px;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.05);
         }
 
         .knee-node-disk {
-            width: 28px;
-            height: 28px;
-            background: radial-gradient(circle, #252525 0%, #0f0f0f 80%);
-            border: 1px solid #2b2b2b;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 35% 35%, #444 0%, #141414 80%);
+            border: 1px solid #262626;
             border-radius: 50%;
-            margin: -8px 0;
+            margin: -10px 0;
             z-index: 4;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
         }
 
         .shin-armor-panel {
             width: 90%;
-            height: 135px;
-            background: linear-gradient(145deg, #141414 0%, #050505 100%);
-            border: 1px solid #1f1f1f;
-            border-radius: 8px 8px 12px 12px;
+            height: 140px;
+            background: linear-gradient(145deg, #1c1c1c 0%, #101010 50%, #040404 100%);
+            border: 1px solid #1e1e1e;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            border-radius: 10px 10px 15px 15px;
         }
 
         .ankle-terminal-foot {
-            width: 54px;
-            height: 26px;
-            background: linear-gradient(180deg, #1f1f1f 0%, #080808 100%);
-            border: 1px solid #2d2d2d;
-            border-radius: 5px 12px 3px 3px;
+            width: 56px;
+            height: 28px;
+            background: linear-gradient(180deg, #242424 0%, #141414 40%, #030303 100%);
+            border: 1px solid #282828;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px 14px 4px 4px;
             margin-top: 2px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.7);
         }
 
-        /* Responsive Scales */
-        @media (max-width: 1100px) {
+        /* Responsive Layout & Scale Adjustments */
+        @media (max-width: 1150px) {
             .portfolio-hero {
                 flex-direction: column-reverse;
                 justify-content: center;
                 text-align: center;
-                padding-top: 130px;
-                gap: 50px;
+                padding-top: 150px;
+                gap: 60px;
             }
             .hero-left {
                 max-width: 100%;
@@ -425,11 +529,26 @@
             }
             .hero-right {
                 width: 100%;
-                height: 580px;
+                height: 600px;
             }
             .robot-full-body {
                 transform: scale(0.85);
                 transform-origin: bottom center;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .main-name {
+                font-size: 3.8rem;
+            }
+            .cta-group {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -535,18 +654,18 @@
             const deltaY = e.clientY - headCenterY;
             const angle = Math.atan2(deltaY, deltaX);
             
-            // Constrain travel distance of the center element
-            const maxEyeTravel = 24;
-            const eyeX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.12, maxEyeTravel);
+            // Bounds limit for micro tracking element travel
+            const maxEyeTravel = 26;
+            const eyeX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.14, maxEyeTravel);
             
-            // Structural lean bounds values
-            const maxTilt = 10;
-            const tiltX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.03, maxTilt);
-            const tiltY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.03, maxTilt);
+            // Clean physical organic structural vector leaning tilt bounds offsets
+            const maxTilt = 12;
+            const tiltX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.035, maxTilt);
+            const tiltY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.035, maxTilt);
 
-            // Execute rendering properties
+            // Execute synchronized 3D transform translations
             coreEye.style.transform = `translateX(${eyeX}px)`;
-            helmetNode.style.transform = `translate(${tiltX}px, ${tiltY}px)`;
+            helmetNode.style.transform = `translate(${tiltX}px, ${tiltY}px) rotate(${tiltX * 0.3}deg)`;
         });
     </script>
 

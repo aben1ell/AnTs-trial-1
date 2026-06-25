@@ -3,32 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnTs | Digital Space</title>
+    <title>Abenezer Tsion | Portfolio</title>
     <style>
-        /* Base styles resetting default spaces and setting the pure black theme */
+        /* Base Setup & Deep Black Theme */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #000000;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Minimalist Header Navigation */
+        /* Fixed Navigation Header */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 20px 40px;
+            padding: 25px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #111111; /* Subtle divider */
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #111111;
         }
 
         .logo {
@@ -41,7 +49,7 @@
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 35px;
         }
 
         nav a {
@@ -53,15 +61,14 @@
             transition: color 0.3s ease, text-shadow 0.3s ease;
         }
 
-        /* Subtle glow hover effect */
         nav a:hover {
             color: #dddddd;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
-        /* Main Center Content Section */
-        main {
-            flex: 1;
+        /* Section 1: Welcome Hero (The original dark view) */
+        .welcome-hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -70,24 +77,236 @@
             padding: 20px;
         }
 
-        h1 {
+        .welcome-hero h1 {
             font-size: 2.5rem;
             font-weight: 300;
             letter-spacing: 4px;
             margin-bottom: 15px;
         }
 
-        p {
-            color: #666666; /* Muted gray text for a slick contrast */
+        .welcome-hero p {
+            color: #666666;
             font-size: 1rem;
             letter-spacing: 1px;
+        }
+
+        /* Section 2: Premium Portfolio Layout (From Image) */
+        .portfolio-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 8%;
+            position: relative;
+        }
+
+        .hero-left {
+            max-width: 55%;
+            z-index: 2;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #222222;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #888888;
+            margin-bottom: 25px;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: #00ff66; /* Neon green active dot */
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff66;
+        }
+
+        /* Main Headline Text */
+        .intro-text {
+            color: #888888;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .main-name {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+
+        .title-badge {
+            display: inline-block;
+            background-color: #111111;
+            border: 1px solid #222222;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #aaaaaa;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            color: #888888;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        /* Action Buttons */
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .btn-primary {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #dddddd;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #111111;
+            border-color: #555555;
+        }
+
+        /* Tech Stack Tags */
+        .tech-tags {
+            display: flex;
+            gap: 20px;
+            color: #444444;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tech-tags span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Hero Right (3D Robot Graphic Placeholder) */
+        .hero-right {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* CSS-based sleek abstract robot/cyborg graphic mimicking the image */
+        .robot-graphic {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 70%, #000000 100%);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.03);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .robot-head {
+            width: 100px;
+            height: 120px;
+            background: linear-gradient(135deg, #222222, #111111);
+            border-radius: 40px 40px 50px 50px;
+            border: 2px solid #333333;
+            position: relative;
+        }
+
+        .robot-visor {
+            width: 70px;
+            height: 20px;
+            background: #000000;
+            border-radius: 10px;
+            margin: 25px auto 0;
+            position: relative;
+            border: 1px solid #222222;
+        }
+
+        .robot-light {
+            width: 6px;
+            height: 6px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-translate, -50%);
+            box-shadow: 0 0 10px #ffffff;
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 968px) {
+            .portfolio-hero {
+                flex-direction: column-reverse;
+                justify-content: center;
+                text-align: center;
+                padding-top: 140px;
+            }
+            .hero-left {
+                max-width: 100%;
+                margin-top: 40px;
+            }
+            .cta-group {
+                justify-content: center;
+            }
+            .tech-tags {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .description {
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">AnTs</div>
+        <div class="logo">Abenezer Tsion</div>
         <nav>
             <ul>
                 <li><a href="#about">About</a></li>
@@ -97,10 +316,49 @@
         </nav>
     </header>
 
-    <main>
+    <section class="welcome-hero">
         <h1>WELCOME TO THE VOID</h1>
-        <p>Something minimal is brewing here.</p>
-    </main>
+        <p>Scroll down to explore</p>
+    </section>
+
+    <section id="about" class="portfolio-hero">
+        
+        <div class="hero-left">
+            <div class="status-badge">Available for new projects</div>
+            
+            <div class="intro-text">Hi there, I'm</div>
+            <h2 class="main-name">Abenezer Tsion</h2>
+            
+            <div class="title-badge">✦ Front-End Developer</div>
+            
+            <p class="description">
+                I create clean and modern web interfaces with responsive layouts, smooth interactions, and a strong focus on user experience.
+            </p>
+            
+            <div class="cta-group">
+                <a href="#projects" class="btn-primary">View My Work ➔</a>
+                <a href="#contact" class="btn-secondary">Get In Touch</a>
+            </div>
+            
+            <div class="tech-tags">
+                <span>◇ React</span>
+                <span>◇ Next.js</span>
+                <span>◇ Framer Motion</span>
+                <span>◇ Tailwind CSS</span>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="robot-graphic">
+                <div class="robot-head">
+                    <div class="robot-visor">
+                        <div class="robot-light"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
 
 </body>
 </html>

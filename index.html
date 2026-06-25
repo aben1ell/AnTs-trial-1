@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abenezer Tsion | Interactive Portfolio</title>
     <style>
-        /* Premium Core Reset & Typography */
+        /* Core System Reset */
         * {
             margin: 0;
             padding: 0;
@@ -19,25 +19,25 @@
         body {
             background-color: #050505;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Ambient Dynamic Background Glow */
+        /* Ambient Luxury Background Light */
         body::before {
             content: '';
             position: fixed;
-            top: -10%;
+            top: -15%;
             right: -10%;
-            width: 60vw;
-            height: 60vh;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 70%);
+            width: 70vw;
+            height: 70vh;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.035) 0%, rgba(0, 0, 0, 0) 70%);
             z-index: 0;
             pointer-events: none;
         }
 
-        /* Fixed Navigation Header */
+        /* Navigation Header */
         header {
             position: fixed;
             top: 0;
@@ -47,7 +47,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 5, 0.75);
+            background: rgba(5, 5, 5, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
@@ -59,7 +59,7 @@
             font-weight: 800;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #bbbbbb 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #aaaaaa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -76,15 +76,14 @@
             font-size: 0.9rem;
             font-weight: 500;
             letter-spacing: 0.8px;
-            transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.3s ease;
+            transition: color 0.3s ease;
         }
 
         nav a:hover {
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        /* Portfolio Layout Area */
+        /* Portfolio Structure Layout */
         .portfolio-hero {
             min-height: 100vh;
             display: flex;
@@ -98,17 +97,17 @@
         }
 
         .hero-left {
-            max-width: 52%;
+            max-width: 50%;
             z-index: 2;
         }
 
-        /* Status Badge */
+        /* Dynamic Status Badge */
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 10px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(20, 20, 20, 0.6);
+            background: rgba(18, 18, 18, 0.6);
             padding: 10px 20px;
             border-radius: 30px;
             font-size: 0.75rem;
@@ -117,7 +116,6 @@
             color: #999999;
             margin-bottom: 40px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(5px);
         }
 
         .status-badge::before {
@@ -126,31 +124,30 @@
             height: 7px;
             background-color: #00ff66;
             border-radius: 50%;
-            box-shadow: 0 0 10px 2px #00ff66;
-            animation: pulseGlow 2s infinite ease-in-out;
+            box-shadow: 0 0 12px 3px #00ff66;
+            animation: beaconPulse 2s infinite ease-in-out;
         }
 
-        @keyframes pulseGlow {
+        @keyframes beaconPulse {
             0%, 100% { opacity: 0.6; box-shadow: 0 0 8px 1px #00ff66; }
             50% { opacity: 1; box-shadow: 0 0 14px 4px #00ff66; }
         }
 
-        /* Typography Styles */
+        /* Main Typography */
         .intro-text {
             color: #666666;
             font-size: 1.3rem;
             margin-bottom: 15px;
             font-weight: 400;
-            letter-spacing: 0.5px;
         }
 
         .main-name {
             font-size: 5.8rem;
             font-weight: 800;
-            line-height: 1.02;
+            line-height: 1.05;
             letter-spacing: -2px;
             margin-bottom: 25px;
-            background: linear-gradient(180deg, #ffffff 0%, #e5e5e5 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -169,7 +166,6 @@
             color: #cccccc;
             margin-bottom: 35px;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .description {
@@ -177,10 +173,10 @@
             font-size: 1.15rem;
             line-height: 1.7;
             margin-bottom: 45px;
-            max-width: 500px;
+            max-width: 480px;
         }
 
-        /* Luxury Interactive Buttons */
+        /* Action Buttons */
         .cta-group {
             display: flex;
             gap: 20px;
@@ -199,317 +195,99 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.08);
-            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, box-shadow 0.25s ease;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
 
         .btn-primary:hover {
-            background-color: #ededed;
+            background-color: #e5e5e5;
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.15);
         }
 
         .btn-secondary {
             border: 1px solid rgba(255, 255, 255, 0.12);
-            background: transparent;
             color: #ffffff;
             padding: 18px 36px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: 500;
             font-size: 1rem;
-            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, border-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
         .btn-secondary:hover {
             background-color: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
 
-        /* Tech Stack Footer Tags */
+        /* Tech Badges */
         .tech-tags {
             display: flex;
             gap: 30px;
             color: #555555;
             font-size: 0.9rem;
             letter-spacing: 1px;
-            font-weight: 500;
         }
 
         .tech-tags span {
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: color 0.3s ease;
         }
 
-        .tech-tags span:hover {
-            color: #888888;
-        }
-
-        /* Right Side - Highly Aesthetic Robot Visual Container */
+        /* Right Side Layout - Clean Robot Visual Showcase */
         .hero-right {
             width: 45%;
-            height: 780px;
+            height: 620px;
             display: flex;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center;
             position: relative;
             z-index: 1;
         }
 
-        .robot-canvas-frame {
+        /* Subtle glowing vector stage for the cleaner robot */
+        .robot-stage {
             width: 100%;
             height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 65%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Floating Interactive Mech Capsule */
+        .floating-mech-frame {
+            width: 320px;
+            height: 420px;
             position: relative;
             display: flex;
             justify-content: center;
-            align-items: flex-end;
-        }
-
-        /* Dynamic Subtle Shadow Base under Robot */
-        .robot-canvas-frame::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            width: 240px;
-            height: 25px;
-            background: radial-gradient(ellipse, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 70%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .robot-full-body {
-            position: relative;
-            width: 380px;
-            height: 700px;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            z-index: 2;
+            animation: dynamicFloat 6s ease-in-out infinite;
+            will-change: transform;
         }
 
-        /* Ultra-Realistic Glossy Chrome Helmet Pod */
-        .chrome-helmet-pod {
-            width: 112px;
-            height: 122px;
-            background: 
-                radial-gradient(circle at 35% 25%, rgba(255,255,255,0.9) 0%, transparent 20%),
-                radial-gradient(circle at 50% 30%, #ffffff 0%, #e0e0e0 10%, #666666 45%, #1c1c1c 85%, #0a0a0a 100%);
-            border-radius: 52% 52% 48% 48%;
-            border-top: 1.5px solid rgba(255,255,255,0.4);
-            border-left: 1px solid rgba(255,255,255,0.2);
-            border-right: 1px solid #222222;
-            border-bottom: 1px solid #111111;
-            position: relative;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 15px;
-            box-shadow: 
-                0 25px 40px rgba(0,0,0,0.85), 
-                inset -8px -8px 20px rgba(0,0,0,0.9),
-                inset 4px 4px 12px rgba(255,255,255,0.15);
+        @keyframes dynamicFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Target Components for Matrix Engine Tracking */
+        .robot-svg-wrapper {
+            width: 100%;
+            height: 100%;
             transition: transform 0.1s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-style: preserve-3d;
+        }
+
+        .interactive-eye-lens {
             will-change: transform;
+            transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Aesthetic Visor Component with Scanlines */
-        .grid-visor-unit {
-            width: 84px;
-            height: 22px;
-            background: linear-gradient(180deg, #181818 0%, #030303 100%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-top: 1px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 
-                inset 0 3px 5px rgba(0,0,0,0.9),
-                0 0 12px rgba(255,255,255,0.02);
-            overflow: hidden;
-        }
-
-        /* Micro-horizontal scanlines inside visor */
-        .grid-visor-unit::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0,0,0,0.4) 0px,
-                rgba(0,0,0,0.4) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-        }
-
-        /* High-Intensity Tracking Light Core Eye */
-        .singular-core-eye {
-            width: 5px;
-            height: 5px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            position: absolute;
-            top: -26px;
-            left: calc(50% - 2.5px);
-            box-shadow: 
-                0 0 12px 3px rgba(255,255,255,1), 
-                0 0 25px 8px rgba(160,210,255,0.8),
-                0 0 4px 1px rgba(255,255,255,0.8);
-            will-change: transform;
-            transition: transform 0.06s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* Neck Hydraulic Column */
-        .neck-interconnect {
-            width: 20px;
-            height: 30px;
-            background: linear-gradient(90deg, #0f0f0f 0%, #3a3a3a 35%, #555555 50%, #1c1c1c 75%, #0b0b0b 100%);
-            border: 1px solid #151515;
-            margin-top: -6px;
-            z-index: 15;
-            border-radius: 3px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
-        }
-
-        /* Deep Matte-Metallic Ergonomic Torso Shell */
-        .matte-torso-shield {
-            width: 206px;
-            height: 200px;
-            background: linear-gradient(145deg, #262626 0%, #141414 40%, #070707 100%);
-            border-radius: 55px 55px 90px 90px;
-            border: 1px solid #282828;
-            border-top: 1.5px solid rgba(255, 255, 255, 0.1);
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 
-                inset 0 2px 4px rgba(255,255,255,0.05), 
-                0 20px 45px rgba(0,0,0,0.85);
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Realistic Segmented Limbs & Industrial Joints */
-        .shoulder-joint {
-            position: absolute;
-            top: 16px;
-            width: 44px;
-            height: 44px;
-            background: 
-                radial-gradient(circle at 35% 25%, rgba(255,255,255,0.15) 0%, transparent 30%),
-                radial-gradient(circle at 40% 40%, #383838 0%, #141414 70%, #050505 100%);
-            border-radius: 50%;
-            border: 1px solid #1c1c1c;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .shoulder-left { left: -25px; }
-        .shoulder-right { right: -25px; }
-
-        .arm-segment-upper {
-            position: absolute;
-            top: 48px;
-            width: 34px;
-            height: 105px;
-            background: linear-gradient(90deg, #1d1d1d 0%, #282828 30%, #121212 70%, #060606 100%);
-            border: 1px solid #202020;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
-        }
-        .arm-left { left: -19px; transform: rotate(11deg); }
-        .arm-right { right: -19px; transform: rotate(-11deg); }
-
-        /* Chassis Pelvic Core Hub */
-        .pelvis-core-hub {
-            width: 88px;
-            height: 54px;
-            background: linear-gradient(180deg, #161616 0%, #0d0d0d 50%, #050505 100%);
-            border: 1px solid #1f1f1f;
-            border-top: 1px solid #2c2c2c;
-            border-radius: 12px;
-            margin-top: -5px;
-            position: relative;
-            z-index: 5;
-            display: flex;
-            justify-content: space-around;
-            padding: 0 8px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-        }
-
-        .hip-hub {
-            width: 25px;
-            height: 25px;
-            background: radial-gradient(circle at 40% 30%, #333333 0%, #111111 80%);
-            border-radius: 50%;
-            border: 1px solid #282828;
-            margin-top: 14px;
-        }
-
-        /* Solid Structural Mechanical Lower Limbs */
-        .leg-strut-container {
-            display: flex;
-            justify-content: space-between;
-            width: 140px;
-            height: 310px;
-            margin-top: -6px;
-        }
-
-        .leg-column {
-            width: 50px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .thigh-armor-panel {
-            width: 100%;
-            height: 130px;
-            background: linear-gradient(145deg, #222222 0%, #141414 45%, #050505 100%);
-            border: 1px solid #222222;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px 12px 18px 18px;
-            box-shadow: inset 0 1px 3px rgba(255,255,255,0.05);
-        }
-
-        .knee-node-disk {
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle at 35% 35%, #444 0%, #141414 80%);
-            border: 1px solid #262626;
-            border-radius: 50%;
-            margin: -10px 0;
-            z-index: 4;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-        }
-
-        .shin-armor-panel {
-            width: 90%;
-            height: 140px;
-            background: linear-gradient(145deg, #1c1c1c 0%, #101010 50%, #040404 100%);
-            border: 1px solid #1e1e1e;
-            border-top: 1px solid rgba(255,255,255,0.03);
-            border-radius: 10px 10px 15px 15px;
-        }
-
-        .ankle-terminal-foot {
-            width: 56px;
-            height: 28px;
-            background: linear-gradient(180deg, #242424 0%, #141414 40%, #030303 100%);
-            border: 1px solid #282828;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px 14px 4px 4px;
-            margin-top: 2px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.7);
-        }
-
-        /* Responsive Layout & Scale Adjustments */
+        /* Responsive Breakpoints */
         @media (max-width: 1150px) {
             .portfolio-hero {
                 flex-direction: column-reverse;
@@ -529,11 +307,7 @@
             }
             .hero-right {
                 width: 100%;
-                height: 600px;
-            }
-            .robot-full-body {
-                transform: scale(0.85);
-                transform-origin: bottom center;
+                height: 480px;
             }
         }
 
@@ -595,45 +369,67 @@
             </div>
 
             <div class="hero-right">
-                <div class="robot-canvas-frame">
-                    <div class="robot-full-body">
-                        
-                        <div id="helmetNode" class="chrome-helmet-pod">
-                            <div id="coreEye" class="singular-core-eye"></div>
+                <div class="robot-stage">
+                    <div class="floating-mech-frame">
+                        <div id="robotVisual" class="robot-svg-wrapper">
                             
-                            <div class="grid-visor-unit"></div>
-                        </div>
-                        
-                        <div class="neck-interconnect"></div>
-                        
-                        <div class="matte-torso-shield">
-                            <div class="shoulder-joint shoulder-left"></div>
-                            <div class="arm-segment-upper arm-left"></div>
-                            
-                            <div class="shoulder-joint shoulder-right"></div>
-                            <div class="arm-segment-upper arm-right"></div>
-                        </div>
-                        
-                        <div class="pelvis-core-hub">
-                            <div class="hip-hub"></div>
-                            <div class="hip-hub"></div>
-                        </div>
-                        
-                        <div class="leg-strut-container">
-                            <div class="leg-column">
-                                <div class="thigh-armor-panel"></div>
-                                <div class="knee-node-disk"></div>
-                                <div class="shin-armor-panel"></div>
-                                <div class="ankle-terminal-foot"></div>
-                            </div>
-                            <div class="leg-column">
-                                <div class="thigh-armor-panel"></div>
-                                <div class="knee-node-disk"></div>
-                                <div class="shin-armor-panel"></div>
-                                <div class="ankle-terminal-foot"></div>
-                            </div>
-                        </div>
+                            <svg viewBox="0 0 320 400" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="helmMetallic" x1="160" y1="40" x2="160" y2="240" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+                                        <stop offset="30%" stop-color="#2c2c2c"/>
+                                        <stop offset="75%" stop-color="#141414"/>
+                                        <stop offset="100%" stop-color="#0a0a0a"/>
+                                    </linearGradient>
+                                    
+                                    <linearGradient id="chassisPlate" x1="160" y1="260" x2="160" y2="380" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#222222"/>
+                                        <stop offset="100%" stop-color="#080808"/>
+                                    </linearGradient>
 
+                                    <radialGradient id="neonGlowCore" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(160 145) scale(20)">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="25%" stop-color="#99ccff"/>
+                                        <stop offset="60%" stop-color="#0066ff" stop-opacity="0.4"/>
+                                        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+                                    </radialGradient>
+                                    
+                                    <filter id="shadowDepth" x="-10%" y="-10%" width="120%" height="120%">
+                                        <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.85"/>
+                                    </filter>
+                                </defs>
+
+                                <rect x="142" y="225" width="36" height="50" rx="6" fill="#161616" stroke="#262626" stroke-width="1.5"/>
+                                <line x1="150" y1="235" x2="150" y2="265" stroke="#333333" stroke-width="2"/>
+                                <line x1="170" y1="235" x2="170" y2="265" stroke="#333333" stroke-width="2"/>
+
+                                <path d="M70 310 C 70 275, 250 275, 250 310 L 270 370 C 270 380, 50 380, 50 370 Z" fill="url(#chassisPlate)" stroke="#222222" stroke-width="2" filter="url(#shadowDepth)"/>
+                                <path d="M120 282 L 200 282 L 210 320 L 110 320 Z" fill="#0f0f0f" stroke="#1f1f1f"/>
+                                <circle cx="160" cy="301" r="5" fill="#262626"/>
+
+                                <g filter="url(#shadowDepth)">
+                                    <path d="M85 110 L 92 200 L 105 215 L 105 100 Z" fill="#121212" stroke="#222222"/>
+                                    <path d="M235 110 L 228 200 L 215 215 L 215 100 Z" fill="#121212" stroke="#222222"/>
+
+                                    <path d="M100 90 C 100 40, 220 40, 220 90 L 215 195 C 215 225, 105 225, 105 195 Z" fill="url(#helmMetallic)" stroke="#2f2f2f" stroke-width="1.5"/>
+                                    
+                                    <path d="M106 85 C 106 48, 214 48, 214 85" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
+                                    
+                                    <path d="M115 130 C 115 122, 205 122, 205 130 L 202 165 C 202 172, 118 172, 118 165 Z" fill="#090909" stroke="#1f1f1f" stroke-width="2"/>
+                                    <path d="M122 135 L 198 135" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                </g>
+
+                                <g id="eyeLensContainer" class="interactive-eye-lens">
+                                    <circle cx="160" cy="148" r="18" fill="url(#neonGlowCore)"/>
+                                    <circle cx="160" cy="148" r="3.5" fill="#ffffff"/>
+                                    <circle cx="160" cy="148" r="5" stroke="#ffffff" stroke-opacity="0.5" stroke-width="1"/>
+                                </g>
+
+                                <line x1="145" y1="205" x2="175" y2="205" stroke="#1c1c1c" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="150" y1="211" x2="170" y2="211" stroke="#1c1c1c" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -642,32 +438,16 @@
     </main>
 
     <script>
-        const helmetNode = document.getElementById('helmetNode');
-        const coreEye = document.getElementById('coreEye');
+        const robotVisual = document.getElementById('robotVisual');
+        const eyeLensContainer = document.getElementById('eyeLensContainer');
 
         document.addEventListener('mousemove', (e) => {
-            const headRect = helmetNode.getBoundingClientRect();
-            const headCenterX = headRect.left + headRect.width / 2;
-            const headCenterY = headRect.top + headRect.height / 2;
+            const containerRect = robotVisual.getBoundingClientRect();
+            const centerX = containerRect.left + containerRect.width / 2;
+            const centerY = containerRect.top + containerRect.height / 2;
 
-            const deltaX = e.clientX - headCenterX;
-            const deltaY = e.clientY - headCenterY;
-            const angle = Math.atan2(deltaY, deltaX);
+            const diffX = e.clientX - centerX;
+            const diffY = e.clientY - centerY;
+            const radians = Math.atan2(diffY, diffX);
             
-            // Bounds limit for micro tracking element travel
-            const maxEyeTravel = 26;
-            const eyeX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.14, maxEyeTravel);
-            
-            // Clean physical organic structural vector leaning tilt bounds offsets
-            const maxTilt = 12;
-            const tiltX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.035, maxTilt);
-            const tiltY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.035, maxTilt);
-
-            // Execute synchronized 3D transform translations
-            coreEye.style.transform = `translateX(${eyeX}px)`;
-            helmetNode.style.transform = `translate(${tiltX}px, ${tiltY}px) rotate(${tiltX * 0.3}deg)`;
-        });
-    </script>
-
-</body>
-</html>
+            // Subtle constrained travel boundaries for cleaner micro-move

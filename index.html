@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abenezer Tsion | Portfolio</title>
+    <title>Abenezer Tsion | Interactive Portfolio</title>
     <style>
         /* Base Setup & Deep Black Theme */
         * {
@@ -101,68 +101,48 @@
         }
 
         .hero-left {
-            max-width: 55%;
+            max-width: 50%;
             z-index: 2;
         }
 
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #222222;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #888888;
-            margin-bottom: 25px;
-        }
-
-        .status-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: #00ff66;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #00ff66;
-        }
-
-        /* Main Headline Text */
+        /* Main Headline Text matching your image layout */
         .intro-text {
             color: #888888;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 400;
         }
 
         .main-name {
-            font-size: 4.5rem;
+            font-size: 5.5rem;
             font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 25px;
         }
 
         .title-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             background-color: #111111;
             border: 1px solid #222222;
-            padding: 6px 12px;
-            border-radius: 5px;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 0.8rem;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: #aaaaaa;
-            margin-bottom: 25px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-weight: 600;
         }
 
         .description {
             color: #888888;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             line-height: 1.6;
             margin-bottom: 40px;
-            max-width: 500px;
+            max-width: 520px;
         }
 
         /* Action Buttons */
@@ -176,11 +156,11 @@
         .btn-primary {
             background-color: #ffffff;
             color: #000000;
-            padding: 14px 28px;
+            padding: 16px 32px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1rem;
             display: inline-flex;
             align-items: center;
             gap: 10px;
@@ -195,11 +175,11 @@
         .btn-secondary {
             border: 1px solid #333333;
             color: #ffffff;
-            padding: 14px 28px;
+            padding: 16px 32px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: background-color 0.2s, border-color 0.2s;
         }
 
@@ -211,94 +191,109 @@
         /* Tech Stack Tags */
         .tech-tags {
             display: flex;
-            gap: 20px;
-            color: #444444;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            gap: 25px;
+            color: #888888;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
         }
 
         .tech-tags span {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
 
-        /* Hero Right Area containing the interactive robot head */
+        /* Left Hand Side Interactive Robot Frame Graphics */
         .hero-right {
-            width: 40%;
+            width: 45%;
+            height: 650px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
+            position: relative;
             z-index: 1;
         }
 
-        .robot-container {
+        /* Main structural layout containing the interactive body model components */
+        .interactive-robot-model {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        /* Robot Body Frame */
+        .robot-body-frame {
             width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, rgba(18, 18, 18, 0.6) 0%, rgba(0, 0, 0, 1) 70%);
+            height: 420px;
+            background: linear-gradient(135deg, #141414 0%, #070707 100%);
+            border-radius: 80px 80px 40px 40px;
+            box-shadow: inset 0px 0px 30px rgba(0, 0, 0, 0.9), 0px 20px 40px rgba(0, 0, 0, 0.8);
+            border: 1px solid #222222;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* Interactive Tracking Head Node */
+        .robot-head-node {
+            position: absolute;
+            top: -110px;
+            left: calc(50% - 70px);
+            width: 140px;
+            height: 155px;
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border-radius: 50px 50px 60px 60px;
+            border: 1px solid #262626;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-        }
-
-        /* The main head frame that will physically tilt slightly toward the mouse */
-        .premium-robot-head {
-            width: 150px;
-            height: 170px;
-            background: linear-gradient(145deg, #121212, #0a0a0a);
-            border-radius: 55px 55px 65px 65px;
-            border: 1px solid #1c1c1c;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 45px;
-            box-shadow: inset 0px 0px 25px rgba(0, 0, 0, 0.9), 0px 15px 35px rgba(0, 0, 0, 0.7);
-            transition: transform 0.1s ease-out; /* Smooth physical movement transition */
+            box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.8), 0px 10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            transition: transform 0.08s ease-out;
             will-change: transform;
         }
 
-        /* The container mask for the tracking eyes */
-        .premium-visor {
-            width: 95px;
-            height: 28px;
-            background: #030303;
-            border-radius: 14px;
-            border: 1px solid #141414;
+        /* Dark Visor Strip */
+        .cyber-visor-strip {
+            width: 90px;
+            height: 26px;
+            background: #020202;
+            border-radius: 13px;
+            border: 1px solid #1c1c1c;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.9);
+            padding: 0 14px;
+            box-shadow: inset 0px 3px 6px rgba(0, 0, 0, 0.95);
             position: relative;
             overflow: hidden;
         }
 
-        /* The eye core dot that physically maps coordinates to follow your cursor */
-        .glowing-core-eye {
-            width: 10px;
-            height: 10px;
+        /* Dual Tracking Core Eyes */
+        .tracking-eye-core {
+            width: 8px;
+            height: 8px;
             background-color: #ffffff;
             border-radius: 50%;
-            box-shadow: 0 0 14px 4px rgba(255, 255, 255, 1), 0 0 5px 1px rgba(255, 255, 255, 0.8);
-            position: absolute;
-            top: calc(50% - 5px);
-            left: calc(50% - 5px);
-            transition: transform 0.05s ease-out; /* Fast snappy tracking response */
+            box-shadow: 0 0 12px 3px rgba(255, 255, 255, 1);
+            position: relative;
+            transition: transform 0.05s ease-out;
             will-change: transform;
         }
 
         /* Responsive design adjustments */
-        @media (max-width: 968px) {
+        @media (max-width: 1024px) {
             .portfolio-hero {
                 flex-direction: column-reverse;
                 justify-content: center;
                 text-align: center;
                 padding-top: 140px;
+                gap: 60px;
             }
             .hero-left {
                 max-width: 100%;
-                margin-top: 40px;
             }
             .cta-group {
                 justify-content: center;
@@ -310,6 +305,20 @@
             .description {
                 margin-left: auto;
                 margin-right: auto;
+            }
+            .hero-right {
+                width: 100%;
+                height: 500px;
+            }
+            .robot-body-frame {
+                width: 260px;
+                height: 340px;
+            }
+            .robot-head-node {
+                top: -90px;
+                left: calc(50% - 55px);
+                width: 110px;
+                height: 125px;
             }
         }
     </style>
@@ -335,15 +344,13 @@
     <section id="about" class="portfolio-hero">
         
         <div class="hero-left">
-            <div class="status-badge">Available for new projects</div>
-            
             <div class="intro-text">Hi there, I'm</div>
             <h2 class="main-name">Abenezer Tsion</h2>
             
             <div class="title-badge">✦ Front-End Developer</div>
             
             <p class="description">
-                I create clean and modern web interfaces with responsive layouts, smooth interactions, and a strong focus on user experience.
+                I create clean and modern web interfaces, with responsive layouts, smooth interactions, and a strong focus on user experience.
             </p>
             
             <div class="cta-group">
@@ -352,53 +359,60 @@
             </div>
             
             <div class="tech-tags">
-                <span>◇ React</span>
-                <span>◇ Next.js</span>
-                <span>◇ Framer Motion</span>
-                <span>◇ Tailwind CSS</span>
+                <span>✧ React</span>
+                <span>✧ Next.js</span>
+                <span>✧ Framer Motion</span>
+                <span>✧ Tailwind CSS</span>
             </div>
         </div>
 
         <div class="hero-right">
-            <div class="robot-container">
-                <div id="robotHead" class="premium-robot-head">
-                    <div class="premium-visor">
-                        <div id="robotEye" class="glowing-core-eye"></div>
+            <div class="interactive-robot-model">
+                
+                <div class="robot-body-frame">
+                    
+                    <div id="interactiveHead" class="robot-head-node">
+                        <div class="cyber-visor-strip">
+                            <div class="tracking-eye-core eye-left"></div>
+                            <div class="tracking-eye-core eye-right"></div>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
 
     </section>
 
     <script>
-        const robotHead = document.getElementById('robotHead');
-        const robotEye = document.getElementById('robotEye');
+        const interactiveHead = document.getElementById('interactiveHead');
+        const trackingEyes = document.querySelectorAll('.tracking-eye-core');
 
         document.addEventListener('mousemove', (e) => {
-            // Get tracking target coordinates for the eye and head
-            const headRect = robotHead.getBoundingClientRect();
+            const headRect = interactiveHead.getBoundingClientRect();
             const headCenterX = headRect.left + headRect.width / 2;
             const headCenterY = headRect.top + headRect.height / 2;
 
-            // Calculate angle and distance between cursor and center of head
             const deltaX = e.clientX - headCenterX;
             const deltaY = e.clientY - headCenterY;
             const angle = Math.atan2(deltaY, deltaX);
             
-            // Limit how far the eye dot can move inside the visor track bounds
-            const eyeMaxDistance = 16; 
-            const eyeMoveX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.1, eyeMaxDistance);
-            const eyeMoveY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.1, eyeMaxDistance);
+            // Constrain coordinates for internal eyes
+            const maxEyeDistance = 6; 
+            const eyeMoveX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.1, maxEyeDistance);
+            const eyeMoveY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.1, maxEyeDistance);
 
-            // Limit physical structural head tilt movement degree
-            const headMaxTilt = 8;
-            const headMoveX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.02, headMaxTilt);
-            const headMoveY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.02, headMaxTilt);
+            // Constrain physical frame lean matrix values
+            const maxHeadTilt = 10;
+            const headMoveX = Math.cos(angle) * Math.min(Math.abs(deltaX) * 0.02, maxHeadTilt);
+            const headMoveY = Math.sin(angle) * Math.min(Math.abs(deltaY) * 0.02, maxHeadTilt);
 
-            // Execute the transformations seamlessly
-            robotEye.style.transform = `translate(${eyeMoveX}px, ${eyeMoveY}px)`;
-            robotHead.style.transform = `translate(${headMoveX}px, ${headMoveY}px)`;
+            // Output translations instantly
+            interactiveHead.style.transform = `translate(${headMoveX}px, ${headMoveY}px)`;
+            trackingEyes.forEach(eye => {
+                eye.style.transform = `translate(${eyeMoveX}px, ${eyeMoveY}px)`;
+            });
         });
     </script>
 

@@ -17,7 +17,7 @@
         }
 
         body {
-            background-color: #030407;
+            background-color: #050505;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
@@ -25,7 +25,7 @@
             min-height: 100vh;
         }
 
-        /* --- New High-Intensity Sunbeam Background Layer --- */
+        /* --- Localized Smooth Yellow Sunbeam Background Layer --- */
         .sunbeam-wrapper {
             position: fixed;
             top: 0;
@@ -35,24 +35,24 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
-            perspective: 1000px;
+            perspective: 1200px;
         }
 
         .sunbeam-container {
             position: absolute;
-            top: -50vh;
-            left: -50vw;
-            width: 200vw;
-            height: 200vh;
-            /* Creates the high-intensity sun glow and ambient reflection */
+            top: -20vh;
+            left: -25vw;
+            width: 150vw;
+            height: 120vh;
+            /* Localized realistic yellowish sun flare reflection merging into dark space */
             background: 
-                radial-gradient(circle at 50% 25%, rgba(255, 245, 220, 0.25) 0%, rgba(140, 185, 255, 0.08) 30%, transparent 60%),
-                radial-gradient(circle at 50% 25%, #ffffff 0%, #a3c8ff 10%, #1a355e 40%, #030407 70%);
-            transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
-            transform-origin: 50% 25%;
+                radial-gradient(circle at 50% 15%, rgba(255, 220, 130, 0.22) 0%, rgba(255, 180, 70, 0.05) 25%, transparent 55%),
+                radial-gradient(circle at 50% 15%, rgba(255, 235, 170, 0.4) 0%, rgba(20, 15, 5, 0.8) 35%, #050505 65%);
+            will-change: transform;
+            transform-origin: 50% 15%;
         }
 
-        /* The actual volumetric light rays projected across the screen */
+        /* Volumetric atmospheric sun rays overlay */
         .sunbeam-container::before {
             content: '';
             position: absolute;
@@ -61,21 +61,19 @@
             width: 100%;
             height: 100%;
             background-image: repeating-conic-gradient(
-                from 0deg at 50% 25%,
+                from 0deg at 50% 15%,
                 transparent 0deg,
-                transparent 4deg,
-                rgba(255, 255, 255, 0.06) 6deg,
-                rgba(255, 255, 255, 0.12) 9deg,
-                rgba(255, 255, 255, 0.06) 12deg,
-                transparent 14deg,
-                transparent 18deg
+                transparent 5deg,
+                rgba(255, 230, 150, 0.06) 7deg,
+                rgba(255, 240, 180, 0.11) 10deg,
+                rgba(255, 230, 150, 0.06) 13deg,
+                transparent 15deg,
+                transparent 20deg
             );
-            /* Smooths out the rays to look like true volumetric atmospheric dust light */
-            mask-image: radial-gradient(circle at 50% 25%, black 0%, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.1) 60%, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at 50% 25%, black 0%, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.1) 60%, transparent 80%);
-            mix-blend-mode: overlay;
+            mask-image: radial-gradient(circle at 50% 15%, black 0%, rgba(0, 0, 0, 0.7) 15%, rgba(0, 0, 0, 0.1) 45%, transparent 65%);
+            -webkit-mask-image: radial-gradient(circle at 50% 15%, black 0%, rgba(0, 0, 0, 0.7) 15%, rgba(0, 0, 0, 0.1) 45%, transparent 65%);
+            mix-blend-mode: screen;
         }
-
         /* --- End Background Layer --- */
 
         /* Navigation Header */
@@ -88,11 +86,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(3, 4, 7, 0.4);
+            background: rgba(5, 5, 5, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .logo {
@@ -176,7 +174,7 @@
 
         /* Main Typography */
         .intro-text {
-            color: #8892b0;
+            color: #666666;
             font-size: 1.3rem;
             margin-bottom: 15px;
             font-weight: 400;
@@ -210,7 +208,7 @@
         }
 
         .description {
-            color: #a8b2d1;
+            color: #949494;
             font-size: 1.15rem;
             line-height: 1.7;
             margin-bottom: 45px;
@@ -265,7 +263,7 @@
         .tech-tags {
             display: flex;
             gap: 30px;
-            color: #64748b;
+            color: #555555;
             font-size: 0.9rem;
             letter-spacing: 1px;
         }
@@ -523,22 +521,24 @@
         const robotVisual = document.getElementById('robotVisual');
         const eyeLensContainer = document.getElementById('eyeLensContainer');
 
+        // Target positions based on real mouse coordinates
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // Interpolated smoothing coordinates (LERP variables)
+        let currentBgX = 0;
+        let currentBgY = 0;
+        let currentBgRot = 0;
+
         document.addEventListener('mousemove', (e) => {
             const width = window.innerWidth;
             const height = window.innerHeight;
             
             // Normalize coordinates from center (-1 to 1)
-            const normX = (e.clientX - width / 2) / (width / 2);
-            const normY = (e.clientY - height / 2) / (height / 2);
+            mouseX = (e.clientX - width / 2) / (width / 2);
+            mouseY = (e.clientY - height / 2) / (height / 2);
 
-            // --- Shift & Tilt Sunbeam Background ---
-            // Simulates true light source vector following the cursor smoothly
-            const bgMoveX = normX * 45; 
-            const bgMoveY = normY * 20;
-            const bgRotate = normX * -12; 
-            sunbeamBg.style.transform = `translate(${bgMoveX}px, ${bgMoveY}px) rotate(${bgRotate}deg)`;
-
-            // --- Micro Robot Vector Mechanics ---
+            // --- Micro Robot Vector Mechanics (Calculated directly on move) ---
             const containerRect = robotVisual.getBoundingClientRect();
             const centerX = containerRect.left + containerRect.width / 2;
             const centerY = containerRect.top + containerRect.height / 2;
@@ -558,6 +558,26 @@
             eyeLensContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
             robotVisual.style.transform = `translate(${leanX}px, ${leanY}px) rotate(${leanX * 0.2}deg)`;
         });
+
+        // High-Performance Smooth Animation Loop (LERP for Background)
+        function renderLoop() {
+            // Target tracking variables with custom horizontal/vertical scaling factors
+            const targetX = mouseX * 35;
+            const targetY = mouseY * 15;
+            const targetRot = mouseX * -8;
+
+            // Smooth linear interpolation formula: current + (target - current) * easeFactor
+            currentBgX += (targetX - currentBgX) * 0.06;
+            currentBgY += (targetY - currentBgY) * 0.06;
+            currentBgRot += (targetRot - currentBgRot) * 0.06;
+
+            // Apply smooth continuous translation/rotation properties to sun element
+            sunbeamBg.style.transform = `translate(${currentBgX}px, ${currentBgY}px) rotate(${currentBgRot}deg)`;
+
+            requestAnimationFrame(renderLoop);
+        }
+        // Fire up the animation cycle loop
+        requestAnimationFrame(renderLoop);
     </script>
 
 </body>

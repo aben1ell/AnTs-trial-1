@@ -3,649 +3,1154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abenezer Tsion | Interactive Portfolio</title>
+    <title>Abenezer Tsion | Front-End Developer</title>
     <style>
-        /* Core System Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --gold: #c9a84c;
+            --gold-dim: rgba(201,168,76,0.15);
+            --gold-glow: rgba(201,168,76,0.35);
+            --white: #f5f5f3;
+            --text-muted: #6b6b6b;
+            --text-dim: #444;
+            --bg: #080808;
+            --surface: #0f0f0f;
+            --border: rgba(255,255,255,0.06);
+            --radius: 12px;
         }
 
         body {
-            background-color: #050505;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
         }
 
-        /* ─── SCROLL REVEAL ANIMATION STYLES ─── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1), transform 0.85s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Localized Smooth Yellow Sunbeam Background Layer */
-        .sunbeam-wrapper {
+        /* ─── CANVAS BACKGROUND ─── */
+        #canvas-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             z-index: 0;
             pointer-events: none;
-            overflow: hidden;
-            perspective: 1200px;
         }
 
-        .sunbeam-container {
-            position: absolute;
-            top: -25vh;
-            left: -25vw;
-            width: 150vw;
-            height: 100vh;
-            background: 
-                radial-gradient(circle at 50% 15%, rgba(255, 210, 100, 0.25) 0%, rgba(255, 160, 50, 0.04) 20%, transparent 45%),
-                radial-gradient(circle at 50% 15%, rgba(255, 230, 150, 0.35) 0%, rgba(15, 12, 5, 0.7) 25%, #050505 50%);
-            will-change: transform;
-            transform-origin: 50% 15%;
+        /* ─── GRAIN OVERLAY ─── */
+        .grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.45;
         }
 
-        .sunbeam-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: repeating-conic-gradient(
-                from 0deg at 50% 15%,
-                transparent 0deg,
-                transparent 5deg,
-                rgba(255, 225, 130, 0.07) 7deg,
-                rgba(255, 235, 160, 0.12) 10deg,
-                rgba(255, 225, 130, 0.07) 13deg,
-                transparent 15deg,
-                transparent 20deg
-            );
-            mask-image: radial-gradient(circle at 50% 15%, black 0%, rgba(0, 0, 0, 0.7) 12%, rgba(0, 0, 0, 0.05) 35%, transparent 50%);
-            -webkit-mask-image: radial-gradient(circle at 50% 15%, black 0%, rgba(0, 0, 0, 0.7) 12%, rgba(0, 0, 0, 0.05) 35%, transparent 50%);
-            mix-blend-mode: screen;
-        }
-
-        /* Navigation Header */
+        /* ─── HEADER ─── */
         header {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 30px 6%;
+            top: 0; left: 0; width: 100%;
+            padding: 24px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 5, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(8,8,8,0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .logo {
-            font-size: 1.15rem;
-            font-weight: 800;
-            letter-spacing: 2.5px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #aaaaaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--white);
         }
+        .logo span { color: var(--gold); }
 
-        nav ul {
-            display: flex;
-            list-style: none;
+        nav ul { display: flex; list-style: none; gap: 36px; }
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: color 0.25s;
+        }
+        nav a:hover { color: var(--white); }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 120px 8% 80px;
+            position: relative;
+            z-index: 2;
+            max-width: 1500px;
+            margin: 0 auto;
             gap: 40px;
         }
 
-        nav a {
-            color: #888888;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #ffffff;
-        }
-
-        /* Portfolio Structure Layout */
-        .portfolio-hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 140px 8% 80px 8%;
-            position: relative;
-            max-width: 1600px;
-            margin: 0 auto;
-            z-index: 1;
-        }
-
-        .hero-left {
-            max-width: 50%;
-            z-index: 2;
-        }
-
-        /* Dynamic Status Badge */
-        .status-badge {
+        /* STATUS */
+        .status-pill {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(18, 18, 18, 0.6);
-            padding: 10px 20px;
-            border-radius: 30px;
+            gap: 9px;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(15,15,15,0.8);
+            padding: 9px 18px;
+            border-radius: 100px;
+            font-size: 0.72rem;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 36px;
+        }
+        .status-dot {
+            width: 7px; height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(34,197,94,0.6);
+            animation: pulse 2.2s infinite;
+        }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+            70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
+
+        .hero-eyebrow { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 14px; }
+
+        .hero-name {
+            font-size: clamp(3.2rem, 6vw, 6rem);
+            font-weight: 800;
+            line-height: 1.02;
+            letter-spacing: -2.5px;
+            color: var(--white);
+            margin-bottom: 22px;
+        }
+        .hero-name .accent { color: var(--gold); }
+
+        .role-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(201,168,76,0.25);
+            color: var(--gold);
+            padding: 8px 18px;
+            border-radius: 6px;
             font-size: 0.75rem;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #999999;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            font-weight: 600;
+            margin-bottom: 30px;
         }
 
-        .status-badge::before {
-            content: '';
-            width: 7px;
-            height: 7px;
-            background-color: #00ff66;
-            border-radius: 50%;
-            box-shadow: 0 0 12px 3px #00ff66;
-            animation: beaconPulse 2s infinite ease-in-out;
+        .hero-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.75;
+            max-width: 460px;
+            margin-bottom: 44px;
         }
 
-        @keyframes beaconPulse {
-            0%, 100% { opacity: 0.6; box-shadow: 0 0 8px 1px #00ff66; }
-            50% { opacity: 1; box-shadow: 0 0 14px 4px #00ff66; }
-        }
+        .cta-row { display: flex; gap: 16px; margin-bottom: 56px; flex-wrap: wrap; }
 
-        /* Main Typography */
-        .intro-text {
-            color: #666666;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            font-weight: 400;
-        }
-
-        .main-name {
-            font-size: 5.8rem;
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -2px;
-            margin-bottom: 25px;
-            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .title-badge {
+        .btn {
+            padding: 16px 34px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #141414 0%, #0d0d0d 100%);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: #cccccc;
-            margin-bottom: 35px;
-            font-weight: 600;
+            gap: 10px;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
         }
-
-        .description {
-            color: #949494;
-            font-size: 1.15rem;
-            line-height: 1.7;
-            margin-bottom: 45px;
-            max-width: 480px;
-        }
-
-        /* Action Buttons */
-        .cta-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 60px;
-        }
+        .btn:hover { transform: translateY(-2px); }
 
         .btn-primary {
-            background-color: #ffffff;
-            color: #000000;
-            padding: 18px 36px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            background: var(--white);
+            color: #000;
         }
-
-        .btn-primary:hover {
-            background-color: #e5e5e5;
-            transform: translateY(-2px);
-        }
+        .btn-primary:hover { background: #e8e8e6; box-shadow: 0 12px 32px rgba(245,245,243,0.08); }
 
         .btn-secondary {
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ffffff;
-            padding: 18px 36px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.14);
         }
+        .btn-secondary:hover { background: rgba(255,255,255,0.04); }
 
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.04);
-            transform: translateY(-2px);
-        }
-
-        /* Tech Badges */
-        .tech-tags {
+        .tech-list {
             display: flex;
-            gap: 30px;
-            color: #555555;
-            font-size: 0.9rem;
+            gap: 24px;
+            flex-wrap: wrap;
+            color: #4a4a4a;
+            font-size: 0.82rem;
             letter-spacing: 1px;
         }
+        .tech-list span { display: flex; align-items: center; gap: 7px; }
+        .tech-list span::before { content: ''; display: block; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.6; }
 
-        .tech-tags span {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Right Side Layout - Clean Robot Visual Showcase */
-        .hero-right {
-            width: 45%;
-            height: 720px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
+        /* ─── ROBOT STAGE ─── */
         .robot-stage {
-            width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-        }
-
-        .floating-mech-frame {
-            width: 440px;
             height: 700px;
             position: relative;
+        }
+        #robotWrapper {
+            width: 420px;
+            height: 660px;
+            position: relative;
+        }
+        .robot-glow-ring {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(201,168,76,0.18) 0%, transparent 70%);
+            pointer-events: none;
+            animation: shadowBreath 3s ease-in-out infinite;
+        }
+        @keyframes shadowBreath {
+            0%, 100% { opacity: 0.6; width: 260px; }
+            50% { opacity: 1; width: 300px; }
+        }
+
+        /* ─── DIVIDER ─── */
+        .section-divider {
+            width: 100%;
+            border: none;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+        }
+
+        /* ─── SECTIONS ─── */
+        .section {
+            position: relative;
+            z-index: 2;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 100px 8%;
+        }
+
+        .section-label {
             display: flex;
-            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            max-width: 60px;
+            height: 1px;
+            background: var(--gold-dim);
+        }
+
+        .section-heading {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 60px;
+            color: var(--white);
+        }
+        .section-heading em {
+            font-style: normal;
+            color: var(--gold);
+        }
+
+        /* ─── PROJECTS ─── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+        .project-card:hover {
+            border-color: rgba(201,168,76,0.25);
+            transform: translateY(-4px);
+        }
+
+        .card-preview {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-1 { background: linear-gradient(135deg, #0d1117 0%, #161b22 100%); }
+        .preview-2 { background: linear-gradient(135deg, #0a0a14 0%, #10101e 100%); }
+        .preview-3 { background: linear-gradient(135deg, #0d1117 0%, #0d170d 100%); }
+
+        .preview-ui {
+            position: absolute;
+            inset: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+        .preview-bar {
+            height: 28px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 6px;
+        }
+        .dot-r { width: 8px; height: 8px; border-radius: 50%; background: #ff5f57; }
+        .dot-y { width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e; }
+        .dot-g { width: 8px; height: 8px; border-radius: 50%; background: #28c840; }
+        .preview-lines { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .line { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.06); }
+        .line-gold { background: rgba(201,168,76,0.2); }
+        .line-short { width: 60%; }
+        .line-med { width: 80%; }
+
+        .card-body { padding: 24px 26px 28px; }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .tag {
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.04);
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .tag-gold { background: var(--gold-dim); color: var(--gold); border-color: rgba(201,168,76,0.2); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 24px;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(201,168,76,0.3);
+            padding-bottom: 2px;
+            transition: border-color 0.2s;
+        }
+        .card-link:hover { border-color: var(--gold); }
+
+        /* ─── ABOUT ─── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+        .about-text { color: var(--text-muted); font-size: 1rem; line-height: 1.85; }
+        .about-text p + p { margin-top: 20px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .stat-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-number span { color: var(--gold); }
+        .stat-label { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.5px; }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 32px;
+        }
+        .skill-pill {
+            padding: 8px 16px;
+            border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.07);
+            font-size: 0.8rem;
+            color: #888;
+            background: var(--surface);
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .skill-pill:hover { border-color: rgba(201,168,76,0.3); color: var(--gold); }
+
+        /* ─── CONTACT ─── */
+        .contact-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
             align-items: center;
         }
-
-        .robot-svg-wrapper {
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+        .contact-text p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 36px;
         }
-
-        /* Specific transform target optimizations */
-        .interactive-neck-ring {
-            will-change: transform;
-            transform-origin: 220px var(--ring-pivot-y, 250px);
-            transition: transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+        .contact-links { display: flex; flex-direction: column; gap: 14px; }
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.2s;
         }
-
-        .interactive-head-group {
-            will-change: transform;
-            transform-origin: 220px 210px;
-            transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1);
+        .contact-link:hover { color: var(--white); }
+        .contact-link-icon {
+            width: 40px; height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: var(--surface);
+            transition: border-color 0.2s;
+            flex-shrink: 0;
         }
+        .contact-link:hover .contact-link-icon { border-color: rgba(201,168,76,0.3); }
 
-        @media (max-width: 1150px) {
-            .portfolio-hero {
-                flex-direction: column-reverse;
-                justify-content: center;
+        .contact-form { display: flex; flex-direction: column; gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.5px; }
+        .form-group input,
+        .form-group textarea {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 0.9rem;
+            padding: 14px 16px;
+            font-family: inherit;
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus { border-color: rgba(201,168,76,0.4); }
+        .form-group textarea { height: 120px; }
+        .form-submit {
+            background: var(--white);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.2s;
+            align-self: flex-start;
+        }
+        .form-submit:hover { background: #e8e8e6; transform: translateY(-1px); }
+
+        /* ─── FOOTER ─── */
+        footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid var(--border);
+            padding: 40px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        footer p { font-size: 0.8rem; color: #3a3a3a; }
+        .footer-logo { font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #2a2a2a; }
+        .footer-logo span { color: rgba(201,168,76,0.4); }
+
+        /* ─── SCROLL FADE-IN ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1100px) {
+            .hero {
+                grid-template-columns: 1fr;
                 text-align: center;
-                padding-top: 150px;
-                gap: 60px;
+                padding-top: 140px;
             }
-            .hero-left { max-width: 100%; }
-            .cta-group { justify-content: center; }
-            .tech-tags { justify-content: center; }
-            .hero-right { width: 100%; height: 580px; }
-            .floating-mech-frame { width: 340px; height: 540px; }
+            .hero-desc { margin-left: auto; margin-right: auto; }
+            .cta-row { justify-content: center; }
+            .tech-list { justify-content: center; }
+            .robot-stage { height: 480px; }
+            #robotWrapper { width: 320px; height: 500px; }
+            .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 40px; }
         }
-
-        @media (max-width: 650px) {
-            .main-name { font-size: 3.8rem; }
-            .cta-group { flex-direction: column; width: 100%; gap: 15px; }
-            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+        @media (max-width: 600px) {
+            .hero-name { font-size: 2.8rem; }
+            .projects-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sunbeam-wrapper">
-        <div id="sunbeamBg" class="sunbeam-container"></div>
-    </div>
+<canvas id="canvas-bg"></canvas>
+<div class="grain"></div>
 
-    <header>
-        <div class="logo">Abenezer Tsion</div>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <div class="logo">A<span>.</span>Tsion</div>
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <main>
-        <section id="about" class="portfolio-hero">
-            
-            <div class="hero-left">
-                <div class="status-badge reveal">Available for new projects</div>
-                
-                <div class="intro-text reveal" style="transition-delay: 0.1s;">Hi there, I'm</div>
-                <h1 class="main-name reveal" style="transition-delay: 0.2s;">Abenezer Tsion</h1>
-                
-                <div class="title-badge reveal" style="transition-delay: 0.3s;">✦ Front-End Developer</div>
-                
-                <p class="description reveal" style="transition-delay: 0.4s;">
-                    I create clean and modern web interfaces with responsive layouts, smooth interactions, and a strong focus on user experience.
-                </p>
-                
-                <div class="cta-group reveal" style="transition-delay: 0.5s;">
-                    <a href="#projects" class="btn-primary">View My Work ➔</a>
-                    <a href="#contact" class="btn-secondary">Get In Touch</a>
-                </div>
-                
-                <div class="tech-tags reveal" style="transition-delay: 0.6s;">
-                    <span>◇ React</span>
-                    <span>◇ Next.js</span>
-                    <span>◇ Framer Motion</span>
-                    <span>◇ Tailwind CSS</span>
-                </div>
+<main>
+
+    <!-- ─── HERO ─── -->
+    <section class="hero" id="about">
+        <div class="hero-left">
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                Available for projects
             </div>
+            <p class="hero-eyebrow">Hi there, I'm</p>
+            <h1 class="hero-name">Abenezer<br><span class="accent">Tsion</span></h1>
+            <div class="role-tag">✦ Front-End Developer</div>
+            <p class="hero-desc">
+                I craft clean, modern web interfaces with responsive layouts, smooth
+                interactions, and a relentless focus on user experience. Currently
+                open to freelance and full-time opportunities.
+            </p>
+            <div class="cta-row">
+                <a href="#projects" class="btn btn-primary">View my work →</a>
+                <a href="#contact" class="btn btn-secondary">Get in touch</a>
+            </div>
+            <div class="tech-list">
+                <span>React</span>
+                <span>Next.js</span>
+                <span>Framer Motion</span>
+                <span>Tailwind CSS</span>
+            </div>
+        </div>
 
-            <div class="hero-right reveal" style="transition-delay: 0.25s;">
-                <div class="robot-stage">
-                    <div class="floating-mech-frame">
-                        <div id="robotVisual" class="robot-svg-wrapper">
-                            
-                            <svg viewBox="0 0 440 700" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="chromeSteel" x1="220" y1="50" x2="220" y2="650" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
-                                        <stop offset="20%" stop-color="#d6dadf"/>
-                                        <stop offset="50%" stop-color="#5a6067"/>
-                                        <stop offset="55%" stop-color="#191b1d"/>
-                                        <stop offset="85%" stop-color="#3a3e44"/>
-                                        <stop offset="100%" stop-color="#0a0b0c"/>
-                                    </linearGradient>
+        <div class="robot-stage">
+            <div id="robotWrapper">
+                <div class="robot-glow-ring"></div>
+                <svg id="robotSVG" viewBox="0 0 420 660" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Gradients -->
+                        <linearGradient id="bodyMetal" x1="210" y1="80" x2="210" y2="620" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#c8cdd4"/>
+                            <stop offset="18%" stop-color="#8d9399"/>
+                            <stop offset="48%" stop-color="#3a3d42"/>
+                            <stop offset="52%" stop-color="#111315"/>
+                            <stop offset="80%" stop-color="#2a2d30"/>
+                            <stop offset="100%" stop-color="#080909"/>
+                        </linearGradient>
+                        <linearGradient id="darkPanel" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#1c1d20"/>
+                            <stop offset="50%" stop-color="#0d0e10"/>
+                            <stop offset="100%" stop-color="#050506"/>
+                        </linearGradient>
+                        <linearGradient id="neckShine" x1="145" y1="0" x2="275" y2="0" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#111214"/>
+                            <stop offset="22%" stop-color="#5a6068"/>
+                            <stop offset="50%" stop-color="#e8eaed"/>
+                            <stop offset="78%" stop-color="#40454b"/>
+                            <stop offset="100%" stop-color="#080909"/>
+                        </linearGradient>
+                        <linearGradient id="visorLine" x1="160" y1="0" x2="260" y2="0" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#c9a84c" stop-opacity="0"/>
+                            <stop offset="30%" stop-color="#c9a84c" stop-opacity="0.9"/>
+                            <stop offset="50%" stop-color="#ffd97a" stop-opacity="1"/>
+                            <stop offset="70%" stop-color="#c9a84c" stop-opacity="0.9"/>
+                            <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+                        </linearGradient>
+                        <linearGradient id="chestStripe" x1="170" y1="0" x2="250" y2="0" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.1"/>
+                            <stop offset="50%" stop-color="#c9a84c" stop-opacity="0.85"/>
+                            <stop offset="100%" stop-color="#c9a84c" stop-opacity="0.1"/>
+                        </linearGradient>
+                        <linearGradient id="eyeGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#ffd97a"/>
+                            <stop offset="100%" stop-color="#c9a84c"/>
+                        </linearGradient>
+                        <linearGradient id="legMetal" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#5a5f65"/>
+                            <stop offset="40%" stop-color="#2a2c30"/>
+                            <stop offset="100%" stop-color="#111214"/>
+                        </linearGradient>
+                        <linearGradient id="footGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#2a2c2e"/>
+                            <stop offset="100%" stop-color="#0a0a0c"/>
+                        </linearGradient>
+                        <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#ffd97a" stop-opacity="0.4"/>
+                            <stop offset="100%" stop-color="#ffd97a" stop-opacity="0"/>
+                        </radialGradient>
 
-                                    <linearGradient id="darkAlloy" x1="0" y1="0" x2="1" y2="0">
-                                        <stop offset="0%" stop-color="#25272b"/>
-                                        <stop offset="50%" stop-color="#111214"/>
-                                        <stop offset="100%" stop-color="#050506"/>
-                                    </linearGradient>
+                        <!-- Filters -->
+                        <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+                            <feGaussianBlur stdDeviation="5" result="blur"/>
+                            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                        </filter>
+                        <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                        </filter>
+                        <filter id="shadow" x="-15%" y="-10%" width="130%" height="125%">
+                            <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000" flood-opacity="0.9"/>
+                        </filter>
+                        <filter id="panelShadow">
+                            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.6"/>
+                        </filter>
+                    </defs>
 
-                                    <linearGradient id="neckRingGradient" x1="160" y1="0" x2="280" y2="0" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#1a1c1e"/>
-                                        <stop offset="25%" stop-color="#6b727a"/>
-                                        <stop offset="50%" stop-color="#f1f3f5"/>
-                                        <stop offset="75%" stop-color="#494f55"/>
-                                        <stop offset="100%" stop-color="#0b0c0d"/>
-                                    </linearGradient>
+                    <!-- ── LEGS ── -->
+                    <g filter="url(#shadow)">
+                        <!-- Left leg -->
+                        <path d="M158 500 C154 500 150 508 150 516 L142 620 C140 628 148 632 155 632 L185 632 C192 632 196 626 194 618 L186 516 C184 508 162 500 158 500Z" fill="url(#legMetal)" stroke="#000" stroke-width="1.5"/>
+                        <!-- Left knee cap -->
+                        <ellipse cx="168" cy="545" rx="20" ry="14" fill="#1a1b1e" stroke="#2a2c30" stroke-width="1"/>
+                        <ellipse cx="168" cy="545" rx="10" ry="7" fill="#0d0e10" stroke="#333" stroke-width="0.5"/>
+                        <!-- Left foot -->
+                        <path d="M142 624 C136 630 130 640 134 648 L196 648 C200 640 194 630 186 624 Z" fill="url(#footGrad)" stroke="#111" stroke-width="1"/>
+                        <path d="M134 644 L196 644" stroke="#1a1b1e" stroke-width="1"/>
 
-                                    <linearGradient id="visorGlow" x1="170" y1="225" x2="270" y2="225" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
-                                        <stop offset="25%" stop-color="#ffffff" stop-opacity="0.9"/>
-                                        <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
-                                        <stop offset="75%" stop-color="#ffffff" stop-opacity="0.9"/>
-                                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-                                    </linearGradient>
+                        <!-- Right leg -->
+                        <path d="M262 500 C258 500 236 508 234 516 L226 618 C224 626 228 632 235 632 L265 632 C272 632 280 628 278 620 L270 516 C268 508 266 500 262 500Z" fill="url(#legMetal)" stroke="#000" stroke-width="1.5"/>
+                        <!-- Right knee cap -->
+                        <ellipse cx="252" cy="545" rx="20" ry="14" fill="#1a1b1e" stroke="#2a2c30" stroke-width="1"/>
+                        <ellipse cx="252" cy="545" rx="10" ry="7" fill="#0d0e10" stroke="#333" stroke-width="0.5"/>
+                        <!-- Right foot -->
+                        <path d="M226 624 C220 630 214 640 218 648 L280 648 C284 640 278 630 272 624 Z" fill="url(#footGrad)" stroke="#111" stroke-width="1"/>
+                        <path d="M218 644 L280 644" stroke="#1a1b1e" stroke-width="1"/>
 
-                                    <linearGradient id="chestLED" x1="180" y1="355" x2="260" y2="355" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
-                                        <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
-                                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2"/>
-                                    </linearGradient>
+                        <!-- Groin panel -->
+                        <path d="M148 488 L272 488 L260 510 L160 510 Z" fill="#0f1012" stroke="#000"/>
+                        <!-- Groin detail lines -->
+                        <path d="M162 496 L168 508" stroke="#1c1d20" stroke-width="1"/>
+                        <path d="M258 496 L252 508" stroke="#1c1d20" stroke-width="1"/>
+                    </g>
 
-                                    <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feGaussianBlur stdDeviation="4" result="blur"/>
-                                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-                                    </filter>
+                    <!-- ── TORSO ── -->
+                    <g filter="url(#shadow)">
+                        <!-- Main body -->
+                        <path d="M130 300 C128 278, 292 278, 290 300 L300 420 C302 464, 118 464, 120 420 Z" fill="url(#bodyMetal)" stroke="#080909" stroke-width="2"/>
 
-                                    <filter id="chassisShadow" x="-10%" y="-10%" width="120%" height="120%">
-                                        <feDropShadow dx="0" dy="15" stdDeviation="18" flood-color="#000000" flood-opacity="0.8"/>
-                                    </filter>
-                                </defs>
+                        <!-- Side panel lines -->
+                        <path d="M142 310 L135 430" stroke="#1a1b1e" stroke-width="1.5"/>
+                        <path d="M278 310 L285 430" stroke="#1a1b1e" stroke-width="1.5"/>
 
-                                <g filter="url(#chassisShadow)">
-                                    <path d="M175 520 L165 650 L145 670 L200 670 L195 650 L185 520 Z" fill="url(#chromeSteel)" stroke="#000" stroke-width="1.5"/>
-                                    <circle cx="180" cy="520" r="16" fill="url(#darkAlloy)" stroke="#3a3e44"/>
-                                    <circle cx="172" cy="655" r="10" fill="#111"/>
+                        <!-- Center chest indent -->
+                        <path d="M168 320 C168 314 252 314 252 320 L258 400 C258 410 162 410 162 400 Z" fill="#0b0c0e" stroke="#151618" stroke-width="1"/>
 
-                                    <path d="M255 520 L245 650 L225 670 L280 670 L275 650 L265 520 Z" fill="url(#chromeSteel)" stroke="#000" stroke-width="1.5"/>
-                                    <circle cx="260" cy="520" r="16" fill="url(#darkAlloy)" stroke="#3a3e44"/>
-                                    <circle cx="252" cy="655" r="10" fill="#111"/>
-                                    
-                                    <path d="M150 490 L290 490 L270 535 L170 535 Z" fill="url(#darkAlloy)" stroke="#000"/>
-                                </g>
+                        <!-- Chest LED bar -->
+                        <rect x="176" y="356" width="68" height="14" rx="7" fill="#0a0b0d" stroke="#222"/>
+                        <rect x="182" y="360" width="56" height="6" rx="3" fill="url(#chestStripe)" filter="url(#softGlow)"/>
 
-                                <g filter="url(#chassisShadow)">
-                                    <path d="M140 315 C140 290, 300 290, 300 315 L315 420 C315 470, 125 470, 125 420 Z" fill="url(#chromeSteel)" stroke="#0d0e10" stroke-width="2"/>
-                                    
-                                    <rect x="175" y="345" width="90" height="20" rx="10" fill="#090a0c" stroke="#33373d"/>
-                                    <rect x="183" y="351" width="74" height="8" rx="4" fill="url(#chestLED)" filter="url(#glowEffect)"/>
+                        <!-- Gold accent lines on chest -->
+                        <path d="M172 335 L175 345 L245 345 L248 335" stroke="rgba(201,168,76,0.12)" stroke-width="1" fill="none"/>
+                        <path d="M172 385 L175 395 L245 395 L248 385" stroke="rgba(201,168,76,0.12)" stroke-width="1" fill="none"/>
 
-                                    <path d="M135 315 C115 315, 105 340, 105 380 L125 460 C125 475, 145 465, 145 440 Z" fill="url(#chromeSteel)" stroke="#111"/>
-                                    <circle cx="125" cy="325" r="18" fill="url(#darkAlloy)" stroke="#444"/>
-                                    <path d="M125 460 C120 485, 145 520, 165 510 L155 470 Z" fill="url(#darkAlloy)"/>
+                        <!-- Shoulder screw details -->
+                        <circle cx="138" cy="302" r="8" fill="#0d0e10" stroke="#333"/>
+                        <circle cx="138" cy="302" r="3" fill="#1a1b1e"/>
+                        <circle cx="282" cy="302" r="8" fill="#0d0e10" stroke="#333"/>
+                        <circle cx="282" cy="302" r="3" fill="#1a1b1e"/>
 
-                                    <path d="M305 315 C325 315, 335 340, 335 380 L315 460 C315 475, 295 465, 295 440 Z" fill="url(#chromeSteel)" stroke="#111"/>
-                                    <circle cx="315" cy="325" r="18" fill="url(#darkAlloy)" stroke="#444"/>
-                                    <path d="M315 460 C320 485, 295 520, 275 510 L285 470 Z" fill="url(#darkAlloy)"/>
-                                </g>
+                        <!-- Arms -->
+                        <!-- Left arm -->
+                        <path d="M124 295 C104 295, 92 320, 90 360 L104 450 C104 468 124 460 124 440 Z" fill="url(#bodyMetal)" stroke="#0d0e10"/>
+                        <!-- Left shoulder ball -->
+                        <circle cx="124" cy="302" r="20" fill="#1a1b1e" stroke="#333" stroke-width="1"/>
+                        <circle cx="124" cy="302" r="9" fill="#0d0e10"/>
+                        <!-- Left hand stub -->
+                        <path d="M102 450 C97 472 116 506 136 498 L128 462 Z" fill="#1a1b1e" stroke="#111"/>
 
-                                <g id="neckRing5" class="interactive-neck-ring" style="--ring-pivot-y: 290px;">
-                                    <path d="M175 282 C175 276, 265 276, 265 282 L260 294 C260 288, 180 288, 180 294 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
-                                </g>
-                                
-                                <g id="neckRing4" class="interactive-neck-ring" style="--ring-pivot-y: 275px;">
-                                    <path d="M172 264 C172 258, 268 258, 268 264 L263 276 C263 270, 177 270, 177 276 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
-                                </g>
+                        <!-- Right arm -->
+                        <path d="M296 295 C316 295, 328 320, 330 360 L316 450 C316 468 296 460 296 440 Z" fill="url(#bodyMetal)" stroke="#0d0e10"/>
+                        <!-- Right shoulder ball -->
+                        <circle cx="296" cy="302" r="20" fill="#1a1b1e" stroke="#333" stroke-width="1"/>
+                        <circle cx="296" cy="302" r="9" fill="#0d0e10"/>
+                        <!-- Right hand stub -->
+                        <path d="M318 450 C323 472 304 506 284 498 L292 462 Z" fill="#1a1b1e" stroke="#111"/>
+                    </g>
 
-                                <g id="neckRing3" class="interactive-neck-ring" style="--ring-pivot-y: 260px;">
-                                    <path d="M170 246 C170 240, 270 240, 270 246 L265 258 C265 252, 175 252, 175 258 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
-                                </g>
+                    <!-- ── NECK RINGS (interactive) ── -->
+                    <g id="ring5" class="neck-ring" data-factor="0.08" style="transform-origin: 210px 278px;">
+                        <path d="M164 270 C164 264 256 264 256 270 L251 282 C251 276 169 276 169 282 Z" fill="url(#neckShine)" stroke="#080909"/>
+                    </g>
+                    <g id="ring4" class="neck-ring" data-factor="0.18" style="transform-origin: 210px 260px;">
+                        <path d="M161 252 C161 246 259 246 259 252 L254 264 C254 258 166 258 166 264 Z" fill="url(#neckShine)" stroke="#080909"/>
+                    </g>
+                    <g id="ring3" class="neck-ring" data-factor="0.35" style="transform-origin: 210px 242px;">
+                        <path d="M159 234 C159 228 261 228 261 234 L256 246 C256 240 164 240 164 246 Z" fill="url(#neckShine)" stroke="#080909"/>
+                    </g>
+                    <g id="ring2" class="neck-ring" data-factor="0.55" style="transform-origin: 210px 224px;">
+                        <path d="M161 216 C161 210 259 210 259 216 L254 228 C254 222 166 222 166 228 Z" fill="url(#neckShine)" stroke="#080909"/>
+                    </g>
+                    <g id="ring1" class="neck-ring" data-factor="0.78" style="transform-origin: 210px 206px;">
+                        <path d="M164 198 C164 192 256 192 256 198 L251 210 C251 204 169 204 169 210 Z" fill="url(#neckShine)" stroke="#080909"/>
+                    </g>
 
-                                <g id="neckRing2" class="interactive-neck-ring" style="--ring-pivot-y: 245px;">
-                                    <path d="M172 228 C172 222, 268 222, 268 228 L263 240 C263 234, 177 234, 177 240 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
-                                </g>
+                    <!-- ── HEAD ── -->
+                    <g id="robotHead" style="transform-origin: 210px 140px;">
+                        <!-- Skull -->
+                        <path d="M150 140 C148 72 272 72 270 140 L262 198 C262 210 158 210 158 198 Z" fill="url(#bodyMetal)" stroke="#0a0b0d" stroke-width="1.5"/>
 
-                                <g id="neckRing1" class="interactive-neck-ring" style="--ring-pivot-y: 230px;">
-                                    <path d="M175 210 C175 204, 265 204, 265 210 L260 222 C260 216, 180 216, 180 222 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
-                                </g>
+                        <!-- Top ridge detail -->
+                        <path d="M178 80 L210 68 L242 80" stroke="#1c1d20" stroke-width="1.5" fill="none"/>
+                        <path d="M210 68 L210 140" stroke="#1c1d20" stroke-width="1"/>
 
-                                <g id="robotHead" class="interactive-head-group">
-                                    <path d="M160 150 C160 80, 280 80, 280 150 L270 215 C270 225, 170 225, 170 215 Z" fill="url(#chromeSteel)" stroke="#0a0b0d" stroke-width="1.5"/>
-                                    
-                                    <path d="M162 145 C190 135, 250 135, 278 145" stroke="#1c1d21" stroke-width="1.5"/>
-                                    <path d="M220 92 L220 135" stroke="#1c1d21" stroke-width="1.5"/>
-                                    
-                                    <path d="M168 135 C168 95, 272 95, 272 135" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Forehead panel crease -->
+                        <path d="M155 132 C175 120 245 120 265 132" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-linecap="round" fill="none"/>
 
-                                    <path d="M175 160 C175 150, 265 150, 265 160 L260 200 C260 210, 180 210, 180 200 Z" fill="url(#darkAlloy)" stroke="#000" stroke-width="1.5"/>
-                                    
-                                    <path d="M185 192 C200 187, 240 187, 255 192" stroke="url(#visorGlow)" stroke-width="5" stroke-linecap="round" filter="url(#glowEffect)"/>
-                                </g>
-                            </svg>
+                        <!-- Side temple panels -->
+                        <path d="M153 120 L148 160 L155 165 L162 162 L158 118 Z" fill="#111315" stroke="#1a1b1e"/>
+                        <path d="M267 120 L272 160 L265 165 L258 162 L262 118 Z" fill="#111315" stroke="#1a1b1e"/>
 
+                        <!-- Ear screws -->
+                        <circle cx="150" cy="148" r="7" fill="#0d0e10" stroke="#2a2c30"/>
+                        <circle cx="150" cy="148" r="3" fill="#1a1b1e"/>
+                        <circle cx="270" cy="148" r="7" fill="#0d0e10" stroke="#2a2c30"/>
+                        <circle cx="270" cy="148" r="3" fill="#1a1b1e"/>
+
+                        <!-- Face plate -->
+                        <path d="M162 148 C162 136 258 136 258 148 L252 196 C252 206 168 206 168 196 Z" fill="#080a0c" stroke="#111" stroke-width="1.5"/>
+
+                        <!-- Eyes - ellipses with gold glow -->
+                        <!-- Left eye outer -->
+                        <ellipse cx="185" cy="162" rx="18" ry="12" fill="#050607"/>
+                        <ellipse cx="185" cy="162" rx="14" ry="8" fill="url(#eyeGrad)" filter="url(#glow)" opacity="0.9"/>
+                        <ellipse cx="185" cy="162" rx="14" ry="8" fill="url(#eyeGlow)"/>
+                        <!-- Left eye highlight -->
+                        <ellipse cx="181" cy="159" rx="4" ry="2.5" fill="rgba(255,255,255,0.5)"/>
+                        <!-- Left eye inner ring -->
+                        <ellipse cx="185" cy="162" rx="18" ry="12" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+
+                        <!-- Right eye outer -->
+                        <ellipse cx="235" cy="162" rx="18" ry="12" fill="#050607"/>
+                        <ellipse cx="235" cy="162" rx="14" ry="8" fill="url(#eyeGrad)" filter="url(#glow)" opacity="0.9"/>
+                        <ellipse cx="235" cy="162" rx="14" ry="8" fill="url(#eyeGlow)"/>
+                        <!-- Right eye highlight -->
+                        <ellipse cx="231" cy="159" rx="4" ry="2.5" fill="rgba(255,255,255,0.5)"/>
+                        <!-- Right eye inner ring -->
+                        <ellipse cx="235" cy="162" rx="18" ry="12" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+
+                        <!-- Mouth / visor scan line -->
+                        <rect x="168" y="188" width="84" height="10" rx="5" fill="#050607" stroke="#111"/>
+                        <rect x="174" y="190" width="72" height="6" rx="3" fill="url(#visorLine)" filter="url(#softGlow)"/>
+
+                        <!-- Nose bridge detail -->
+                        <path d="M207 174 L210 184 L213 174" stroke="rgba(201,168,76,0.15)" stroke-width="1" fill="none"/>
+                    </g>
+
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ─── PROJECTS ─── -->
+    <section id="projects" class="section">
+        <p class="section-label">Selected work</p>
+        <h2 class="section-heading">Things I've <em>built</em></h2>
+
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <article class="project-card reveal">
+                <div class="card-preview preview-1">
+                    <div class="preview-ui">
+                        <div class="preview-bar">
+                            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                        </div>
+                        <div class="preview-lines">
+                            <div class="line line-gold" style="width:45%; height:12px;"></div>
+                            <div class="line line-med"></div>
+                            <div class="line line-short"></div>
+                            <div class="line" style="width:70%;"></div>
+                            <div class="line line-short" style="margin-top:8px;"></div>
+                            <div class="line line-gold" style="width:30%;"></div>
                         </div>
                     </div>
                 </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-gold">Featured</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Tailwind</span>
+                    </div>
+                    <h3 class="card-title">E-commerce Dashboard</h3>
+                    <p class="card-desc">A fully responsive admin dashboard with real-time analytics, inventory management, and smooth animated data visualizations.</p>
+                    <a href="#" class="card-link">View project →</a>
+                </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article class="project-card reveal">
+                <div class="card-preview preview-2">
+                    <div class="preview-ui">
+                        <div class="preview-bar">
+                            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                        </div>
+                        <div class="preview-lines">
+                            <div class="line line-med"></div>
+                            <div style="display:flex; gap:8px; margin-top:4px;">
+                                <div class="line" style="width:40%; background:rgba(120,80,200,0.2);"></div>
+                                <div class="line" style="width:40%; background:rgba(120,80,200,0.1);"></div>
+                            </div>
+                            <div class="line line-short" style="margin-top:12px;"></div>
+                            <div class="line line-gold" style="width:55%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">Framer Motion</span>
+                    </div>
+                    <h3 class="card-title">Portfolio Template</h3>
+                    <p class="card-desc">A polished Next.js portfolio template with page transitions, scroll animations, and a clean minimal aesthetic — ready to deploy.</p>
+                    <a href="#" class="card-link">View project →</a>
+                </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article class="project-card reveal">
+                <div class="card-preview preview-3">
+                    <div class="preview-ui">
+                        <div class="preview-bar">
+                            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                        </div>
+                        <div class="preview-lines">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                                <div class="line" style="height:40px; border-radius:6px; background:rgba(255,255,255,0.04);"></div>
+                                <div class="line" style="height:40px; border-radius:6px; background:rgba(255,255,255,0.04);"></div>
+                            </div>
+                            <div class="line line-gold" style="width:50%; margin-top:8px;"></div>
+                            <div class="line line-short"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">CSS Modules</span>
+                    </div>
+                    <h3 class="card-title">SaaS Landing Page</h3>
+                    <p class="card-desc">High-converting SaaS landing page with animated feature sections, testimonials, and pricing tables. Optimized for performance.</p>
+                    <a href="#" class="card-link">View project →</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ─── ABOUT ─── -->
+    <section class="section reveal">
+        <p class="section-label">Who I am</p>
+        <h2 class="section-heading">A developer who<br>cares about <em>craft</em></h2>
+        <div class="about-grid">
+            <div>
+                <p class="about-text">
+                    <p>I'm Abenezer, a front-end developer based in Addis Ababa. I love turning complex problems into simple, beautiful interfaces. Every pixel matters to me — from micro-interactions to layout rhythm.</p>
+                    <p>When I'm not coding, I'm exploring new design systems, contributing to open-source projects, or finding ways to make the web faster and more accessible for everyone.</p>
+                </p>
+                <div class="skills-list">
+                    <span class="skill-pill">HTML & CSS</span>
+                    <span class="skill-pill">JavaScript</span>
+                    <span class="skill-pill">TypeScript</span>
+                    <span class="skill-pill">React</span>
+                    <span class="skill-pill">Next.js</span>
+                    <span class="skill-pill">Tailwind CSS</span>
+                    <span class="skill-pill">Framer Motion</span>
+                    <span class="skill-pill">Figma</span>
+                    <span class="skill-pill">Git</span>
+                </div>
             </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">3<span>+</span></div>
+                    <div class="stat-label">Years of experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">20<span>+</span></div>
+                    <div class="stat-label">Projects completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15<span>+</span></div>
+                    <div class="stat-label">Happy clients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Coffee consumed</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        </section>
-    </main>
+    <hr class="section-divider">
 
-    <script>
-        const sunbeamBg = document.getElementById('sunbeamBg');
-        const robotVisual = document.getElementById('robotVisual');
-        
-        // Target Interactive Elements
-        const robotHead = document.getElementById('robotHead');
-        const neckRing1 = document.getElementById('neckRing1');
-        const neckRing2 = document.getElementById('neckRing2');
-        const neckRing3 = document.getElementById('neckRing3');
-        const neckRing4 = document.getElementById('neckRing4');
-        const neckRing5 = document.getElementById('neckRing5');
+    <!-- ─── CONTACT ─── -->
+    <section id="contact" class="section reveal">
+        <p class="section-label">Let's talk</p>
+        <h2 class="section-heading">Start a <em>conversation</em></h2>
+        <div class="contact-inner">
+            <div class="contact-text">
+                <p>Have a project in mind? Looking to collaborate or just want to say hello? My inbox is always open — I'll do my best to get back to you within 24 hours.</p>
+                <div class="contact-links">
+                    <a href="mailto:hello@abenezertsion.dev" class="contact-link">
+                        <div class="contact-link-icon">✉</div>
+                        hello@abenezertsion.dev
+                    </a>
+                    <a href="https://github.com/aben1ell" target="_blank" class="contact-link">
+                        <div class="contact-link-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </div>
+                        github.com/aben1ell
+                    </a>
+                    <a href="https://www.linkedin.com/in/abenezer-tsion" target="_blank" class="contact-link">
+                        <div class="contact-link-icon">in</div>
+                        linkedin.com/in/abenezer-tsion
+                    </a>
+                </div>
+            </div>
+            <form class="contact-form" onsubmit="handleForm(event)">
+                <div class="form-group">
+                    <label>Your name</label>
+                    <input type="text" placeholder="Abebe Girma" required />
+                </div>
+                <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" placeholder="abebe@example.com" required />
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea placeholder="Tell me about your project..." required></textarea>
+                </div>
+                <button type="submit" class="form-submit">Send message →</button>
+            </form>
+        </div>
+    </section>
 
-        // Target tracking values across coordinates
-        let mouseX = 0;
-        let mouseY = 0;
-        
-        // Interpolated smoothing variables (LERP)
-        let currentBgX = 0;
-        let currentBgY = 0;
-        let currentBgRot = 0;
+</main>
 
-        // Neck Segment Tracking Interp Arrays
-        let headX = 0, headY = 0, headRot = 0;
-        let r1X = 0, r1Y = 0, r1Rot = 0;
-        let r2X = 0, r2Y = 0, r2Rot = 0;
-        let r3X = 0, r3Y = 0, r3Rot = 0;
-        let r4X = 0, r4Y = 0, r4Rot = 0;
-        let r5X = 0, r5Y = 0, r5Rot = 0;
+<footer>
+    <div class="footer-logo">A<span>.</span>Tsion</div>
+    <p>© 2025 Abenezer Tsion — Built with love in Addis Ababa</p>
+</footer>
 
-        document.addEventListener('mousemove', (e) => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            
-            // Normalize coordinates from viewport center (-1 to 1)
-            mouseX = (e.clientX - width / 2) / (width / 2);
-            mouseY = (e.clientY - height / 2) / (height / 2);
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CANVAS BACKGROUND — animated particle grid + aurora
+═══════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+let mx = 0, my = 0;
+
+function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    initParticles();
+}
+
+function initParticles() {
+    particles = [];
+    const count = Math.floor((W * H) / 22000);
+    for (let i = 0; i < count; i++) {
+        particles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.4 + 0.3,
+            speedX: (Math.random() - 0.5) * 0.15,
+            speedY: (Math.random() - 0.5) * 0.15,
+            opacity: Math.random() * 0.4 + 0.05,
+            gold: Math.random() < 0.08
         });
+    }
+}
 
-        // High-Performance Motion Loop
-        function renderLoop() {
-            // 1. Background Sunbeam LERP Handling
-            const targetBgX = mouseX * 35;
-            const targetBgY = mouseY * 15;
-            const targetBgRot = mouseX * -8;
+let t = 0;
+function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.004;
 
-            currentBgX += (targetBgX - currentBgX) * 0.06;
-            currentBgY += (targetBgY - currentBgY) * 0.06;
-            currentBgRot += (targetBgRot - currentBgRot) * 0.06;
-            sunbeamBg.style.transform = `translate(${currentBgX}px, ${currentBgY}px) rotate(${currentBgRot}deg)`;
+    // Aurora blobs
+    const blobs = [
+        { x: W * 0.5 + Math.sin(t * 0.7) * W * 0.12, y: H * 0.15 + Math.cos(t * 0.5) * H * 0.06, r: W * 0.35, c: 'rgba(201,168,76,' },
+        { x: W * 0.2 + Math.cos(t * 0.6) * W * 0.08, y: H * 0.6,  r: W * 0.25, c: 'rgba(60,40,120,' },
+        { x: W * 0.8 + Math.sin(t * 0.8) * W * 0.06, y: H * 0.4,  r: W * 0.22, c: 'rgba(201,168,76,' },
+    ];
 
-            // 2. Physics-Chain Neck and Head Coordination Calculations
-            const targetHeadX = mouseX * 28;
-            const targetHeadY = mouseY * 14;
-            const targetHeadRot = mouseX * 12;
+    blobs.forEach(b => {
+        const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+        g.addColorStop(0, b.c + '0.055)');
+        g.addColorStop(1, b.c + '0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+    });
 
-            // Head moves fast and leads the tracking change
-            headX += (targetHeadX - headX) * 0.12;
-            headY += (targetHeadY - headY) * 0.12;
-            headRot += (targetHeadRot - headRot) * 0.12;
-            robotHead.style.transform = `translate(${headX}px, ${headY}px) rotate(${headRot}deg)`;
+    // Mouse-follow subtle blob
+    const mg = ctx.createRadialGradient(mx, my, 0, mx, my, 320);
+    mg.addColorStop(0, 'rgba(201,168,76,0.04)');
+    mg.addColorStop(1, 'rgba(201,168,76,0)');
+    ctx.fillStyle = mg;
+    ctx.beginPath();
+    ctx.arc(mx, my, 320, 0, Math.PI * 2);
+    ctx.fill();
 
-            // Ring 1 (Top collar follows head closely)
-            r1X += (targetHeadX * 0.85 - r1X) * 0.10;
-            r1Y += (targetHeadY * 0.85 - r1Y) * 0.10;
-            r1Rot += (targetHeadRot * 0.80 - r1Rot) * 0.10;
-            neckRing1.style.transform = `translate(${r1X}px, ${r1Y}px) rotate(${r1Rot}deg)`;
+    // Particles
+    particles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
 
-            // Ring 2
-            r2X += (targetHeadX * 0.65 - r2X) * 0.09;
-            r2Y += (targetHeadY * 0.65 - r2Y) * 0.09;
-            r2Rot += (targetHeadRot * 0.60 - r2Rot) * 0.09;
-            neckRing2.style.transform = `translate(${r2X}px, ${r2Y}px) rotate(${r2Rot}deg)`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.gold
+            ? `rgba(201,168,76,${p.opacity * 0.7})`
+            : `rgba(255,255,255,${p.opacity})`;
+        ctx.fill();
+    });
 
-            // Ring 3 (Middle anchor segment)
-            r3X += (targetHeadX * 0.45 - r3X) * 0.08;
-            r3Y += (targetHeadY * 0.45 - r3Y) * 0.08;
-            r3Rot += (targetHeadRot * 0.40 - r3Rot) * 0.08;
-            neckRing3.style.transform = `translate(${r3X}px, ${r3Y}px) rotate(${r3Rot}deg)`;
+    requestAnimationFrame(draw);
+}
 
-            // Ring 4
-            r4X += (targetHeadX * 0.25 - r4X) * 0.07;
-            r4Y += (targetHeadY * 0.25 - r4Y) * 0.07;
-            r4Rot += (targetHeadRot * 0.20 - r4Rot) * 0.07;
-            neckRing4.style.transform = `translate(${r4X}px, ${r4Y}px) rotate(${r4Rot}deg)`;
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+resize();
+draw();
 
-            // Ring 5 (Base collar remains relatively firm, micro-swivels)
-            r5X += (targetHeadX * 0.10 - r5X) * 0.06;
-            r5Y += (targetHeadY * 0.10 - r5Y) * 0.06;
-            r5Rot += (targetHeadRot * 0.05 - r5Rot) * 0.06;
-            neckRing5.style.transform = `translate(${r5X}px, ${r5Y}px) rotate(${r5Rot}deg)`;
+/* ═══════════════════════════════════════════════════════════
+   ROBOT ANIMATION
+═══════════════════════════════════════════════════════════ */
+const robotHead = document.getElementById('robotHead');
+const rings = Array.from(document.querySelectorAll('.neck-ring')).reverse();
 
-            // Subtle secondary frame lag logic to give the whole setup organic depth
-            robotVisual.style.transform = `rotate(${headX * 0.05}deg)`;
+let rmx = 0, rmy = 0;
+let headState = { x: 0, y: 0, rx: 0 };
+const ringStates = rings.map(() => ({ x: 0, y: 0, rx: 0 }));
 
-            requestAnimationFrame(renderLoop);
-        }
-        
-        // Initialize Animation Loop
-        requestAnimationFrame(renderLoop);
+window.addEventListener('mousemove', e => {
+    const rect = document.getElementById('robotWrapper').getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    rmx = (e.clientX - cx) / (window.innerWidth / 2);
+    rmy = (e.clientY - cy) / (window.innerHeight / 2);
+});
 
-        /* ═══════════════════════════════════════════════════════════
-           HIGH-PERFORMANCE MULTI-DIRECTIONAL SCROLL REVEAL ENGINE
-        ═══════════════════════════════════════════════════════════ */
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } else {
-                    // Triggers the animation to reset gracefully when scrolling back up past elements
-                    if (entry.boundingClientRect.top > 0) {
-                        entry.target.classList.remove('visible');
-                    }
-                }
-            });
-        }, { 
-            threshold: 0.10,
-            rootMargin: "0px 0px -20px 0px"
-        });
+function lerp(a, b, t) { return a + (b - a) * t; }
 
-        revealElements.forEach(el => scrollObserver.observe(el));
-    </script>
+function robotLoop() {
+    const tx = rmx * 24, ty = rmy * 12, trx = rmx * 10;
+
+    headState.x = lerp(headState.x, tx, 0.1);
+    headState.y = lerp(headState.y, ty, 0.1);
+    headState.rx = lerp(headState.rx, trx, 0.1);
+    robotHead.style.transform = `translate(${headState.x}px, ${headState.y}px) rotate(${headState.rx}deg)`;
+
+    rings.forEach((ring, i) => {
+        const factor = parseFloat(ring.dataset.factor);
+        const s = ringStates[i];
+        s.x = lerp(s.x, tx * factor, 0.08);
+        s.y = lerp(s.y, ty * factor, 0.08);
+        s.rx = lerp(s.rx, trx * factor, 0.08);
+        ring.style.transform = `translate(${s.x}px, ${s.y}px) rotate(${s.rx}deg)`;
+    });
+
+    requestAnimationFrame(robotLoop);
+}
+robotLoop();
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════════════════ */
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+
+/* ═══════════════════════════════════════════════════════════
+   FORM HANDLER
+═══════════════════════════════════════════════════════════ */
+function handleForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Message sent ✓';
+    btn.style.background = '#22c55e';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+        btn.textContent = 'Send message →';
+        btn.style.background = '';
+        btn.style.color = '';
+        e.target.reset();
+    }, 3000);
+}
+</script>
 
 </body>
 </html>

@@ -44,7 +44,6 @@
             left: -25vw;
             width: 150vw;
             height: 100vh;
-            /* Concentrated realistic yellowish sun flare reflection merging quickly into dark space */
             background: 
                 radial-gradient(circle at 50% 15%, rgba(255, 210, 100, 0.25) 0%, rgba(255, 160, 50, 0.04) 20%, transparent 45%),
                 radial-gradient(circle at 50% 15%, rgba(255, 230, 150, 0.35) 0%, rgba(15, 12, 5, 0.7) 25%, #050505 50%);
@@ -52,7 +51,6 @@
             transform-origin: 50% 15%;
         }
 
-        /* Volumetric atmospheric sun rays overlay */
         .sunbeam-container::before {
             content: '';
             position: absolute;
@@ -74,7 +72,6 @@
             -webkit-mask-image: radial-gradient(circle at 50% 15%, black 0%, rgba(0, 0, 0, 0.7) 12%, rgba(0, 0, 0, 0.05) 35%, transparent 50%);
             mix-blend-mode: screen;
         }
-        /* --- End Background Layer --- */
 
         /* Navigation Header */
         header {
@@ -274,10 +271,10 @@
             gap: 8px;
         }
 
-        /* Right Side Layout - Clean Robot Visual Showcase */
+        /* Right Side Layout - Clean New Robot Visual Showcase */
         .hero-right {
             width: 45%;
-            height: 620px;
+            height: 720px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -285,7 +282,6 @@
             z-index: 1;
         }
 
-        /* Stage setup for the robot */
         .robot-stage {
             width: 100%;
             height: 100%;
@@ -295,37 +291,35 @@
             position: relative;
         }
 
-        /* Floating Interactive Mech Capsule */
         .floating-mech-frame {
-            width: 340px;
-            height: 440px;
+            width: 440px;
+            height: 700px;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: dynamicFloat 6s ease-in-out infinite;
-            will-change: transform;
         }
 
-        @keyframes dynamicFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
-
-        /* Target Components for Matrix Engine Tracking */
         .robot-svg-wrapper {
             width: 100%;
             height: 100%;
-            transition: transform 0.1s cubic-bezier(0.25, 1, 0.5, 1);
             transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
-        .interactive-eye-lens {
+        /* Specific transform target optimizations */
+        .interactive-neck-ring {
             will-change: transform;
-            transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-origin: 220px var(--ring-pivot-y, 250px);
+            transition: transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Responsive Breakpoints */
+        .interactive-head-group {
+            will-change: transform;
+            transform-origin: 220px 210px;
+            transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
         @media (max-width: 1150px) {
             .portfolio-hero {
                 flex-direction: column-reverse;
@@ -334,34 +328,17 @@
                 padding-top: 150px;
                 gap: 60px;
             }
-            .hero-left {
-                max-width: 100%;
-            }
-            .cta-group {
-                justify-content: center;
-            }
-            .tech-tags {
-                justify-content: center;
-            }
-            .hero-right {
-                width: 100%;
-                height: 480px;
-            }
+            .hero-left { max-width: 100%; }
+            .cta-group { justify-content: center; }
+            .tech-tags { justify-content: center; }
+            .hero-right { width: 100%; height: 580px; }
+            .floating-mech-frame { width: 340px; height: 540px; }
         }
 
         @media (max-width: 650px) {
-            .main-name {
-                font-size: 3.8rem;
-            }
-            .cta-group {
-                flex-direction: column;
-                width: 100%;
-                gap: 15px;
-            }
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                justify-content: center;
-            }
+            .main-name { font-size: 3.8rem; }
+            .cta-group { flex-direction: column; width: 100%; gap: 15px; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -415,97 +392,114 @@
                     <div class="floating-mech-frame">
                         <div id="robotVisual" class="robot-svg-wrapper">
                             
-                            <svg viewBox="0 0 340 440" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg viewBox="0 0 440 700" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
-                                    <linearGradient id="armorChrome" x1="170" y1="30" x2="170" y2="250" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
-                                        <stop offset="15%" stop-color="#eaeaea"/>
-                                        <stop offset="45%" stop-color="#6e7278"/>
-                                        <stop offset="50%" stop-color="#1c1d21"/>
-                                        <stop offset="85%" stop-color="#383b40"/>
-                                        <stop offset="100%" stop-color="#0d0e10"/>
+                                    <linearGradient id="chromeSteel" x1="220" y1="50" x2="220" y2="650" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
+                                        <stop offset="20%" stop-color="#d6dadf"/>
+                                        <stop offset="50%" stop-color="#5a6067"/>
+                                        <stop offset="55%" stop-color="#191b1d"/>
+                                        <stop offset="85%" stop-color="#3a3e44"/>
+                                        <stop offset="100%" stop-color="#0a0b0c"/>
                                     </linearGradient>
 
-                                    <linearGradient id="darkChassis" x1="170" y1="40" x2="170" y2="250" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#2a2d32"/>
-                                        <stop offset="50%" stop-color="#141518"/>
-                                        <stop offset="100%" stop-color="#050607"/>
+                                    <linearGradient id="darkAlloy" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0%" stop-color="#25272b"/>
+                                        <stop offset="50%" stop-color="#111214"/>
+                                        <stop offset="100%" stop-color="#050506"/>
                                     </linearGradient>
 
-                                    <linearGradient id="hydraulicPiston" x1="0" y1="0" x2="1" y2="0">
-                                        <stop offset="0%" stop-color="#111"/>
-                                        <stop offset="30%" stop-color="#999"/>
-                                        <stop offset="50%" stop-color="#fff"/>
-                                        <stop offset="70%" stop-color="#555"/>
-                                        <stop offset="100%" stop-color="#000"/>
+                                    <linearGradient id="neckRingGradient" x1="160" y1="0" x2="280" y2="0" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#1a1c1e"/>
+                                        <stop offset="25%" stop-color="#6b727a"/>
+                                        <stop offset="50%" stop-color="#f1f3f5"/>
+                                        <stop offset="75%" stop-color="#494f55"/>
+                                        <stop offset="100%" stop-color="#0b0c0d"/>
                                     </linearGradient>
 
-                                    <linearGradient id="torsoMetal" x1="170" y1="260" x2="170" y2="410" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#33373e"/>
-                                        <stop offset="30%" stop-color="#1c1d21"/>
-                                        <stop offset="100%" stop-color="#08090a"/>
+                                    <linearGradient id="visorGlow" x1="170" y1="225" x2="270" y2="225" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+                                        <stop offset="25%" stop-color="#ffffff" stop-opacity="0.9"/>
+                                        <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+                                        <stop offset="75%" stop-color="#ffffff" stop-opacity="0.9"/>
+                                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
                                     </linearGradient>
 
-                                    <radialGradient id="laserGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(170 148) scale(28)">
-                                        <stop offset="0%" stop-color="#ffffff"/>
-                                        <stop offset="20%" stop-color="#77b5ff"/>
-                                        <stop offset="55%" stop-color="#0052cc" stop-opacity="0.6"/>
-                                        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-                                    </radialGradient>
+                                    <linearGradient id="chestLED" x1="180" y1="355" x2="260" y2="355" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+                                        <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+                                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2"/>
+                                    </linearGradient>
 
-                                    <filter id="heavyDrop" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.95"/>
-                                    </filter>
-                                    <filter id="cyberGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                                    <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feGaussianBlur stdDeviation="4" result="blur"/>
                                         <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                                    </filter>
+
+                                    <filter id="chassisShadow" x="-10%" y="-10%" width="120%" height="120%">
+                                        <feDropShadow dx="0" dy="15" stdDeviation="18" flood-color="#000000" flood-opacity="0.8"/>
                                     </filter>
                                 </defs>
 
-                                <g filter="url(#heavyDrop)">
-                                    <rect x="152" y="220" width="36" height="55" rx="4" fill="url(#hydraulicPiston)"/>
-                                    <rect x="140" y="235" width="8" height="35" rx="2" fill="url(#hydraulicPiston)"/>
-                                    <rect x="192" y="235" width="8" height="35" rx="2" fill="url(#hydraulicPiston)"/>
-                                    <path d="M135 260 L 205 260 L 215 275 L 125 275 Z" fill="#18191c" stroke="#2a2d32"/>
-                                </g>
+                                <g filter="url(#chassisShadow)">
+                                    <path d="M175 520 L165 650 L145 670 L200 670 L195 650 L185 520 Z" fill="url(#chromeSteel)" stroke="#000" stroke-width="1.5"/>
+                                    <circle cx="180" cy="520" r="16" fill="url(#darkAlloy)" stroke="#3a3e44"/>
+                                    <circle cx="172" cy="655" r="10" fill="#111"/>
 
-                                <g filter="url(#heavyDrop)">
-                                    <path d="M75 320 C 75 280, 265 280, 265 320 L 285 410 C 285 425, 55 425, 55 410 Z" fill="url(#torsoMetal)" stroke="#111214" stroke-width="2"/>
-                                    <path d="M145 285 L 195 285 L 205 420 L 135 420 Z" fill="#121316" stroke="#22252a" stroke-width="1.5"/>
-                                    <path d="M115 288 C 140 278, 200 278, 225 288" stroke="#555b66" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-                                    <circle cx="170" cy="315" r="7" fill="#0c0d0f" stroke="#33373e"/>
-                                    <circle cx="170" cy="315" r="2" fill="#77b5ff" filter="url(#cyberGlow)"/>
-                                </g>
-
-                                <g filter="url(#heavyDrop)">
-                                    <path d="M80 115 L 94 205 L 110 220 L 110 100 Z" fill="#1c1d21" stroke="#33373e"/>
-                                    <path d="M260 115 L 246 205 L 230 220 L 230 100 Z" fill="#1c1d21" stroke="#33373e"/>
-                                    <path d="M82 110 L 65 70 L 75 68 L 86 95 Z" fill="url(#darkChassis)" stroke="#111"/>
-                                    <path d="M258 110 L 275 70 L 265 68 L 254 95 Z" fill="url(#darkChassis)" stroke="#111"/>
-
-                                    <path d="M95 95 C 95 35, 245 35, 245 95 L 238 205 C 238 240, 102 240, 102 205 Z" fill="url(#armorChrome)" stroke="#111214" stroke-width="1.5"/>
+                                    <path d="M255 520 L245 650 L225 670 L280 670 L275 650 L265 520 Z" fill="url(#chromeSteel)" stroke="#000" stroke-width="1.5"/>
+                                    <circle cx="260" cy="520" r="16" fill="url(#darkAlloy)" stroke="#3a3e44"/>
+                                    <circle cx="252" cy="655" r="10" fill="#111"/>
                                     
-                                    <path d="M102 95 C 130 85, 210 85, 238 95" stroke="#111214" stroke-width="2"/>
-                                    <path d="M170 36 L 170 86" stroke="#111214" stroke-width="1.5"/>
-                                    <path d="M102 165 L 118 165" stroke="#111214" stroke-width="2"/>
-                                    <path d="M238 165 L 222 165" stroke="#111214" stroke-width="2"/>
-
-                                    <path d="M104 90 C 104 42, 236 42, 236 90" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
-
-                                    <path d="M112 128 C 112 118, 228 118, 228 128 L 224 168 C 224 178, 116 178, 116 168 Z" fill="url(#darkChassis)" stroke="#111214" stroke-width="2"/>
-                                    <path d="M118 134 L 222 134 L 219 162 L 121 162 Z" fill="#070809" stroke="#1a1c1f"/>
+                                    <path d="M150 490 L290 490 L270 535 L170 535 Z" fill="url(#darkAlloy)" stroke="#000"/>
                                 </g>
 
-                                <g id="eyeLensContainer" class="interactive-eye-lens">
-                                    <circle cx="170" cy="148" r="22" fill="url(#laserGlow)" filter="url(#cyberGlow)"/>
-                                    <circle cx="170" cy="148" r="4" fill="#ffffff"/>
-                                    <circle cx="170" cy="148" r="6.5" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1"/>
-                                    <line x1="145" y1="148" x2="195" y2="148" stroke="#77b5ff" stroke-width="0.75" opacity="0.3"/>
+                                <g filter="url(#chassisShadow)">
+                                    <path d="M140 315 C140 290, 300 290, 300 315 L315 420 C315 470, 125 470, 125 420 Z" fill="url(#chromeSteel)" stroke="#0d0e10" stroke-width="2"/>
+                                    
+                                    <rect x="175" y="345" width="90" height="20" rx="10" fill="#090a0c" stroke="#33373d"/>
+                                    <rect x="183" y="351" width="74" height="8" rx="4" fill="url(#chestLED)" filter="url(#glowEffect)"/>
+
+                                    <path d="M135 315 C115 315, 105 340, 105 380 L125 460 C125 475, 145 465, 145 440 Z" fill="url(#chromeSteel)" stroke="#111"/>
+                                    <circle cx="125" cy="325" r="18" fill="url(#darkAlloy)" stroke="#444"/>
+                                    <path d="M125 460 C120 485, 145 520, 165 510 L155 470 Z" fill="url(#darkAlloy)"/>
+
+                                    <path d="M305 315 C325 315, 335 340, 335 380 L315 460 C315 475, 295 465, 295 440 Z" fill="url(#chromeSteel)" stroke="#111"/>
+                                    <circle cx="315" cy="325" r="18" fill="url(#darkAlloy)" stroke="#444"/>
+                                    <path d="M315 460 C320 485, 295 520, 275 510 L285 470 Z" fill="url(#darkAlloy)"/>
                                 </g>
 
-                                <path d="M145 212 L 195 212 L 185 230 L 155 230 Z" fill="#1c1d21" stroke="#33373e"/>
-                                <line x1="155" y1="218" x2="185" y2="218" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round"/>
-                                <line x1="158" y1="224" x2="182" y2="224" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round"/>
+                                <g id="neckRing5" class="interactive-neck-ring" style="--ring-pivot-y: 290px;">
+                                    <path d="M175 282 C175 276, 265 276, 265 282 L260 294 C260 288, 180 288, 180 294 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
+                                </g>
+                                
+                                <g id="neckRing4" class="interactive-neck-ring" style="--ring-pivot-y: 275px;">
+                                    <path d="M172 264 C172 258, 268 258, 268 264 L263 276 C263 270, 177 270, 177 276 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
+                                </g>
+
+                                <g id="neckRing3" class="interactive-neck-ring" style="--ring-pivot-y: 260px;">
+                                    <path d="M170 246 C170 240, 270 240, 270 246 L265 258 C265 252, 175 252, 175 258 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
+                                </g>
+
+                                <g id="neckRing2" class="interactive-neck-ring" style="--ring-pivot-y: 245px;">
+                                    <path d="M172 228 C172 222, 268 222, 268 228 L263 240 C263 234, 177 234, 177 240 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
+                                </g>
+
+                                <g id="neckRing1" class="interactive-neck-ring" style="--ring-pivot-y: 230px;">
+                                    <path d="M175 210 C175 204, 265 204, 265 210 L260 222 C260 216, 180 216, 180 222 Z" fill="url(#neckRingGradient)" stroke="#090a0c"/>
+                                </g>
+
+                                <g id="robotHead" class="interactive-head-group">
+                                    <path d="M160 150 C160 80, 280 80, 280 150 L270 215 C270 225, 170 225, 170 215 Z" fill="url(#chromeSteel)" stroke="#0a0b0d" stroke-width="1.5"/>
+                                    
+                                    <path d="M162 145 C190 135, 250 135, 278 145" stroke="#1c1d21" stroke-width="1.5"/>
+                                    <path d="M220 92 L220 135" stroke="#1c1d21" stroke-width="1.5"/>
+                                    
+                                    <path d="M168 135 C168 95, 272 95, 272 135" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" stroke-linecap="round"/>
+
+                                    <path d="M175 160 C175 150, 265 150, 265 160 L260 200 C260 210, 180 210, 180 200 Z" fill="url(#darkAlloy)" stroke="#000" stroke-width="1.5"/>
+                                    
+                                    <path d="M185 192 C200 187, 240 187, 255 192" stroke="url(#visorGlow)" stroke-width="5" stroke-linecap="round" filter="url(#glowEffect)"/>
+                                </g>
                             </svg>
 
                         </div>
@@ -519,64 +513,102 @@
     <script>
         const sunbeamBg = document.getElementById('sunbeamBg');
         const robotVisual = document.getElementById('robotVisual');
-        const eyeLensContainer = document.getElementById('eyeLensContainer');
+        
+        // Target Interactive Elements
+        const robotHead = document.getElementById('robotHead');
+        const neckRing1 = document.getElementById('neckRing1');
+        const neckRing2 = document.getElementById('neckRing2');
+        const neckRing3 = document.getElementById('neckRing3');
+        const neckRing4 = document.getElementById('neckRing4');
+        const neckRing5 = document.getElementById('neckRing5');
 
-        // Target positions based on real mouse coordinates
+        // Target tracking values across coordinates
         let mouseX = 0;
         let mouseY = 0;
         
-        // Interpolated smoothing coordinates (LERP variables)
+        // Interpolated smoothing variables (LERP)
         let currentBgX = 0;
         let currentBgY = 0;
         let currentBgRot = 0;
+
+        // Neck Segment Tracking Interp Arrays
+        let headX = 0, headY = 0, headRot = 0;
+        let r1X = 0, r1Y = 0, r1Rot = 0;
+        let r2X = 0, r2Y = 0, r2Rot = 0;
+        let r3X = 0, r3Y = 0, r3Rot = 0;
+        let r4X = 0, r4Y = 0, r4Rot = 0;
+        let r5X = 0, r5Y = 0, r5Rot = 0;
 
         document.addEventListener('mousemove', (e) => {
             const width = window.innerWidth;
             const height = window.innerHeight;
             
-            // Normalize coordinates from center (-1 to 1)
+            // Normalize coordinates from viewport center (-1 to 1)
             mouseX = (e.clientX - width / 2) / (width / 2);
             mouseY = (e.clientY - height / 2) / (height / 2);
-
-            // --- Micro Robot Vector Mechanics (Calculated directly on move) ---
-            const containerRect = robotVisual.getBoundingClientRect();
-            const centerX = containerRect.left + containerRect.width / 2;
-            const centerY = containerRect.top + containerRect.height / 2;
-
-            const diffX = e.clientX - centerX;
-            const diffY = e.clientY - centerY;
-            const radians = Math.atan2(diffY, diffX);
-            
-            const maxEyeMove = 15; 
-            const moveX = Math.cos(radians) * Math.min(Math.abs(diffX) * 0.08, maxEyeMove);
-            const moveY = Math.sin(radians) * Math.min(Math.abs(diffY) * 0.08, maxEyeMove * 0.5);
-            
-            const maxFrameLean = 7;
-            const leanX = Math.cos(radians) * Math.min(Math.abs(diffX) * 0.015, maxFrameLean);
-            const leanY = Math.sin(radians) * Math.min(Math.abs(diffY) * 0.015, maxFrameLean);
-
-            eyeLensContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            robotVisual.style.transform = `translate(${leanX}px, ${leanY}px) rotate(${leanX * 0.2}deg)`;
         });
 
-        // High-Performance Smooth Animation Loop (LERP for Background)
+        // High-Performance Motion Loop
         function renderLoop() {
-            // Target tracking variables with custom horizontal/vertical scaling factors
-            const targetX = mouseX * 35;
-            const targetY = mouseY * 15;
-            const targetRot = mouseX * -8;
+            // 1. Background Sunbeam LERP Handling
+            const targetBgX = mouseX * 35;
+            const targetBgY = mouseY * 15;
+            const targetBgRot = mouseX * -8;
 
-            // Smooth linear interpolation formula: current + (target - current) * easeFactor
-            currentBgX += (targetX - currentBgX) * 0.06;
-            currentBgY += (targetY - currentBgY) * 0.06;
-            currentBgRot += (targetRot - currentBgRot) * 0.06;
-
-            // Apply smooth continuous translation/rotation properties to sun element
+            currentBgX += (targetBgX - currentBgX) * 0.06;
+            currentBgY += (targetBgY - currentBgY) * 0.06;
+            currentBgRot += (targetBgRot - currentBgRot) * 0.06;
             sunbeamBg.style.transform = `translate(${currentBgX}px, ${currentBgY}px) rotate(${currentBgRot}deg)`;
+
+            // 2. Physics-Chain Neck and Head Coordination Calculations
+            // Base maximum target ranges for head tracking
+            const targetHeadX = mouseX * 28;
+            const targetHeadY = mouseY * 14;
+            const targetHeadRot = mouseX * 12;
+
+            // Head moves fast and leads the tracking change
+            headX += (targetHeadX - headX) * 0.12;
+            headY += (targetHeadY - headY) * 0.12;
+            headRot += (targetHeadRot - headRot) * 0.12;
+            robotHead.style.transform = `translate(${headX}px, ${headY}px) rotate(${headRot}deg)`;
+
+            // Ring 1 (Top collar follows head closely)
+            r1X += (targetHeadX * 0.85 - r1X) * 0.10;
+            r1Y += (targetHeadY * 0.85 - r1Y) * 0.10;
+            r1Rot += (targetHeadRot * 0.80 - r1Rot) * 0.10;
+            neckRing1.style.transform = `translate(${r1X}px, ${r1Y}px) rotate(${r1Rot}deg)`;
+
+            // Ring 2
+            r2X += (targetHeadX * 0.65 - r2X) * 0.09;
+            r2Y += (targetHeadY * 0.65 - r2Y) * 0.09;
+            r2Rot += (targetHeadRot * 0.60 - r2Rot) * 0.09;
+            neckRing2.style.transform = `translate(${r2X}px, ${r2Y}px) rotate(${r2Rot}deg)`;
+
+            // Ring 3 (Middle anchor segment)
+            r3X += (targetHeadX * 0.45 - r3X) * 0.08;
+            r3Y += (targetHeadY * 0.45 - r3Y) * 0.08;
+            r3Rot += (targetHeadRot * 0.40 - r3Rot) * 0.08;
+            neckRing3.style.transform = `translate(${r3X}px, ${r3Y}px) rotate(${r3Rot}deg)`;
+
+            // Ring 4
+            r4X += (targetHeadX * 0.25 - r4X) * 0.07;
+            r4Y += (targetHeadY * 0.25 - r4Y) * 0.07;
+            r4Rot += (targetHeadRot * 0.20 - r4Rot) * 0.07;
+            neckRing4.style.transform = `translate(${r4X}px, ${r4Y}px) rotate(${r4Rot}deg)`;
+
+            // Ring 5 (Base collar remains relatively firm, micro-swivels)
+            r5X += (targetHeadX * 0.10 - r5X) * 0.06;
+            r5Y += (targetHeadY * 0.10 - r5Y) * 0.06;
+            r5Rot += (targetHeadRot * 0.05 - r5Rot) * 0.06;
+            neckRing5.style.transform = `translate(${r5X}px, ${r5Y}px) rotate(${r5Rot}deg)`;
+
+            // Subtle secondary frame lag logic to give the whole setup organic depth
+            robotVisual.style.transform = `rotate(${headX * 0.05}deg)`;
 
             requestAnimationFrame(renderLoop);
         }
-        // Fire up the animation cycle loop
+        
+        // Initialize Animation Loop
         requestAnimationFrame(renderLoop);
     </script>
 

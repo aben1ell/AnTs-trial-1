@@ -24,7 +24,7 @@
             position: relative;
         }
 
-        /* Interactive WebGL Sunbeam Background Canvas Layer */
+        /* Interactive Sunbeam Canvas Layer */
         #bgCanvas {
             position: fixed;
             top: 0;
@@ -45,7 +45,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 5, 0.4);
+            background: rgba(5, 5, 5, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
@@ -244,7 +244,7 @@
             z-index: 1;
         }
 
-        /* Stage container */
+        /* Stage setup for the robot */
         .robot-stage {
             width: 100%;
             height: 100%;
@@ -444,4 +444,144 @@
                                     
                                     <path d="M102 95 C 130 85, 210 85, 238 95" stroke="#111214" stroke-width="2"/>
                                     <path d="M170 36 L 170 86" stroke="#111214" stroke-width="1.5"/>
-                                    <path d="M102 165 L 1
+                                    <path d="M102 165 L 118 165" stroke="#111214" stroke-width="2"/>
+                                    <path d="M238 165 L 222 165" stroke="#111214" stroke-width="2"/>
+
+                                    <path d="M104 90 C 104 42, 236 42, 236 90" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+
+                                    <path d="M112 128 C 112 118, 228 118, 228 128 L 224 168 C 224 178, 116 178, 116 168 Z" fill="url(#darkChassis)" stroke="#111214" stroke-width="2"/>
+                                    <path d="M118 134 L 222 134 L 219 162 L 121 162 Z" fill="#070809" stroke="#1a1c1f"/>
+                                </g>
+
+                                <g id="eyeLensContainer" class="interactive-eye-lens">
+                                    <circle cx="170" cy="148" r="22" fill="url(#laserGlow)" filter="url(#cyberGlow)"/>
+                                    <circle cx="170" cy="148" r="4" fill="#ffffff"/>
+                                    <circle cx="170" cy="148" r="6.5" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1"/>
+                                    <line x1="145" y1="148" x2="195" y2="148" stroke="#77b5ff" stroke-width="0.75" opacity="0.3"/>
+                                </g>
+
+                                <path d="M145 212 L 195 212 L 185 230 L 155 230 Z" fill="#1c1d21" stroke="#33373e"/>
+                                <line x1="155" y1="218" x2="185" y2="218" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="158" y1="224" x2="182" y2="224" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // --- 1. Interactive Sunbeam Engine Configs ---
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let targetRayX = window.innerWidth / 2;
+        
+        // Setup Rays Properties matching LightRays specs
+        const rayCount = 12;
+        const rays = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        // Generate Ray data structures
+        for (let i = 0; i < rayCount; i++) {
+            rays.push({
+                angleOffset: (Math.PI / rayCount) * i - (Math.PI / 2),
+                speed: 0.005 + Math.random() * 0.008,
+                width: 0.1 + Math.random() * 0.25,
+                opacityModifier: 0.3 + Math.random() * 0.7,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+        
+        function drawSunbeams(time) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Core Light Origin point (top-center)
+            const originX = canvas.width / 2;
+            const originY = -50;
+            
+            // Smoothly ease light towards the mouse position horizontally
+            targetRayX += (mouseX - targetRayX) * 0.05; 
+            const baseAngle = Math.atan2(canvas.height, targetRayX - originX);
+            
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            
+            rays.forEach(ray => {
+                ray.phase += ray.speed;
+                const dynamicOpacity = (0.5 + Math.sin(ray.phase) * 0.5) * ray.opacityModifier * 0.12;
+                
+                // Calculate dynamic structural reach angles
+                const finalAngle = baseAngle + ray.angleOffset + Math.sin(ray.phase * 0.5) * 0.08;
+                
+                const gradient = ctx.createRadialGradient(originX, originY, 0, originX, originY, canvas.height * 2);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${dynamicOpacity})`);
+                gradient.addColorStop(0.3, `rgba(230, 240, 255, ${dynamicOpacity * 0.6})`);
+                gradient.addColorStop(0.7, `rgba(170, 200, 255, ${dynamicOpacity * 0.1})`);
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                
+                ctx.beginPath();
+                ctx.moveTo(originX, originY);
+                ctx.arc(originX, originY, canvas.height * 2.5, finalAngle - ray.width, finalAngle + ray.width);
+                ctx.closePath();
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            });
+            
+            ctx.restore();
+        }
+
+        // --- 2. Micro Robot Vector Mechanics ---
+        const robotVisual = document.getElementById('robotVisual');
+        const eyeLensContainer = document.getElementById('eyeLensContainer');
+
+        // Combined Single Mouse Event Listener Pipeline
+        document.addEventListener('mousemove', (e) => {
+            // Update Background Coordinates
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Update Robot Face Trajectory Calculations
+            const containerRect = robotVisual.getBoundingClientRect();
+            const centerX = containerRect.left + containerRect.width / 2;
+            const centerY = containerRect.top + containerRect.height / 2;
+
+            const diffX = e.clientX - centerX;
+            const diffY = e.clientY - centerY;
+            const radians = Math.atan2(diffY, diffX);
+            
+            const maxEyeMove = 15; 
+            const moveX = Math.cos(radians) * Math.min(Math.abs(diffX) * 0.08, maxEyeMove);
+            const moveY = Math.sin(radians) * Math.min(Math.abs(diffY) * 0.08, maxEyeMove * 0.5);
+            
+            const maxFrameLean = 7;
+            const leanX = Math.cos(radians) * Math.min(Math.abs(diffX) * 0.015, maxFrameLean);
+            const leanY = Math.sin(radians) * Math.min(Math.abs(diffY) * 0.015, maxFrameLean);
+
+            // Render updates instantly
+            eyeLensContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            robotVisual.style.transform = `translate(${leanX}px, ${leanY}px) rotate(${leanX * 0.2}deg)`;
+        });
+
+        // Loop Animation Frame Engine
+        function animationEngine(time) {
+            drawSunbeams(time);
+            requestAnimationFrame(animationEngine);
+        }
+        requestAnimationFrame(animationEngine);
+    </script>
+
+</body>
+</html>

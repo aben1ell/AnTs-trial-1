@@ -6,1051 +6,935 @@
 <title>Abenezer Tsion | Front-End Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/*──────────────────────────────────────────────
-  DESIGN SYSTEM — UI UX Pro Max: Portfolio / HUD Sci-Fi + Motion Driven + OLED Dark
-  Palette: #C9A84C (gold), #0AFFD9 (cyan), #ffffff, #060608 (bg)
-  Typography: Space Grotesk (display) / Inter (body)
-──────────────────────────────────────────────*/
-:root{
-  --gold:#C9A84C; --gold2:#FFD97A; --gold-a15:rgba(201,168,76,.15); --gold-a08:rgba(201,168,76,.08);
-  --cyan:#0AFFD9; --cyan-a10:rgba(10,255,217,.10); --cyan-a04:rgba(10,255,217,.04);
-  --white:#F0F0EE; --muted:#555560; --dim:#2A2A32;
-  --bg:#060608; --bg2:#0B0B10; --bg3:#111118;
-  --border:rgba(255,255,255,.055); --border2:rgba(255,255,255,.09);
-  --r:14px; --r-sm:8px;
-  --ease-out:cubic-bezier(.22,1,.36,1);
-  --ease-spring:cubic-bezier(.34,1.56,.64,1);
-}
+/* ─── RESET ─── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
+:root{
+  --gold:#C9A84C; --gold2:#FFD97A; --ga08:rgba(201,168,76,.08);
+  --white:#EEEEED; --muted:#565666; --bg:#070709;
+  --s1:#0C0C12; --s2:#101018; --bd:rgba(255,255,255,.055);
+  --ease:cubic-bezier(.22,1,.36,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
 body{
-  background:var(--bg);
-  color:var(--white);
+  background:var(--bg); color:var(--white);
   font-family:'Inter',sans-serif;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
 
-/* ── GRAIN OVERLAY ── */
-body::after{
-  content:'';
-  position:fixed;inset:0;z-index:1;
-  pointer-events:none;
-  opacity:.38;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+/* ════════════════════════════════════════
+   LOADER
+════════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:#070709;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:0;
+  /* stays until JS removes it */
+}
+#loader.out{
+  animation:loaderOut .7s var(--ease) forwards;
+}
+@keyframes loaderOut{
+  to{opacity:0;visibility:hidden}
 }
 
-/* ── CANVAS ── */
+/* progress bar at very top */
+.ld-bar-wrap{
+  position:absolute;top:0;left:0;width:100%;height:2px;
+  background:rgba(255,255,255,.04);overflow:hidden;
+}
+.ld-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));
+  background-size:200%;
+  animation:barShimmer 1.2s linear infinite, barFill 1.8s var(--ease) forwards;
+}
+@keyframes barFill{0%{width:0%} 60%{width:75%} 85%{width:92%} 100%{width:100%}}
+@keyframes barShimmer{0%{background-position:200%}100%{background-position:0%}}
+
+/* logo mark */
+.ld-logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(2.8rem,8vw,5rem);
+  font-weight:800; letter-spacing:-2px;
+  color:var(--white);
+  opacity:0;transform:translateY(14px);
+  animation:ldIn .65s var(--ease) .2s forwards;
+}
+.ld-logo em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;background-size:200%;
+  animation:shimmer 3s ease-in-out infinite;
+}
+@keyframes ldIn{to{opacity:1;transform:none}}
+@keyframes shimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+
+.ld-rule{
+  width:0;height:1px;margin:18px 0 14px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.45),transparent);
+  opacity:0;
+  animation:ldIn .5s var(--ease) .55s forwards,ldRule .55s var(--ease) .55s forwards;
+}
+@keyframes ldRule{to{width:160px}}
+
+.ld-sub{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.68rem;letter-spacing:3.5px;text-transform:uppercase;
+  color:var(--muted);
+  opacity:0;animation:ldIn .5s var(--ease) .72s forwards;
+}
+
+/* counter number */
+.ld-pct{
+  position:absolute;bottom:48px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.75rem;letter-spacing:2px;
+  color:rgba(201,168,76,.5);
+  opacity:0;animation:ldIn .4s var(--ease) .6s forwards;
+}
+
+/* ════════════════════════════════════════
+   CANVAS
+════════════════════════════════════════ */
 #bg-cv{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-/* ── CURSOR GLOW ── */
-#cursor-glow{
-  position:fixed;width:400px;height:400px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:2;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(201,168,76,.07) 0%,transparent 65%);
-  transition:opacity .3s;
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
 }
 
-/* ── HUD SCAN LINE ── */
-.hud-scan{
-  position:fixed;top:0;left:0;width:100%;height:2px;
-  background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);
-  z-index:50;opacity:0;
-  animation:scanDown 6s ease-in-out infinite 2s;
-}
-@keyframes scanDown{
-  0%{top:0;opacity:0}
-  5%{opacity:.6}
-  95%{opacity:.3}
-  100%{top:100%;opacity:0}
-}
-
-/* ─────────── HEADER ─────────── */
+/* ════════════════════════════════════════
+   HEADER
+════════════════════════════════════════ */
 header{
-  position:fixed;inset:0 0 auto;
-  padding:20px 6%;
+  position:fixed;inset:0 0 auto;padding:20px 6%;
   display:flex;justify-content:space-between;align-items:center;
-  background:rgba(6,6,8,.8);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
-  z-index:800;
+  background:rgba(7,7,9,.82);backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--bd);z-index:800;
 }
 .logo{
   font-family:'Space Grotesk',sans-serif;
-  font-size:.95rem;font-weight:700;
-  letter-spacing:3px;text-transform:uppercase;
+  font-size:.95rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
   color:var(--white);
 }
 .logo em{color:var(--gold);font-style:normal}
-nav ul{display:flex;list-style:none;gap:36px}
+nav ul{display:flex;list-style:none;gap:34px}
 nav a{
   color:var(--muted);text-decoration:none;
-  font-size:.82rem;letter-spacing:.6px;
-  transition:color .25s;position:relative;
+  font-size:.82rem;letter-spacing:.5px;transition:color .25s;position:relative;
 }
 nav a::after{
   content:'';position:absolute;left:0;bottom:-3px;
-  width:0;height:1px;background:var(--gold);
-  transition:width .3s var(--ease-out);
+  width:0;height:1px;background:var(--gold);transition:width .3s var(--ease);
 }
 nav a:hover{color:var(--white)}
 nav a:hover::after{width:100%}
 
-/* HUD corner deco on header */
-header::before,header::after{
-  content:'';position:absolute;
-  width:10px;height:10px;
-  border-color:var(--gold);border-style:solid;
-  opacity:.35;
-}
-header::before{top:8px;left:8px;border-width:1px 0 0 1px}
-header::after{top:8px;right:8px;border-width:1px 1px 0 0}
-
-/* ─────────── HERO ─────────── */
+/* ════════════════════════════════════════
+   HERO
+════════════════════════════════════════ */
 .hero{
   min-height:100vh;
   display:grid;grid-template-columns:1fr 1fr;
   align-items:center;
-  padding:110px 8% 70px;
-  max-width:1560px;margin:0 auto;
-  position:relative;z-index:3;gap:40px;
+  padding:110px 8% 80px;
+  max-width:1540px;margin:0 auto;
+  position:relative;z-index:3;gap:60px;
 }
 
-/* ── REVEAL ANIMATIONS ── */
-[data-reveal]{
-  opacity:0;
-  transition:opacity .9s var(--ease-out),transform .9s var(--ease-out);
-}
-[data-reveal="up"]{transform:translateY(48px)}
-[data-reveal="left"]{transform:translateX(-48px)}
-[data-reveal="right"]{transform:translateX(48px)}
-[data-reveal="scale"]{transform:scale(.9)}
-[data-reveal].visible{opacity:1;transform:none!important}
+/* REVEAL */
+[data-r]{opacity:0;transition:opacity .85s var(--ease),transform .85s var(--ease)}
+[data-r="up"]   {transform:translateY(44px)}
+[data-r="left"] {transform:translateX(-44px)}
+[data-r="right"]{transform:translateX(44px)}
+[data-r].vis    {opacity:1;transform:none!important}
 
-/* ── STATUS PILL ── */
-.status-pill{
+/* status */
+.pill{
   display:inline-flex;align-items:center;gap:9px;
-  border:1px solid rgba(10,255,217,.12);
-  background:rgba(10,255,217,.04);
-  padding:9px 18px;border-radius:100px;
+  border:1px solid rgba(34,197,94,.14);background:rgba(34,197,94,.04);
+  padding:8px 16px;border-radius:100px;
   font-size:.68rem;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(10,255,217,.7);margin-bottom:30px;
+  color:rgba(34,197,94,.75);margin-bottom:28px;
 }
-.pulse-dot{
-  width:6px;height:6px;background:var(--cyan);border-radius:50%;
-  box-shadow:0 0 0 0 rgba(10,255,217,.6);
-  animation:pdot 2.4s infinite;
+.dot{
+  width:6px;height:6px;background:#22c55e;border-radius:50%;
+  box-shadow:0 0 0 0 rgba(34,197,94,.55);animation:pdot 2.5s infinite;
 }
-@keyframes pdot{
-  0%{box-shadow:0 0 0 0 rgba(10,255,217,.6)}
-  70%{box-shadow:0 0 0 8px rgba(10,255,217,0)}
-  100%{box-shadow:0 0 0 0 rgba(10,255,217,0)}
-}
+@keyframes pdot{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
 
-.eyebrow{
-  font-family:'Space Grotesk',sans-serif;
-  color:var(--muted);font-size:1rem;margin-bottom:10px;font-weight:400;
-}
-
+.eyebrow{font-family:'Space Grotesk',sans-serif;color:var(--muted);font-size:1rem;margin-bottom:8px}
 .hero-name{
   font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(3rem,5.5vw,6rem);
-  font-weight:700;line-height:1.0;letter-spacing:-2.5px;
+  font-size:clamp(3rem,5.8vw,6.2rem);
+  font-weight:800;line-height:1.0;letter-spacing:-2.5px;
   color:var(--white);margin-bottom:18px;
 }
 .hero-name .g{
-  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%);
+  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  background-size:200% 200%;
-  animation:shimmer 4s ease-in-out infinite;
+  background-clip:text;background-size:200%;animation:shimmer 5s ease-in-out infinite;
 }
-@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-
 .role-badge{
   display:inline-flex;align-items:center;gap:8px;
-  background:var(--gold-a08);
-  border:1px solid rgba(201,168,76,.2);
-  color:var(--gold);padding:8px 16px;border-radius:6px;
-  font-size:.7rem;letter-spacing:1.8px;text-transform:uppercase;
-  font-family:'Space Grotesk',sans-serif;font-weight:600;
-  margin-bottom:26px;
-}
-
-.hero-desc{
-  color:var(--muted);font-size:.975rem;line-height:1.85;
-  max-width:450px;margin-bottom:38px;
-}
-
-.cta-row{display:flex;gap:14px;margin-bottom:50px;flex-wrap:wrap}
-
-/* BUTTONS */
-.btn{
-  padding:14px 30px;border-radius:10px;
+  background:var(--ga08);border:1px solid rgba(201,168,76,.18);
+  color:var(--gold);padding:7px 15px;border-radius:6px;
   font-family:'Space Grotesk',sans-serif;
-  font-size:.9rem;font-weight:600;
-  text-decoration:none;display:inline-flex;align-items:center;gap:9px;
-  transition:transform .2s var(--ease-spring),box-shadow .2s;
-  border:none;cursor:pointer;letter-spacing:.3px;position:relative;overflow:hidden;
+  font-size:.68rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:600;
+  margin-bottom:24px;
 }
-.btn::before{
-  content:'';position:absolute;inset:0;opacity:0;
-  background:rgba(255,255,255,.06);
-  transition:opacity .2s;
+.hero-desc{
+  color:var(--muted);font-size:.96rem;line-height:1.82;
+  max-width:440px;margin-bottom:36px;
 }
-.btn:hover::before{opacity:1}
+.cta-row{display:flex;gap:13px;margin-bottom:46px;flex-wrap:wrap}
+.btn{
+  padding:14px 28px;border-radius:10px;
+  font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  border:none;cursor:pointer;letter-spacing:.2px;
+  transition:transform .22s var(--spring),box-shadow .22s;position:relative;overflow:hidden;
+}
+.btn::after{content:'';position:absolute;inset:0;opacity:0;background:rgba(255,255,255,.06);transition:opacity .2s}
+.btn:hover::after{opacity:1}
 .btn:hover{transform:translateY(-3px)}
-.btn:active{transform:translateY(-1px)}
-
-.btn-primary{background:var(--white);color:#060608;font-weight:700}
-.btn-primary:hover{box-shadow:0 16px 40px rgba(240,240,238,.1)}
-
-.btn-secondary{
-  background:transparent;color:var(--white);
-  border:1px solid rgba(255,255,255,.12);
-}
-.btn-secondary:hover{border-color:rgba(201,168,76,.3);box-shadow:0 0 20px rgba(201,168,76,.08)}
-
-.tech-row{
-  display:flex;gap:20px;flex-wrap:wrap;
-  color:#3a3a45;font-size:.78rem;letter-spacing:.8px;
-}
+.btn-p{background:var(--white);color:#070709;font-weight:700}
+.btn-p:hover{box-shadow:0 14px 36px rgba(239,239,237,.09)}
+.btn-s{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.11)}
+.btn-s:hover{border-color:rgba(201,168,76,.28)}
+.tech-row{display:flex;gap:18px;flex-wrap:wrap;color:#363644;font-size:.78rem;letter-spacing:.7px}
 .tech-row span{display:flex;align-items:center;gap:6px;cursor:default;transition:color .25s}
 .tech-row span:hover{color:var(--gold)}
-.tech-row span::before{
-  content:'';display:block;width:3px;height:3px;border-radius:50%;
-  background:var(--gold);opacity:.5;
-}
+.tech-row span::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--gold);opacity:.45;display:block}
 
-/* ─────────── ROBOT STAGE ─────────── */
+/* ════════════════════════════════════════
+   ROBOT — completely new design
+   A clean, modern, rendered-looking
+   humanoid. No shaking. Gentle float only.
+════════════════════════════════════════ */
 .robot-stage{
-  display:flex;justify-content:center;align-items:center;
-  height:740px;position:relative;
+  display:flex;justify-content:center;align-items:flex-end;
+  height:680px;position:relative;
 }
-
-/* HUD corner brackets around robot */
-.robot-stage::before,.robot-stage::after,
-.hud-br,.hud-bl{
-  content:'';position:absolute;
-  width:22px;height:22px;
-  border-color:rgba(201,168,76,.25);border-style:solid;
-  pointer-events:none;z-index:5;
+#rw{
+  width:400px;height:640px;position:relative;
+  animation:gentleFloat 6s ease-in-out infinite;
+  will-change:transform;
 }
-.robot-stage::before{top:10px;left:10px;border-width:1px 0 0 1px}
-.robot-stage::after{top:10px;right:10px;border-width:1px 1px 0 0}
-.hud-br{position:absolute;bottom:50px;right:10px;border-width:0 1px 1px 0}
-.hud-bl{position:absolute;bottom:50px;left:10px;border-width:0 0 1px 1px}
-
-/* HUD readout */
-.hud-readout{
-  position:absolute;bottom:56px;left:50%;transform:translateX(-50%);
-  font-family:'Space Grotesk',sans-serif;
-  font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(201,168,76,.3);pointer-events:none;
-  animation:hudBlink 3s ease-in-out infinite;
+@keyframes gentleFloat{
+  0%,100%{transform:translateY(0px)}
+  50%{transform:translateY(-10px)}
 }
-@keyframes hudBlink{0%,100%{opacity:.3}50%{opacity:.6}}
-
-#robot-wrap{width:440px;height:680px;position:relative}
-
 .r-shadow{
-  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:200px;height:24px;border-radius:50%;
-  background:radial-gradient(ellipse,rgba(201,168,76,.18) 0%,transparent 70%);
-  animation:rshadow 3s ease-in-out infinite;
+  position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:180px;height:20px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(201,168,76,.14) 0%,transparent 70%);
+  animation:rShadow 6s ease-in-out infinite;
 }
-@keyframes rshadow{0%,100%{width:180px;opacity:.7}50%{width:230px;opacity:1}}
+@keyframes rShadow{
+  0%,100%{width:160px;opacity:.7}
+  50%{width:210px;opacity:1}
+}
 
-/* ─────────── DIVIDER ─────────── */
-.divider{
+/* ════════════════════════════════════════
+   SECTIONS
+════════════════════════════════════════ */
+.sec{
   position:relative;z-index:3;
-  border:none;border-top:1px solid var(--border);
-  max-width:1560px;margin:0 auto;
+  max-width:1280px;margin:0 auto;padding:96px 8%;
 }
-
-/* ─────────── SECTIONS ─────────── */
-.section{
-  position:relative;z-index:3;
-  max-width:1300px;margin:0 auto;
-  padding:100px 8%;
+.sep{
+  display:block;border:none;
+  border-top:1px solid rgba(255,255,255,.042);
+  max-width:1540px;margin:0 auto;position:relative;z-index:3;
 }
-
 .sec-label{
-  display:flex;align-items:center;gap:14px;
   font-family:'Space Grotesk',sans-serif;
   font-size:.65rem;letter-spacing:3.5px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:16px;
+  color:var(--gold);margin-bottom:14px;
 }
-.sec-label::after{
-  content:'';display:block;width:40px;height:1px;
-  background:linear-gradient(90deg,rgba(201,168,76,.5),transparent);
-}
-
 .sec-title{
   font-family:'Space Grotesk',sans-serif;
-  font-size:clamp(1.9rem,3.5vw,3rem);
-  font-weight:700;letter-spacing:-1px;line-height:1.08;
-  margin-bottom:54px;color:var(--white);
+  font-size:clamp(1.8rem,3.2vw,3rem);
+  font-weight:700;letter-spacing:-.8px;line-height:1.1;
+  margin-bottom:52px;color:var(--white);
 }
 .sec-title em{font-style:normal;color:var(--gold)}
 
-/* ─────────── PROJECTS ─────────── */
-.proj-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:20px;
+/* ════════════════════════════════════════
+   PROJECTS
+════════════════════════════════════════ */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.pc{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:14px;overflow:hidden;
+  transition:border-color .35s,transform .38s var(--ease),box-shadow .38s;cursor:pointer;
 }
-
-.proj-card{
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:var(--r);overflow:hidden;
-  transition:border-color .35s,transform .4s var(--ease-out),box-shadow .4s;
-  cursor:pointer;position:relative;
-}
-/* card top shimmer line */
-.proj-card::before{
-  content:'';position:absolute;
-  top:0;left:-100%;width:100%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  transition:left .6s var(--ease-out);
-}
-.proj-card:hover::before{left:100%}
-.proj-card:hover{
-  border-color:rgba(201,168,76,.22);
-  transform:translateY(-6px);
-  box-shadow:0 28px 64px rgba(0,0,0,.6);
-}
-
-.proj-thumb{height:190px;position:relative;overflow:hidden}
-.t1{background:linear-gradient(135deg,#0c1018,#161e2c)}
-.t2{background:linear-gradient(135deg,#0e0c18,#18102a)}
-.t3{background:linear-gradient(135deg,#0c1814,#0e1e12)}
-
-.thumb-ui{
-  position:absolute;inset:16px;
-  border-radius:8px;border:1px solid rgba(255,255,255,.055);
-  overflow:hidden;background:rgba(0,0,0,.3);
-}
-.t-bar{
-  height:24px;
-  background:rgba(255,255,255,.025);
-  border-bottom:1px solid rgba(255,255,255,.04);
-  display:flex;align-items:center;padding:0 10px;gap:5px;
-}
+.pc:hover{border-color:rgba(201,168,76,.2);transform:translateY(-5px);box-shadow:0 24px 56px rgba(0,0,0,.55)}
+.pt{height:185px;position:relative;overflow:hidden}
+.t1{background:linear-gradient(135deg,#0c1018,#141e2c)}
+.t2{background:linear-gradient(135deg,#0d0b18,#180f28)}
+.t3{background:linear-gradient(135deg,#0a1210,#0c1c14)}
+.tch{position:absolute;inset:15px;border-radius:7px;border:1px solid rgba(255,255,255,.05);overflow:hidden}
+.tb{height:22px;background:rgba(0,0,0,.3);border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;padding:0 9px;gap:4px}
 .d{width:6px;height:6px;border-radius:50%}
-.d-r{background:#ff5f57}.d-y{background:#ffbd2e}.d-g{background:#28c840}
-.t-body{padding:12px;display:flex;flex-direction:column;gap:6px}
+.dr{background:#ff5f57}.dy{background:#ffbd2e}.dg{background:#28c840}
+.tbd{padding:11px 12px;display:flex;flex-direction:column;gap:6px}
 .tl{height:6px;border-radius:3px;background:rgba(255,255,255,.05)}
-.tl-g{background:rgba(201,168,76,.18)}
-.tl-c{background:rgba(10,255,217,.1)}
+.tlg{background:rgba(201,168,76,.18)}
+.pb{padding:20px 22px 24px}
+.ptags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ptag{font-size:.61rem;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.03);color:var(--muted);border:1px solid rgba(255,255,255,.04)}
+.ptag-g{background:var(--ga08);color:var(--gold);border-color:rgba(201,168,76,.14)}
+.ptit{font-family:'Space Grotesk',sans-serif;font-size:1.08rem;font-weight:600;color:var(--white);margin-bottom:7px;letter-spacing:-.2px}
+.pdesc{font-size:.85rem;color:var(--muted);line-height:1.68;margin-bottom:18px}
+.plink{display:inline-flex;align-items:center;gap:6px;color:var(--gold);font-size:.77rem;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(201,168,76,.24);padding-bottom:2px;transition:border-color .2s,gap .2s}
+.plink:hover{border-color:var(--gold);gap:10px}
 
-.p-body{padding:20px 22px 24px}
-.p-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
-.ptag{
-  font-size:.62rem;letter-spacing:1px;text-transform:uppercase;
-  padding:3px 9px;border-radius:4px;
-  background:rgba(255,255,255,.03);color:var(--muted);
-  border:1px solid rgba(255,255,255,.04);
-}
-.ptag-g{background:var(--gold-a08);color:var(--gold);border-color:rgba(201,168,76,.15)}
-.p-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:1.1rem;font-weight:600;color:var(--white);
-  margin-bottom:8px;letter-spacing:-.2px;
-}
-.p-desc{font-size:.86rem;color:var(--muted);line-height:1.7;margin-bottom:20px}
-.p-link{
-  display:inline-flex;align-items:center;gap:7px;
-  color:var(--gold);font-size:.78rem;font-weight:600;
-  letter-spacing:.4px;text-decoration:none;
-  border-bottom:1px solid rgba(201,168,76,.25);padding-bottom:2px;
-  transition:border-color .2s,gap .2s;
-}
-.p-link:hover{border-color:var(--gold);gap:11px}
+/* ════════════════════════════════════════
+   ABOUT
+════════════════════════════════════════ */
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:start}
+.atxt{color:var(--muted);font-size:.96rem;line-height:1.88}
+.atxt p+p{margin-top:16px}
+.skwrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.sk{padding:6px 13px;border-radius:100px;border:1px solid rgba(255,255,255,.055);font-size:.74rem;color:#484855;background:var(--s1);transition:border-color .24s,color .24s,transform .2s;cursor:default}
+.sk:hover{border-color:rgba(201,168,76,.26);color:var(--gold);transform:translateY(-1px)}
+.stgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stb{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:22px;transition:border-color .3s,transform .3s;position:relative;overflow:hidden}
+.stb::before{content:'';position:absolute;top:0;right:0;width:55px;height:55px;background:radial-gradient(circle at top right,rgba(201,168,76,.05),transparent 70%)}
+.stb:hover{border-color:rgba(201,168,76,.14);transform:translateY(-2px)}
+.stn{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:-2px;color:var(--white);line-height:1;margin-bottom:4px}
+.stn sup{color:var(--gold);font-size:1.2rem;vertical-align:super}
+.stl{font-size:.72rem;color:var(--muted)}
 
-/* ─────────── ABOUT ─────────── */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start}
-.a-text{color:var(--muted);font-size:.965rem;line-height:1.88}
-.a-text p+p{margin-top:18px}
+/* ════════════════════════════════════════
+   CONTACT
+════════════════════════════════════════ */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center}
+.ci{color:var(--muted);font-size:.96rem;line-height:1.85;margin-bottom:28px}
+.clinks{display:flex;flex-direction:column;gap:11px}
+.clink{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.875rem;text-decoration:none;transition:color .22s}
+.clink:hover{color:var(--white)}
+.cico{width:38px;height:38px;border:1px solid var(--bd);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.88rem;background:var(--s1);flex-shrink:0;transition:border-color .22s,background .22s}
+.clink:hover .cico{border-color:rgba(201,168,76,.22);background:rgba(201,168,76,.04)}
+.cform{display:flex;flex-direction:column;gap:13px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:.7rem;color:var(--muted);letter-spacing:.5px}
+.fg input,.fg textarea{background:var(--s1);border:1px solid var(--bd);border-radius:9px;color:var(--white);font-size:.875rem;padding:12px 14px;font-family:'Inter',sans-serif;outline:none;resize:none;transition:border-color .22s,box-shadow .22s}
+.fg input:focus,.fg textarea:focus{border-color:rgba(201,168,76,.32);box-shadow:0 0 0 3px rgba(201,168,76,.05)}
+.fg textarea{height:110px}
+.fbtn{align-self:flex-start;background:var(--white);color:#070709;padding:13px 26px;border-radius:9px;font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s}
+.fbtn:hover{background:#e2e2e0;transform:translateY(-2px);box-shadow:0 12px 28px rgba(239,239,237,.07)}
 
-.skills-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
-.skill-tag{
-  padding:6px 14px;border-radius:100px;
-  border:1px solid rgba(255,255,255,.06);
-  font-size:.75rem;color:#505058;
-  background:var(--bg2);
-  transition:border-color .25s,color .25s,transform .2s;cursor:default;
-}
-.skill-tag:hover{border-color:rgba(201,168,76,.28);color:var(--gold);transform:translateY(-1px)}
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+footer{position:relative;z-index:3;border-top:1px solid rgba(255,255,255,.04);padding:32px 8%;display:flex;justify-content:space-between;align-items:center}
+footer p{font-size:.74rem;color:#222230}
+.flogo{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#1e1e28}
+.flogo em{color:rgba(201,168,76,.28);font-style:normal}
 
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.stat-b{
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:var(--r);padding:22px;
-  transition:border-color .3s,transform .3s;
-  position:relative;overflow:hidden;
-}
-.stat-b::before{
-  content:'';position:absolute;
-  top:0;right:0;width:60px;height:60px;
-  background:radial-gradient(circle at top right,rgba(201,168,76,.07),transparent 70%);
-}
-.stat-b:hover{border-color:rgba(201,168,76,.16);transform:translateY(-2px)}
-.stat-n{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:2.5rem;font-weight:700;
-  letter-spacing:-2px;color:var(--white);
-  line-height:1;margin-bottom:5px;
-}
-.stat-n sup{color:var(--gold);font-size:1.3rem;vertical-align:super}
-.stat-l{font-size:.72rem;color:var(--muted)}
-
-/* ─────────── CONTACT ─────────── */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
-.c-intro{color:var(--muted);font-size:.965rem;line-height:1.88;margin-bottom:30px}
-.c-links{display:flex;flex-direction:column;gap:12px}
-.c-link{
-  display:flex;align-items:center;gap:13px;
-  color:var(--muted);font-size:.875rem;
-  text-decoration:none;transition:color .22s;
-}
-.c-link:hover{color:var(--white)}
-.c-ico{
-  width:40px;height:40px;
-  border:1px solid var(--border);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.9rem;background:var(--bg2);flex-shrink:0;
-  transition:border-color .22s,background .22s;
-}
-.c-link:hover .c-ico{border-color:rgba(201,168,76,.25);background:rgba(201,168,76,.05)}
-
-.c-form{display:flex;flex-direction:column;gap:14px}
-.fg{display:flex;flex-direction:column;gap:7px}
-.fg label{font-size:.7rem;color:var(--muted);letter-spacing:.6px}
-.fg input,.fg textarea{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:10px;color:var(--white);
-  font-size:.875rem;padding:13px 15px;
-  font-family:'Inter',sans-serif;outline:none;resize:none;
-  transition:border-color .22s,box-shadow .22s;
-}
-.fg input:focus,.fg textarea:focus{
-  border-color:rgba(201,168,76,.35);
-  box-shadow:0 0 0 3px rgba(201,168,76,.06);
-}
-.fg textarea{height:115px}
-.f-btn{
-  align-self:flex-start;background:var(--white);color:#060608;
-  padding:13px 28px;border-radius:10px;
-  font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:700;
-  border:none;cursor:pointer;
-  transition:background .2s,transform .2s,box-shadow .2s;
-}
-.f-btn:hover{background:#e0e0de;transform:translateY(-2px);box-shadow:0 14px 32px rgba(240,240,238,.08)}
-
-/* ─────────── FOOTER ─────────── */
-footer{
-  position:relative;z-index:3;
-  border-top:1px solid var(--border);
-  padding:34px 8%;
-  display:flex;justify-content:space-between;align-items:center;
-}
-footer p{font-size:.75rem;color:#252530}
-.f-logo{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:.82rem;font-weight:700;letter-spacing:2.5px;
-  text-transform:uppercase;color:#1e1e26;
-}
-.f-logo em{color:rgba(201,168,76,.3);font-style:normal}
-
-/* ─────────── RESPONSIVE ─────────── */
-@media(max-width:1100px){
-  .hero{grid-template-columns:1fr;text-align:center;padding-top:130px;gap:0}
-  .hero-desc,.status-pill,.role-badge{margin-left:auto;margin-right:auto}
-  .status-pill{display:inline-flex;width:fit-content}
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media(max-width:1080px){
+  .hero{grid-template-columns:1fr;text-align:center;padding-top:120px;gap:0}
+  .hero-desc,.pill{margin-left:auto;margin-right:auto}
+  .pill{display:inline-flex;width:fit-content}
+  .role-badge{margin:0 auto 24px;display:inline-flex}
   .cta-row,.tech-row{justify-content:center}
-  .robot-stage{height:520px}
-  #robot-wrap{width:340px;height:520px}
-  .about-grid,.contact-grid{grid-template-columns:1fr;gap:44px}
+  .robot-stage{height:480px;margin-top:10px}
+  #rw{width:300px;height:480px}
+  .agrid,.cgrid{grid-template-columns:1fr;gap:44px}
+  .hero-desc{max-width:100%}
 }
 @media(max-width:580px){
-  .hero-name{font-size:2.7rem}
-  .proj-grid{grid-template-columns:1fr}
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .cta-row{flex-direction:column;align-items:center}
-  .btn{width:100%;justify-content:center}
+  .hero-name{font-size:2.8rem;letter-spacing:-1.5px}
+  .pgrid{grid-template-columns:1fr}
+  .stgrid{grid-template-columns:1fr 1fr}
+  .cta-row{flex-direction:column;align-items:stretch}
+  .btn{justify-content:center}
+  header{padding:16px 5%}
+  .sec{padding:72px 5%}
 }
-
-/* ─── prefers-reduced-motion ─── */
-@media(prefers-reduced-motion:reduce){
-  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
-}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
 <canvas id="bg-cv"></canvas>
-<div id="cursor-glow"></div>
-<div class="hud-scan"></div>
 
-<!-- ─── HEADER ─── -->
+<!-- ════════════════════════════════════════
+     LOADER
+════════════════════════════════════════ -->
+<div id="loader">
+  <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
+  <div class="ld-logo">A<em>.</em>Tsion</div>
+  <div class="ld-rule"></div>
+  <div class="ld-sub">Front-End Developer</div>
+  <div class="ld-pct" id="ld-pct">0%</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
 <header>
   <div class="logo">A<em>.</em>Tsion</div>
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <nav><ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul></nav>
 </header>
 
 <main>
 
-<!-- ══════════════ HERO ══════════════ -->
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
 <section class="hero" id="about">
 
+  <!-- TEXT -->
   <div>
-    <div class="status-pill" data-reveal="up" data-delay="0">
-      <span class="pulse-dot"></span>
-      Available for projects
-    </div>
-
-    <p class="eyebrow" data-reveal="up" data-delay="80">Hi there, we are</p>
-
-    <h1 class="hero-name" data-reveal="up" data-delay="160">
-      Abenezer<br><span class="g">Tsion</span>
-    </h1>
-
-    <div class="role-badge" data-reveal="up" data-delay="240">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><polygon points="5,0 10,5 5,10 0,5" fill="currentColor" opacity=".6"/></svg>
+    <div class="pill" data-r="up" data-d="0"><span class="dot"></span>Available for projects</div>
+    <p class="eyebrow" data-r="up" data-d="80">Hi there, we are</p>
+    <h1 class="hero-name" data-r="up" data-d="160">Abenezer<br><span class="g">Tsion</span></h1>
+    <div class="role-badge" data-r="up" data-d="240">
+      <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><polygon points="4,0 8,4 4,8 0,4"/></svg>
       Front-End Developer
     </div>
-
-    <p class="hero-desc" data-reveal="up" data-delay="320">
-      We craft clean, modern web interfaces with responsive layouts,
-      smooth interactions, and a relentless focus on user experience.
-      Open to freelance and full-time opportunities.
-    </p>
-
-    <div class="cta-row" data-reveal="up" data-delay="400">
-      <a href="#projects" class="btn btn-primary">View our work →</a>
-      <a href="#contact" class="btn btn-secondary">Get in touch</a>
+    <p class="hero-desc" data-r="up" data-d="320">We craft clean, modern web interfaces with responsive layouts, smooth interactions, and a relentless focus on user experience. Open to freelance and full-time opportunities.</p>
+    <div class="cta-row" data-r="up" data-d="400">
+      <a href="#projects" class="btn btn-p">View our work →</a>
+      <a href="#contact" class="btn btn-s">Get in touch</a>
     </div>
-
-    <div class="tech-row" data-reveal="up" data-delay="480">
-      <span>React</span>
-      <span>Next.js</span>
-      <span>Framer Motion</span>
-      <span>Tailwind CSS</span>
+    <div class="tech-row" data-r="up" data-d="480">
+      <span>React</span><span>Next.js</span><span>Framer Motion</span><span>Tailwind CSS</span>
     </div>
   </div>
 
-  <!-- ── ROBOT ── -->
-  <div class="robot-stage" data-reveal="right" data-delay="200">
-    <div class="hud-br"></div>
-    <div class="hud-bl"></div>
-    <div class="hud-readout">UNIT — A.TSION — ONLINE</div>
-
-    <div id="robot-wrap">
+  <!-- ROBOT -->
+  <div class="robot-stage" data-r="right" data-d="200">
+    <div id="rw">
       <div class="r-shadow"></div>
 
-      <svg id="robot-svg" viewBox="0 0 440 680" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!--
+        NEW ROBOT DESIGN
+        ─────────────────
+        Inspired by the reference image:
+        • Very smooth glossy black dome head
+        • Wide rounded torso — like a chest plate
+        • Rounded ball-joint shoulders (large, like the ref)
+        • Short upper arms, round elbow joints
+        • Forearms tapering to flat hands
+        • Short stocky legs
+        • Flat heavy boots
+        
+        NO mouse-following / shaking.
+        Just a beautiful static hero character
+        with a subtle gold visor glow.
+      -->
+      <svg viewBox="0 0 400 620" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <!-- GLOSS CHROME — main body surfaces -->
-          <radialGradient id="rg-body" cx="35%" cy="22%" r="68%" gradientUnits="objectBoundingBox">
-            <stop offset="0%"   stop-color="#b0b8c2"/>
-            <stop offset="10%"  stop-color="#5a6268"/>
-            <stop offset="30%"  stop-color="#1e2025"/>
-            <stop offset="55%"  stop-color="#0d0e12"/>
-            <stop offset="100%" stop-color="#040507"/>
+          <!-- Main deep gloss — like polished obsidian -->
+          <radialGradient id="obsidian" cx="32%" cy="18%" r="72%" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stop-color="#b8c0cc"/>
+            <stop offset="10%"  stop-color="#585e68"/>
+            <stop offset="30%"  stop-color="#1c1e26"/>
+            <stop offset="58%"  stop-color="#0a0b10"/>
+            <stop offset="100%" stop-color="#030407"/>
           </radialGradient>
 
-          <!-- HEAD DOME — deep gloss black with strong highlight -->
-          <radialGradient id="rg-dome" cx="32%" cy="20%" r="65%" gradientUnits="objectBoundingBox">
-            <stop offset="0%"   stop-color="#d8dde4"/>
-            <stop offset="8%"   stop-color="#8a9098"/>
-            <stop offset="25%"  stop-color="#252830"/>
-            <stop offset="55%"  stop-color="#0e1015"/>
-            <stop offset="100%" stop-color="#040507"/>
+          <!-- Dome — very shiny top -->
+          <radialGradient id="dome" cx="28%" cy="15%" r="68%" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stop-color="#e0e6ee"/>
+            <stop offset="7%"   stop-color="#8890a2"/>
+            <stop offset="24%"  stop-color="#22252e"/>
+            <stop offset="55%"  stop-color="#0c0e14"/>
+            <stop offset="100%" stop-color="#030407"/>
           </radialGradient>
 
-          <!-- SHOULDER BALL gloss -->
-          <radialGradient id="rg-ball" cx="30%" cy="26%" r="62%" gradientUnits="objectBoundingBox">
-            <stop offset="0%"   stop-color="#9aa4ae"/>
-            <stop offset="22%"  stop-color="#2e3238"/>
-            <stop offset="55%"  stop-color="#111316"/>
-            <stop offset="100%" stop-color="#040507"/>
+          <!-- Ball joint -->
+          <radialGradient id="ball" cx="28%" cy="22%" r="64%" gradientUnits="objectBoundingBox">
+            <stop offset="0%"   stop-color="#9aa6b4"/>
+            <stop offset="18%"  stop-color="#2a2e3a"/>
+            <stop offset="55%"  stop-color="#0e1018"/>
+            <stop offset="100%" stop-color="#030407"/>
           </radialGradient>
 
-          <!-- ARM cross gradient -->
-          <linearGradient id="rg-arm" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#4e555e"/>
-            <stop offset="28%"  stop-color="#1c1e23"/>
-            <stop offset="62%"  stop-color="#0e0f13"/>
-            <stop offset="100%" stop-color="#050608"/>
-          </linearGradient>
-
-          <!-- TORSO FRONT -->
-          <linearGradient id="rg-torso" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#3e444c"/>
-            <stop offset="25%"  stop-color="#202228"/>
-            <stop offset="65%"  stop-color="#0f1014"/>
+          <!-- Torso front panel -->
+          <linearGradient id="chestpanel" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#383d4a"/>
+            <stop offset="30%"  stop-color="#1c1e28"/>
+            <stop offset="70%"  stop-color="#0e0f16"/>
             <stop offset="100%" stop-color="#060709"/>
           </linearGradient>
 
-          <!-- NECK chrome band -->
-          <linearGradient id="rg-neck" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#07080a"/>
-            <stop offset="18%"  stop-color="#42484f"/>
-            <stop offset="50%"  stop-color="#c5cad0"/>
-            <stop offset="82%"  stop-color="#36393f"/>
-            <stop offset="100%" stop-color="#070809"/>
+          <!-- Arm side gradient -->
+          <linearGradient id="armgrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#484e5a"/>
+            <stop offset="35%"  stop-color="#1a1c24"/>
+            <stop offset="70%"  stop-color="#0c0e14"/>
+            <stop offset="100%" stop-color="#040508"/>
           </linearGradient>
 
-          <!-- LEG gradient -->
-          <linearGradient id="rg-leg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#3a3e46"/>
-            <stop offset="38%"  stop-color="#1a1c22"/>
-            <stop offset="78%"  stop-color="#0d0e12"/>
-            <stop offset="100%" stop-color="#060709"/>
+          <!-- Leg gradient -->
+          <linearGradient id="leggrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#343840"/>
+            <stop offset="45%"  stop-color="#181a22"/>
+            <stop offset="85%"  stop-color="#0c0d14"/>
+            <stop offset="100%" stop-color="#050609"/>
           </linearGradient>
 
-          <!-- FOOT -->
-          <linearGradient id="rg-foot" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stop-color="#242830"/>
-            <stop offset="100%" stop-color="#080a0e"/>
+          <!-- Boot -->
+          <linearGradient id="bootgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#1e2028"/>
+            <stop offset="100%" stop-color="#06070c"/>
           </linearGradient>
 
-          <!-- VISOR GLOW — gold scanline -->
-          <linearGradient id="rg-visor" x1="0" y1="0" x2="1" y2="0">
+          <!-- Gold visor -->
+          <linearGradient id="gvisor" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%"   stop-color="#C9A84C" stop-opacity="0"/>
-            <stop offset="28%"  stop-color="#C9A84C" stop-opacity=".9"/>
+            <stop offset="25%"  stop-color="#C9A84C" stop-opacity=".88"/>
             <stop offset="50%"  stop-color="#FFD97A" stop-opacity="1"/>
-            <stop offset="72%"  stop-color="#C9A84C" stop-opacity=".9"/>
+            <stop offset="75%"  stop-color="#C9A84C" stop-opacity=".88"/>
             <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
           </linearGradient>
 
-          <!-- CHEST LED -->
-          <linearGradient id="rg-led" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#C9A84C" stop-opacity=".1"/>
-            <stop offset="50%"  stop-color="#C9A84C" stop-opacity=".85"/>
-            <stop offset="100%" stop-color="#C9A84C" stop-opacity=".1"/>
-          </linearGradient>
-
-          <!-- CYAN accent -->
-          <linearGradient id="rg-cyan" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"   stop-color="#0AFFD9" stop-opacity="0"/>
-            <stop offset="50%"  stop-color="#0AFFD9" stop-opacity=".7"/>
-            <stop offset="100%" stop-color="#0AFFD9" stop-opacity="0"/>
+          <!-- Chest LED -->
+          <linearGradient id="chestled" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#C9A84C" stop-opacity=".06"/>
+            <stop offset="50%"  stop-color="#C9A84C" stop-opacity=".8"/>
+            <stop offset="100%" stop-color="#C9A84C" stop-opacity=".06"/>
           </linearGradient>
 
           <!-- Filters -->
-          <filter id="f-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="7" result="b"/>
+          <filter id="bigGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="8" result="b"/>
             <feComposite in="SourceGraphic" in2="b" operator="over"/>
           </filter>
-          <filter id="f-soft" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="3.5" result="b"/>
+          <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
             <feComposite in="SourceGraphic" in2="b" operator="over"/>
           </filter>
-          <filter id="f-shadow" x="-20%" y="-10%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#000" flood-opacity=".96"/>
+          <filter id="drop" x="-25%" y="-10%" width="150%" height="140%">
+            <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000" flood-opacity=".95"/>
           </filter>
-          <filter id="f-eye">
-            <feGaussianBlur stdDeviation="5" result="b"/>
+          <filter id="innerShadow">
+            <feOffset dx="0" dy="3"/>
+            <feGaussianBlur stdDeviation="4" result="b"/>
             <feComposite in="SourceGraphic" in2="b" operator="over"/>
           </filter>
         </defs>
 
-        <!-- ══ FEET / LEGS ══ -->
-        <g filter="url(#f-shadow)">
-          <!-- LEFT LEG -->
-          <path d="M154 492 C148 492 143 501 141 512 L132 622 C130 634 140 641 151 641 L188 641 C199 641 205 633 202 620 L191 512 C189 501 183 492 176 492Z" fill="url(#rg-leg)" stroke="#030406" stroke-width="1.5"/>
-          <!-- left leg highlight streak -->
-          <path d="M150 500 C147 522 145 565 147 600" stroke="rgba(130,140,150,.28)" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- left knee disc -->
-          <ellipse cx="167" cy="556" rx="25" ry="17" fill="#0c0d11" stroke="#1c1e24" stroke-width="1.5"/>
-          <ellipse cx="167" cy="556" rx="15" ry="10" fill="#070809" stroke="#28292f" stroke-width=".8"/>
-          <ellipse cx="167" cy="556" rx="6"  ry="4"  fill="#111318"/>
-          <!-- left foot -->
-          <path d="M132 630 C122 638 118 654 123 662 L214 662 C219 654 215 638 205 630Z" fill="url(#rg-foot)" stroke="#030406" stroke-width="1"/>
-          <path d="M123 657 L214 657" stroke="#181a20" stroke-width="1"/>
-          <rect x="148" y="642" width="46" height="5" rx="2.5" fill="#0f1016"/>
+        <!-- ══ BOOTS / LEGS ══ -->
+        <g filter="url(#drop)">
+          <!-- LEFT BOOT — wide, heavy, flat -->
+          <path d="M118 500 L114 570 C112 578 108 586 104 592 L188 592 C188 586 186 578 184 570 L178 500Z"
+                fill="url(#leggrad)" stroke="#020306" stroke-width="1.5"/>
+          <!-- left boot sole -->
+          <path d="M100 588 C96 596 96 606 102 610 L190 610 C196 606 196 596 192 588Z"
+                fill="url(#bootgrad)" stroke="#020306" stroke-width="1"/>
+          <path d="M102 604 L190 604" stroke="#141620" stroke-width=".8"/>
+          <!-- left boot detail ridge -->
+          <rect x="122" y="574" width="44" height="5" rx="2.5" fill="#0e0f18"/>
+          <!-- left leg highlight -->
+          <path d="M122 504 C120 528 118 558 120 580" stroke="rgba(140,152,168,.22)" stroke-width="2" stroke-linecap="round"/>
 
-          <!-- RIGHT LEG -->
-          <path d="M264 492 C257 492 251 501 249 512 L238 620 C235 633 241 641 252 641 L289 641 C300 641 310 634 308 622 L297 512 C295 501 289 492 286 492Z" fill="url(#rg-leg)" stroke="#030406" stroke-width="1.5"/>
-          <!-- right leg highlight -->
-          <path d="M290 500 C293 522 295 565 293 600" stroke="rgba(130,140,150,.28)" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- right knee disc -->
-          <ellipse cx="273" cy="556" rx="25" ry="17" fill="#0c0d11" stroke="#1c1e24" stroke-width="1.5"/>
-          <ellipse cx="273" cy="556" rx="15" ry="10" fill="#070809" stroke="#28292f" stroke-width=".8"/>
-          <ellipse cx="273" cy="556" rx="6"  ry="4"  fill="#111318"/>
-          <!-- right foot -->
-          <path d="M226 630 C216 638 212 654 217 662 L308 662 C313 654 309 638 299 630Z" fill="url(#rg-foot)" stroke="#030406" stroke-width="1"/>
-          <path d="M217 657 L308 657" stroke="#181a20" stroke-width="1"/>
-          <rect x="246" y="642" width="46" height="5" rx="2.5" fill="#0f1016"/>
+          <!-- RIGHT BOOT -->
+          <path d="M222 500 L218 570 C216 578 212 586 212 592 L296 592 C296 586 294 578 290 570 L286 500Z"
+                fill="url(#leggrad)" stroke="#020306" stroke-width="1.5"/>
+          <!-- right boot sole -->
+          <path d="M208 588 C204 596 204 606 210 610 L298 610 C304 606 304 596 300 588Z"
+                fill="url(#bootgrad)" stroke="#020306" stroke-width="1"/>
+          <path d="M210 604 L298 604" stroke="#141620" stroke-width=".8"/>
+          <rect x="234" y="574" width="44" height="5" rx="2.5" fill="#0e0f18"/>
+          <path d="M282 504 C284 528 286 558 284 580" stroke="rgba(140,152,168,.22)" stroke-width="2" stroke-linecap="round"/>
 
-          <!-- PELVIS BRIDGE -->
-          <path d="M145 476 L295 476 L282 502 L158 502Z" fill="#0a0b0f" stroke="#030406"/>
-          <path d="M162 484 L220 480 L278 484" stroke="#181a20" stroke-width="1" fill="none"/>
+          <!-- PELVIS PLATE — wide like the ref image -->
+          <path d="M106 484 L294 484 L282 508 L118 508Z" fill="#09090e" stroke="#020306"/>
+          <path d="M124 491 L200 487 L276 491" stroke="#161820" stroke-width=".8" fill="none"/>
         </g>
 
         <!-- ══ TORSO ══ -->
-        <g filter="url(#f-shadow)">
-          <!-- body shell -->
-          <path d="M134 292 C132 268 308 268 306 292 L316 432 C318 480 122 480 124 432Z" fill="url(#rg-body)" stroke="#030406" stroke-width="2"/>
-          <!-- top specular edge -->
-          <path d="M148 276 C180 262 260 262 292 276" stroke="rgba(210,218,228,.48)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <g filter="url(#drop)">
+          <!--
+            Wide, rounded chest — like the ref:
+            very broad at shoulders, tapers slightly to waist
+          -->
+          <path d="M96 252
+                   C90 224 310 224 304 252
+                   L316 400
+                   C318 450 82 450 84 400 Z"
+                fill="url(#obsidian)" stroke="#020306" stroke-width="2.5"/>
 
-          <!-- CHEST FRONT PANEL -->
-          <path d="M169 308 C169 300 271 300 271 308 L277 422 C277 436 163 436 163 422Z" fill="url(#rg-torso)" stroke="#0c0d11" stroke-width="1"/>
-          <path d="M173 320 L267 320" stroke="#15161c" stroke-width=".8"/>
-          <path d="M173 406 L267 406" stroke="#15161c" stroke-width=".8"/>
+          <!-- top specular rim — strong shine like polished plastic -->
+          <path d="M110 232 C148 216 252 216 290 232"
+                stroke="rgba(220,230,240,.5)" stroke-width="2.5"
+                stroke-linecap="round" fill="none"/>
 
-          <!-- CHEST ACCENT LINES (gold thin) -->
-          <path d="M175 332 L178 340 L262 340 L265 332" stroke="rgba(201,168,76,.08)" stroke-width=".8" fill="none"/>
-          <path d="M175 394 L178 400 L262 400 L265 394" stroke="rgba(201,168,76,.08)" stroke-width=".8" fill="none"/>
+          <!-- CHEST FRONT PANEL — inset dark plate -->
+          <path d="M144 266 C144 256 256 256 256 266 L262 388 C262 402 138 402 138 388Z"
+                fill="url(#chestpanel)" stroke="#0c0d16" stroke-width="1"/>
 
-          <!-- LED bar -->
-          <rect x="178" y="366" width="84" height="13" rx="6.5" fill="#06070a" stroke="#1a1b22"/>
-          <rect x="184" y="370" width="72" height="5" rx="2.5" fill="url(#rg-led)" filter="url(#f-soft)"/>
+          <!-- panel horizontal seams -->
+          <path d="M148 278 L252 278" stroke="#131420" stroke-width=".7"/>
+          <path d="M148 372 L252 372" stroke="#131420" stroke-width=".7"/>
 
-          <!-- secondary cyan accent (thin line) -->
-          <rect x="196" y="384" width="48" height="2" rx="1" fill="url(#rg-cyan)" opacity=".5" filter="url(#f-soft)"/>
+          <!-- CHEST LED BAR — gold glow strip -->
+          <rect x="160" y="330" width="80" height="13" rx="6.5" fill="#060710" stroke="#18192a"/>
+          <rect x="166" y="334" width="68" height="5" rx="2.5" fill="url(#chestled)" filter="url(#softGlow)"/>
 
           <!-- chest dot indicators -->
-          <circle cx="190" cy="348" r="4.5" fill="#09090e" stroke="#202128"/>
-          <circle cx="190" cy="348" r="2"   fill="#C9A84C" opacity=".45" filter="url(#f-soft)"/>
-          <circle cx="250" cy="348" r="4.5" fill="#09090e" stroke="#202128"/>
-          <circle cx="250" cy="348" r="2"   fill="#C9A84C" opacity=".45" filter="url(#f-soft)"/>
+          <circle cx="168" cy="308" r="4.5" fill="#08090e" stroke="#1e2030"/>
+          <circle cx="168" cy="308" r="2" fill="#C9A84C" opacity=".4" filter="url(#softGlow)">
+            <animate attributeName="opacity" values=".22;.75;.22" dur="2.8s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="232" cy="308" r="4.5" fill="#08090e" stroke="#1e2030"/>
+          <circle cx="232" cy="308" r="2" fill="#C9A84C" opacity=".4" filter="url(#softGlow)">
+            <animate attributeName="opacity" values=".22;.75;.22" dur="2.8s" begin=".6s" repeatCount="indefinite"/>
+          </circle>
 
-          <!-- SIDE PANEL GROOVES -->
-          <path d="M140 296 L133 450" stroke="#0a0b0f" stroke-width="2.5"/>
-          <path d="M300 296 L307 450" stroke="#0a0b0f" stroke-width="2.5"/>
-          <path d="M144 298 L137 448" stroke="rgba(80,90,100,.2)" stroke-width=".8"/>
-          <path d="M296 298 L303 448" stroke="rgba(80,90,100,.2)" stroke-width=".8"/>
+          <!-- torso side panel lines -->
+          <path d="M100 256 L92 418" stroke="#08090e" stroke-width="2.5"/>
+          <path d="M300 256 L308 418" stroke="#08090e" stroke-width="2.5"/>
+          <path d="M104 258 L96 416" stroke="rgba(80,90,110,.15)" stroke-width=".8"/>
+          <path d="M296 258 L304 416" stroke="rgba(80,90,110,.15)" stroke-width=".8"/>
 
-          <!-- SHOULDER SOCKET BALLS -->
-          <circle cx="134" cy="296" r="28" fill="url(#rg-ball)" stroke="#030406" stroke-width="2"/>
-          <circle cx="134" cy="296" r="18" fill="#070809" stroke="#1c1e24"/>
-          <circle cx="134" cy="296" r="8"  fill="#0c0d12"/>
-          <path d="M121 285 C123 280 132 279 137 282" stroke="rgba(200,210,218,.5)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <!-- ── SHOULDER BALLS — large, like the ref image ── -->
+          <!-- Left -->
+          <circle cx="96"  cy="256" r="34" fill="url(#ball)" stroke="#020306" stroke-width="2.5"/>
+          <circle cx="96"  cy="256" r="21" fill="#06070c" stroke="#1c1e2c"/>
+          <circle cx="96"  cy="256" r="9"  fill="#0c0d16"/>
+          <!-- left ball highlight -->
+          <path d="M80 243 C82 236 93 235 99 240"
+                stroke="rgba(210,222,235,.5)" stroke-width="1.8"
+                stroke-linecap="round" fill="none"/>
 
-          <circle cx="306" cy="296" r="28" fill="url(#rg-ball)" stroke="#030406" stroke-width="2"/>
-          <circle cx="306" cy="296" r="18" fill="#070809" stroke="#1c1e24"/>
-          <circle cx="306" cy="296" r="8"  fill="#0c0d12"/>
-          <path d="M293 285 C295 280 304 279 309 282" stroke="rgba(200,210,218,.5)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <!-- Right -->
+          <circle cx="304" cy="256" r="34" fill="url(#ball)" stroke="#020306" stroke-width="2.5"/>
+          <circle cx="304" cy="256" r="21" fill="#06070c" stroke="#1c1e2c"/>
+          <circle cx="304" cy="256" r="9"  fill="#0c0d16"/>
+          <path d="M288 243 C290 236 301 235 307 240"
+                stroke="rgba(210,222,235,.5)" stroke-width="1.8"
+                stroke-linecap="round" fill="none"/>
         </g>
 
         <!-- ══ ARMS ══ -->
-        <g filter="url(#f-shadow)">
-          <!-- LEFT UPPER ARM -->
-          <path d="M110 293 C88 299 74 325 72 368 L86 464 C88 479 110 473 110 454Z" fill="url(#rg-arm)" stroke="#060709" stroke-width="1.5"/>
-          <path d="M106 300 C93 318 85 348 83 380" stroke="rgba(110,120,130,.3)" stroke-width="2.2" stroke-linecap="round"/>
+        <g filter="url(#drop)">
+          <!-- LEFT UPPER ARM — short, wide -->
+          <path d="M68 254 C50 260 40 282 38 316 L50 394 C52 408 70 403 72 390 L76 296 C76 278 76 256 68 254Z"
+                fill="url(#armgrad)" stroke="#05060a" stroke-width="1.5"/>
+          <path d="M62 262 C52 278 46 304 46 334"
+                stroke="rgba(120,132,148,.25)" stroke-width="2" stroke-linecap="round"/>
 
-          <!-- LEFT ELBOW -->
-          <circle cx="98"  cy="464" r="22" fill="url(#rg-ball)" stroke="#060709" stroke-width="1.5"/>
-          <circle cx="98"  cy="464" r="13" fill="#07080b" stroke="#1c1e24"/>
-          <path d="M87 454 C89 448 97 447 101 451" stroke="rgba(200,210,218,.4)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <!-- Left elbow ball — large round joint -->
+          <circle cx="62"  cy="394" r="24" fill="url(#ball)" stroke="#05060a" stroke-width="1.5"/>
+          <circle cx="62"  cy="394" r="15" fill="#06070c" stroke="#1c1e2c"/>
+          <path d="M50 383 C52 376 62 375 67 380"
+                stroke="rgba(210,222,235,.38)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
 
-          <!-- LEFT LOWER ARM -->
-          <path d="M80 462 C72 471 70 494 74 526 L84 554 C90 565 112 558 110 543 L104 480 C101 467 88 457 80 462Z" fill="url(#rg-arm)" stroke="#060709" stroke-width="1"/>
-          <path d="M76 468 C72 490 72 518 75 536" stroke="rgba(110,120,130,.22)" stroke-width="1.8" stroke-linecap="round"/>
-
-          <!-- LEFT WRIST + HAND -->
-          <ellipse cx="100" cy="552" rx="20" ry="14" fill="#0c0d11" stroke="#1c1e24"/>
-          <path d="M82 558 C78 572 84 592 100 594 L118 592 C130 588 132 570 124 558Z" fill="#0d0e13" stroke="#181a20" stroke-width="1"/>
-          <path d="M84 572 L118 568" stroke="#181a20" stroke-width=".8"/>
-          <path d="M82 580 L116 577" stroke="#181a20" stroke-width=".8"/>
+          <!-- Left forearm — tapers to wrist -->
+          <path d="M42 392 C34 402 32 422 36 454 L44 478 C52 490 74 484 72 470 L68 410 C66 398 52 388 42 392Z"
+                fill="url(#armgrad)" stroke="#05060a" stroke-width="1"/>
+          <!-- left wrist plate -->
+          <ellipse cx="60" cy="476" rx="18" ry="11" fill="#0a0b12" stroke="#1c1e2c"/>
+          <!-- left hand — flat paddle shape like the ref -->
+          <path d="M42 482 C38 494 42 514 56 518 L74 516 C86 512 88 496 80 484Z"
+                fill="#0c0d16" stroke="#181a26" stroke-width="1"/>
+          <path d="M44 498 L78 494" stroke="#181a26" stroke-width=".7"/>
+          <path d="M42 508 L76 504" stroke="#181a26" stroke-width=".7"/>
 
           <!-- RIGHT UPPER ARM -->
-          <path d="M330 293 C352 299 366 325 368 368 L354 464 C352 479 330 473 330 454Z" fill="url(#rg-arm)" stroke="#060709" stroke-width="1.5"/>
-          <path d="M334 300 C347 318 355 348 357 380" stroke="rgba(110,120,130,.3)" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M332 254 C350 260 360 282 362 316 L350 394 C348 408 330 403 328 390 L324 296 C324 278 324 256 332 254Z"
+                fill="url(#armgrad)" stroke="#05060a" stroke-width="1.5"/>
+          <path d="M338 262 C348 278 354 304 354 334"
+                stroke="rgba(120,132,148,.25)" stroke-width="2" stroke-linecap="round"/>
 
-          <!-- RIGHT ELBOW -->
-          <circle cx="342" cy="464" r="22" fill="url(#rg-ball)" stroke="#060709" stroke-width="1.5"/>
-          <circle cx="342" cy="464" r="13" fill="#07080b" stroke="#1c1e24"/>
-          <path d="M331 454 C333 448 341 447 345 451" stroke="rgba(200,210,218,.4)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <!-- Right elbow ball -->
+          <circle cx="338" cy="394" r="24" fill="url(#ball)" stroke="#05060a" stroke-width="1.5"/>
+          <circle cx="338" cy="394" r="15" fill="#06070c" stroke="#1c1e2c"/>
+          <path d="M326 383 C328 376 338 375 343 380"
+                stroke="rgba(210,222,235,.38)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
 
-          <!-- RIGHT LOWER ARM -->
-          <path d="M360 462 C368 471 370 494 366 526 L356 554 C350 565 328 558 330 543 L336 480 C339 467 352 457 360 462Z" fill="url(#rg-arm)" stroke="#060709" stroke-width="1"/>
-          <path d="M364 468 C368 490 368 518 365 536" stroke="rgba(110,120,130,.22)" stroke-width="1.8" stroke-linecap="round"/>
-
-          <!-- RIGHT WRIST + HAND -->
-          <ellipse cx="340" cy="552" rx="20" ry="14" fill="#0c0d11" stroke="#1c1e24"/>
-          <path d="M322 558 C318 572 324 592 340 594 L358 592 C370 588 372 570 364 558Z" fill="#0d0e13" stroke="#181a20" stroke-width="1"/>
-          <path d="M324 572 L358 568" stroke="#181a20" stroke-width=".8"/>
-          <path d="M322 580 L356 577" stroke="#181a20" stroke-width=".8"/>
-        </g>
-
-        <!-- ══ NECK RINGS ══ -->
-        <g id="neck-group">
-          <!-- ring 5 — base (barely moves) -->
-          <g id="nr5" class="nr" data-f=".06" style="transform-origin:220px 275px">
-            <path d="M172 268 C172 262 268 262 268 268 L263 281 C263 275 177 275 177 281Z" fill="url(#rg-neck)" stroke="#060709"/>
-            <path d="M175 272 C183 269 257 269 265 272" stroke="rgba(255,255,255,.055)" stroke-width=".5" fill="none"/>
-          </g>
-          <!-- ring 4 -->
-          <g id="nr4" class="nr" data-f=".18" style="transform-origin:220px 260px">
-            <path d="M170 253 C170 247 270 247 270 253 L265 266 C265 260 175 260 175 266Z" fill="url(#rg-neck)" stroke="#060709"/>
-            <path d="M173 257 C181 254 259 254 267 257" stroke="rgba(255,255,255,.055)" stroke-width=".5" fill="none"/>
-          </g>
-          <!-- ring 3 -->
-          <g id="nr3" class="nr" data-f=".36" style="transform-origin:220px 245px">
-            <path d="M168 238 C168 232 272 232 272 238 L267 251 C267 245 173 245 173 251Z" fill="url(#rg-neck)" stroke="#060709"/>
-            <path d="M171 242 C179 239 261 239 269 242" stroke="rgba(255,255,255,.055)" stroke-width=".5" fill="none"/>
-          </g>
-          <!-- ring 2 -->
-          <g id="nr2" class="nr" data-f=".58" style="transform-origin:220px 228px">
-            <path d="M170 221 C170 215 270 215 270 221 L265 234 C265 228 175 228 175 234Z" fill="url(#rg-neck)" stroke="#060709"/>
-            <path d="M173 225 C181 222 259 222 267 225" stroke="rgba(255,255,255,.055)" stroke-width=".5" fill="none"/>
-          </g>
-          <!-- ring 1 — top (most movement) -->
-          <g id="nr1" class="nr" data-f=".82" style="transform-origin:220px 208px">
-            <path d="M173 202 C173 196 267 196 267 202 L262 215 C262 209 178 209 178 215Z" fill="url(#rg-neck)" stroke="#060709"/>
-            <path d="M176 206 C184 203 256 203 264 206" stroke="rgba(255,255,255,.06)" stroke-width=".5" fill="none"/>
-          </g>
+          <!-- Right forearm -->
+          <path d="M358 392 C366 402 368 422 364 454 L356 478 C348 490 326 484 328 470 L332 410 C334 398 348 388 358 392Z"
+                fill="url(#armgrad)" stroke="#05060a" stroke-width="1"/>
+          <ellipse cx="340" cy="476" rx="18" ry="11" fill="#0a0b12" stroke="#1c1e2c"/>
+          <!-- right hand -->
+          <path d="M322 482 C318 494 322 514 336 518 L354 516 C366 512 368 496 360 484Z"
+                fill="#0c0d16" stroke="#181a26" stroke-width="1"/>
+          <path d="M324 498 L358 494" stroke="#181a26" stroke-width=".7"/>
+          <path d="M322 508 L356 504" stroke="#181a26" stroke-width=".7"/>
         </g>
 
         <!-- ══ HEAD ══ -->
-        <g id="robot-head" style="transform-origin:220px 142px">
+        <g>
+          <!--
+            HEAD — very smooth, broad dome.
+            Like a sleek motorcycle helmet.
+            Wide, rounded, glossy black.
+          -->
 
-          <!-- SKULL DOME — big round smooth shape -->
-          <ellipse cx="220" cy="142" rx="80" ry="88" fill="url(#rg-dome)" stroke="#030406" stroke-width="1.5"/>
+          <!-- outer dome shadow -->
+          <ellipse cx="200" cy="162" rx="92" ry="100"
+                   fill="rgba(0,0,0,.55)" transform="translate(0,8)"
+                   filter="url(#drop)"/>
 
-          <!-- PRIMARY DOME HIGHLIGHT — big white sheen top-left -->
-          <ellipse cx="192" cy="100" rx="32" ry="18" fill="rgba(230,238,248,.2)" transform="rotate(-25 192 100)"/>
-          <!-- SECONDARY MICRO HIGHLIGHT -->
-          <ellipse cx="182" cy="91"  rx="12" ry="6"  fill="rgba(255,255,255,.4)" transform="rotate(-25 182 91)"/>
-          <!-- tertiary glow bottom dome -->
-          <path d="M158 175 C175 185 265 185 282 175" stroke="rgba(255,255,255,.04)" stroke-width="1" fill="none"/>
+          <!-- SKULL DOME — broad and smooth -->
+          <path d="M112 180
+                   C112 100 288 100 288 180
+                   L284 224
+                   C284 238 116 238 116 224 Z"
+                fill="url(#dome)" stroke="#020306" stroke-width="2"/>
 
-          <!-- HEAD SEAM LINE (equator) -->
-          <path d="M143 150 C143 142 297 142 297 150" stroke="#0e0f14" stroke-width="1.5" fill="none"/>
+          <!-- PRIMARY HIGHLIGHT — large bright area top left, like the ref photo -->
+          <ellipse cx="170" cy="126" rx="40" ry="24"
+                   fill="rgba(235,242,250,.22)"
+                   transform="rotate(-30 170 126)"/>
+          <!-- SECONDARY micro-sheen -->
+          <ellipse cx="156" cy="114" rx="16" ry="8"
+                   fill="rgba(255,255,255,.42)"
+                   transform="rotate(-30 156 114)"/>
+          <!-- subtle rim light right side -->
+          <path d="M272 148 C276 160 276 178 272 192"
+                stroke="rgba(140,155,175,.18)" stroke-width="3"
+                stroke-linecap="round" fill="none"/>
 
-          <!-- EAR / SIDE PANELS -->
-          <path d="M142 128 L137 172 L144 180 L153 176 L148 124Z" fill="#0c0d12" stroke="#161820"/>
-          <path d="M298 128 L303 172 L296 180 L287 176 L292 124Z" fill="#0c0d12" stroke="#161820"/>
+          <!-- HEAD SIDE PANELS / EARS — matching the ref's round side pieces -->
+          <!-- Left ear -->
+          <circle cx="112" cy="182" r="20"
+                  fill="url(#ball)" stroke="#020306" stroke-width="1.5"/>
+          <circle cx="112" cy="182" r="12" fill="#06070c" stroke="#1c1e2c"/>
+          <circle cx="112" cy="182" r="5"  fill="#0e0f1a"/>
+          <!-- Left ear highlight -->
+          <path d="M102 172 C104 167 111 166 115 170"
+                stroke="rgba(200,214,230,.45)" stroke-width="1.5"
+                stroke-linecap="round" fill="none"/>
 
-          <!-- EAR DISC DETAIL -->
-          <circle cx="140" cy="150" r="11" fill="#09090e" stroke="#202228"/>
-          <circle cx="140" cy="150" r="5.5" fill="#131418" stroke="#1e2026"/>
-          <circle cx="298" cy="150" r="11" fill="#09090e" stroke="#202228"/>
-          <circle cx="298" cy="150" r="5.5" fill="#131418" stroke="#1e2026"/>
+          <!-- Right ear -->
+          <circle cx="288" cy="182" r="20"
+                  fill="url(#ball)" stroke="#020306" stroke-width="1.5"/>
+          <circle cx="288" cy="182" r="12" fill="#06070c" stroke="#1c1e2c"/>
+          <circle cx="288" cy="182" r="5"  fill="#0e0f1a"/>
+          <path d="M278 172 C280 167 287 166 291 170"
+                stroke="rgba(200,214,230,.45)" stroke-width="1.5"
+                stroke-linecap="round" fill="none"/>
 
-          <!-- FOREHEAD RIDGE TOP SEAM -->
-          <path d="M188 70 L220 60 L252 70" stroke="#101115" stroke-width="2" fill="none"/>
-          <path d="M220 60 L220 100" stroke="#101115" stroke-width="1" fill="none"/>
+          <!-- FACE PLATE RECESS — the lower face area -->
+          <path d="M128 176 C128 162 272 162 272 176 L268 228 C268 242 132 242 132 228Z"
+                fill="#040508" stroke="#0c0e16" stroke-width="1.5"/>
 
-          <!-- FACE PLATE RECESS -->
-          <path d="M154 146 C154 132 286 132 286 146 L280 206 C280 218 160 218 160 206Z" fill="#060709" stroke="#0f1015" stroke-width="1.5"/>
-          <!-- face plate bevel -->
-          <path d="M156 146 C156 134 284 134 284 146" stroke="rgba(70,80,92,.45)" stroke-width="1.8" fill="none"/>
+          <!-- face plate top bevel highlight -->
+          <path d="M130 176 C130 164 270 164 270 176"
+                stroke="rgba(65,75,95,.45)" stroke-width="1.5" fill="none"/>
 
-          <!-- VISOR SLOT — the main eye unit -->
-          <rect x="162" y="153" width="116" height="40" rx="20" fill="#030408" stroke="#0d0e14" stroke-width="1.5"/>
-          <!-- visor inner glass -->
-          <rect x="167" y="158" width="106" height="30" rx="15" fill="#030a12" opacity=".96"/>
-          <!-- visor top sheen -->
-          <path d="M170 162 C180 159 260 159 270 162" stroke="rgba(255,255,255,.1)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+          <!-- VISOR — the signature look:
+               wide horizontal band, deeply recessed,
+               glowing gold inside like the ref image -->
+          <!-- visor slot outer bezel -->
+          <rect x="136" y="182" width="128" height="34" rx="17"
+                fill="#020406" stroke="#0a0c14" stroke-width="2"/>
+          <!-- visor inner dark glass -->
+          <rect x="141" y="187" width="118" height="24" rx="12"
+                fill="#030812" opacity=".98"/>
+          <!-- visor glass top sheen -->
+          <path d="M144 191 C154 188 246 188 256 191"
+                stroke="rgba(255,255,255,.08)" stroke-width="1"
+                stroke-linecap="round" fill="none"/>
 
-          <!-- VISOR GOLD SCANLINE — main glowing element -->
-          <rect x="172" y="169" width="96" height="9" rx="4.5" fill="url(#rg-visor)" filter="url(#f-glow)"/>
-          <!-- scanline animation -->
-          <rect id="visor-scan" x="172" y="172" width="96" height="3" rx="1.5" fill="rgba(255,217,122,.35)">
-            <animateTransform attributeName="transform" type="translate" values="0,0;0,12;0,0" dur="3s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values=".35;.8;.35" dur="3s" repeatCount="indefinite"/>
+          <!-- VISOR GOLD GLOW — the main eye element, like the ref -->
+          <rect x="146" y="195" width="108" height="10" rx="5"
+                fill="url(#gvisor)" filter="url(#bigGlow)"/>
+
+          <!-- secondary softer glow layer for depth -->
+          <rect x="148" y="196" width="104" height="8" rx="4"
+                fill="rgba(201,168,76,.35)" filter="url(#softGlow)"/>
+
+          <!-- visor animated scan line -->
+          <rect x="150" y="197" width="100" height="3" rx="1.5"
+                fill="rgba(255,220,120,.5)" opacity=".6">
+            <animate attributeName="opacity" values=".3;.9;.3" dur="3s" repeatCount="indefinite"/>
+            <animateTransform attributeName="transform" type="translate"
+              values="0,0;0,5;0,0" dur="3s" repeatCount="indefinite"/>
           </rect>
 
-          <!-- CHIN STRIP -->
-          <rect x="197" y="210" width="46" height="9" rx="4.5" fill="#09090e" stroke="#161820"/>
-          <rect x="205" y="212" width="30" height="5" rx="2.5" fill="url(#rg-visor)" opacity=".4"/>
+          <!-- CHIN PLATE -->
+          <rect x="176" y="234" width="48" height="9" rx="4.5"
+                fill="#070810" stroke="#14162a"/>
+          <rect x="184" y="236" width="32" height="5" rx="2.5"
+                fill="url(#gvisor)" opacity=".3" filter="url(#softGlow)"/>
 
-          <!-- STATUS DOT above visor (top of face) -->
-          <circle cx="220" cy="146" r="3" fill="#C9A84C" opacity=".3" filter="url(#f-soft)">
-            <animate attributeName="opacity" values=".2;.7;.2" dur="2.5s" repeatCount="indefinite"/>
+          <!-- tiny status indicator on forehead -->
+          <circle cx="200" cy="174" r="3" fill="#C9A84C" opacity=".25" filter="url(#softGlow)">
+            <animate attributeName="opacity" values=".15;.6;.15" dur="2.8s" repeatCount="indefinite"/>
           </circle>
-
         </g>
+
       </svg>
-    </div>
-  </div>
+    </div><!-- /rw -->
+  </div><!-- /robot-stage -->
 </section>
 
-<hr class="divider">
+<hr class="sep">
 
-<!-- ══════════════ PROJECTS ══════════════ -->
-<section id="projects" class="section">
-  <p class="sec-label" data-reveal="up">Selected work</p>
-  <h2 class="sec-title" data-reveal="up" data-delay="80">Things we've <em>built</em></h2>
-
-  <div class="proj-grid">
-    <article class="proj-card" data-reveal="up" data-delay="0">
-      <div class="proj-thumb t1">
-        <div class="thumb-ui">
-          <div class="t-bar"><span class="d d-r"></span><span class="d d-y"></span><span class="d d-g"></span></div>
-          <div class="t-body">
-            <div class="tl tl-g" style="width:44%;height:12px"></div>
-            <div class="tl" style="width:80%"></div>
-            <div class="tl" style="width:56%"></div>
-            <div class="tl" style="width:70%"></div>
-            <div class="tl tl-c" style="width:36%;margin-top:8px"></div>
+<!-- ════════════════════════════════════════
+     PROJECTS
+════════════════════════════════════════ -->
+<section id="projects" class="sec">
+  <p class="sec-label" data-r="up">Selected work</p>
+  <h2 class="sec-title" data-r="up" data-d="80">Things we've <em>built</em></h2>
+  <div class="pgrid">
+    <article class="pc" data-r="up" data-d="0">
+      <div class="pt t1">
+        <div class="tch">
+          <div class="tb"><span class="d dr"></span><span class="d dy"></span><span class="d dg"></span></div>
+          <div class="tbd">
+            <div class="tl tlg" style="width:44%;height:11px"></div>
+            <div class="tl" style="width:78%"></div>
+            <div class="tl" style="width:54%"></div>
+            <div class="tl" style="width:68%"></div>
+            <div class="tl tlg" style="width:34%;margin-top:7px"></div>
           </div>
         </div>
       </div>
-      <div class="p-body">
-        <div class="p-tags"><span class="ptag ptag-g">Featured</span><span class="ptag">React</span><span class="ptag">Tailwind</span></div>
-        <h3 class="p-title">E-commerce Dashboard</h3>
-        <p class="p-desc">Responsive admin dashboard with real-time analytics, inventory management, and animated data visualisations.</p>
-        <a href="#" class="p-link">View project →</a>
+      <div class="pb">
+        <div class="ptags"><span class="ptag ptag-g">Featured</span><span class="ptag">React</span><span class="ptag">Tailwind</span></div>
+        <h3 class="ptit">E-commerce Dashboard</h3>
+        <p class="pdesc">Responsive admin dashboard with real-time analytics, inventory management, and animated data visualisations.</p>
+        <a href="#" class="plink">View project →</a>
       </div>
     </article>
 
-    <article class="proj-card" data-reveal="up" data-delay="120">
-      <div class="proj-thumb t2">
-        <div class="thumb-ui">
-          <div class="t-bar"><span class="d d-r"></span><span class="d d-y"></span><span class="d d-g"></span></div>
-          <div class="t-body">
+    <article class="pc" data-r="up" data-d="120">
+      <div class="pt t2">
+        <div class="tch">
+          <div class="tb"><span class="d dr"></span><span class="d dy"></span><span class="d dg"></span></div>
+          <div class="tbd">
             <div class="tl" style="width:72%"></div>
-            <div style="display:flex;gap:8px;margin-top:4px">
-              <div class="tl" style="width:40%;background:rgba(100,70,180,.16)"></div>
-              <div class="tl" style="width:36%;background:rgba(100,70,180,.09)"></div>
+            <div style="display:flex;gap:7px;margin-top:4px">
+              <div class="tl" style="width:38%;background:rgba(90,60,170,.16)"></div>
+              <div class="tl" style="width:34%;background:rgba(90,60,170,.09)"></div>
             </div>
-            <div class="tl" style="width:54%;margin-top:10px"></div>
-            <div class="tl tl-g" style="width:42%"></div>
+            <div class="tl" style="width:52%;margin-top:9px"></div>
+            <div class="tl tlg" style="width:40%"></div>
           </div>
         </div>
       </div>
-      <div class="p-body">
-        <div class="p-tags"><span class="ptag">Next.js</span><span class="ptag">Framer Motion</span></div>
-        <h3 class="p-title">Portfolio Template</h3>
-        <p class="p-desc">Next.js portfolio template with page transitions, scroll animations, and a clean minimal aesthetic — ready to deploy.</p>
-        <a href="#" class="p-link">View project →</a>
+      <div class="pb">
+        <div class="ptags"><span class="ptag">Next.js</span><span class="ptag">Framer Motion</span></div>
+        <h3 class="ptit">Portfolio Template</h3>
+        <p class="pdesc">Next.js portfolio template with page transitions, scroll animations, and a clean minimal aesthetic — ready to deploy.</p>
+        <a href="#" class="plink">View project →</a>
       </div>
     </article>
 
-    <article class="proj-card" data-reveal="up" data-delay="240">
-      <div class="proj-thumb t3">
-        <div class="thumb-ui">
-          <div class="t-bar"><span class="d d-r"></span><span class="d d-y"></span><span class="d d-g"></span></div>
-          <div class="t-body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <div class="tl" style="height:36px;border-radius:6px;background:rgba(255,255,255,.04)"></div>
-              <div class="tl" style="height:36px;border-radius:6px;background:rgba(255,255,255,.04)"></div>
+    <article class="pc" data-r="up" data-d="240">
+      <div class="pt t3">
+        <div class="tch">
+          <div class="tb"><span class="d dr"></span><span class="d dy"></span><span class="d dg"></span></div>
+          <div class="tbd">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+              <div class="tl" style="height:34px;border-radius:5px;background:rgba(255,255,255,.04)"></div>
+              <div class="tl" style="height:34px;border-radius:5px;background:rgba(255,255,255,.04)"></div>
             </div>
-            <div class="tl tl-g" style="width:46%;margin-top:8px"></div>
-            <div class="tl" style="width:62%"></div>
+            <div class="tl tlg" style="width:44%;margin-top:7px"></div>
+            <div class="tl" style="width:60%"></div>
           </div>
         </div>
       </div>
-      <div class="p-body">
-        <div class="p-tags"><span class="ptag">React</span><span class="ptag">CSS Modules</span></div>
-        <h3 class="p-title">SaaS Landing Page</h3>
-        <p class="p-desc">High-converting landing page with animated feature sections, testimonials, and pricing tables. Optimised for performance.</p>
-        <a href="#" class="p-link">View project →</a>
+      <div class="pb">
+        <div class="ptags"><span class="ptag">React</span><span class="ptag">CSS Modules</span></div>
+        <h3 class="ptit">SaaS Landing Page</h3>
+        <p class="pdesc">High-converting landing page with animated sections, testimonials, and pricing tables. Optimised for performance.</p>
+        <a href="#" class="plink">View project →</a>
       </div>
     </article>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="sep">
 
-<!-- ══════════════ ABOUT ══════════════ -->
-<section class="section">
-  <p class="sec-label" data-reveal="up">Who we are</p>
-  <h2 class="sec-title" data-reveal="up" data-delay="80">Developers who<br>care about <em>craft</em></h2>
-
-  <div class="about-grid">
-    <div data-reveal="left">
-      <div class="a-text">
+<!-- ════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════ -->
+<section class="sec">
+  <p class="sec-label" data-r="up">Who we are</p>
+  <h2 class="sec-title" data-r="up" data-d="80">Developers who<br>care about <em>craft</em></h2>
+  <div class="agrid">
+    <div data-r="left">
+      <div class="atxt">
         <p>We're Abenezer Tsion — a front-end developer based in Addis Ababa. We turn complex problems into simple, beautiful, memorable interfaces. Every pixel matters: from micro-interactions to layout rhythm.</p>
         <p>When we're not coding, we're exploring new design systems, contributing to open source, and finding ways to make the web faster and more accessible for everyone.</p>
       </div>
-      <div class="skills-wrap">
-        <span class="skill-tag">HTML & CSS</span>
-        <span class="skill-tag">JavaScript</span>
-        <span class="skill-tag">TypeScript</span>
-        <span class="skill-tag">React</span>
-        <span class="skill-tag">Next.js</span>
-        <span class="skill-tag">Tailwind CSS</span>
-        <span class="skill-tag">Framer Motion</span>
-        <span class="skill-tag">Figma</span>
-        <span class="skill-tag">Git / GitHub</span>
-        <span class="skill-tag">REST APIs</span>
+      <div class="skwrap">
+        <span class="sk">HTML & CSS</span><span class="sk">JavaScript</span>
+        <span class="sk">TypeScript</span><span class="sk">React</span>
+        <span class="sk">Next.js</span><span class="sk">Tailwind CSS</span>
+        <span class="sk">Framer Motion</span><span class="sk">Figma</span>
+        <span class="sk">Git / GitHub</span><span class="sk">REST APIs</span>
       </div>
     </div>
-
-    <div class="stats-grid" data-reveal="right">
-      <div class="stat-b">
-        <div class="stat-n">3<sup>+</sup></div>
-        <div class="stat-l">Years of experience</div>
+    <div class="stgrid" data-r="right">
+      <div class="stb">
+        <div class="stn" data-count="3"><span class="n">0</span><sup>+</sup></div>
+        <div class="stl">Years of experience</div>
       </div>
-      <div class="stat-b">
-        <div class="stat-n">20<sup>+</sup></div>
-        <div class="stat-l">Projects completed</div>
+      <div class="stb">
+        <div class="stn" data-count="20"><span class="n">0</span><sup>+</sup></div>
+        <div class="stl">Projects completed</div>
       </div>
-      <div class="stat-b">
-        <div class="stat-n">15<sup>+</sup></div>
-        <div class="stat-l">Happy clients</div>
+      <div class="stb">
+        <div class="stn" data-count="15"><span class="n">0</span><sup>+</sup></div>
+        <div class="stl">Happy clients</div>
       </div>
-      <div class="stat-b">
-        <div class="stat-n">∞</div>
-        <div class="stat-l">Coffee consumed</div>
+      <div class="stb">
+        <div class="stn">∞</div>
+        <div class="stl">Coffee consumed</div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<hr class="sep">
 
-<!-- ══════════════ CONTACT ══════════════ -->
-<section id="contact" class="section">
-  <p class="sec-label" data-reveal="up">Let's talk</p>
-  <h2 class="sec-title" data-reveal="up" data-delay="80">Start a <em>conversation</em></h2>
-
-  <div class="contact-grid">
-    <div data-reveal="left">
-      <p class="c-intro">Have a project in mind? Looking to collaborate or just want to say hello? Our inbox is always open — we'll get back to you within 24 hours.</p>
-      <div class="c-links">
-        <a href="mailto:hello@abenezertsion.dev" class="c-link">
-          <div class="c-ico">✉</div>
-          hello@abenezertsion.dev
+<!-- ════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════ -->
+<section id="contact" class="sec">
+  <p class="sec-label" data-r="up">Let's talk</p>
+  <h2 class="sec-title" data-r="up" data-d="80">Start a <em>conversation</em></h2>
+  <div class="cgrid">
+    <div data-r="left">
+      <p class="ci">Have a project in mind? Looking to collaborate or just want to say hello? Our inbox is always open — we'll get back to you within 24 hours.</p>
+      <div class="clinks">
+        <a href="mailto:hello@abenezertsion.dev" class="clink">
+          <div class="cico">✉</div>hello@abenezertsion.dev
         </a>
-        <a href="https://github.com/aben1ell" target="_blank" rel="noopener" class="c-link">
-          <div class="c-ico">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          </div>
-          github.com/aben1ell
+        <a href="https://github.com/aben1ell" target="_blank" rel="noopener" class="clink">
+          <div class="cico">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </div>github.com/aben1ell
         </a>
-        <a href="https://linkedin.com/in/abenezer-tsion" target="_blank" rel="noopener" class="c-link">
-          <div class="c-ico" style="font-size:.78rem;font-weight:800;letter-spacing:.5px">in</div>
+        <a href="https://linkedin.com/in/abenezer-tsion" target="_blank" rel="noopener" class="clink">
+          <div class="cico" style="font-size:.76rem;font-weight:800">in</div>
           linkedin.com/in/abenezer-tsion
         </a>
       </div>
     </div>
-
-    <form class="c-form" onsubmit="submitForm(event)" data-reveal="right">
-      <div class="fg">
-        <label>Your name</label>
-        <input type="text" placeholder="Abebe Girma" required autocomplete="name"/>
-      </div>
-      <div class="fg">
-        <label>Email address</label>
-        <input type="email" placeholder="abebe@example.com" required autocomplete="email"/>
-      </div>
-      <div class="fg">
-        <label>Message</label>
-        <textarea placeholder="Tell us about your project…" required></textarea>
-      </div>
-      <button type="submit" class="f-btn">Send message →</button>
+    <form class="cform" onsubmit="submitForm(event)" data-r="right">
+      <div class="fg"><label>Your name</label><input type="text" placeholder="Abebe Girma" required autocomplete="name"></div>
+      <div class="fg"><label>Email address</label><input type="email" placeholder="abebe@example.com" required autocomplete="email"></div>
+      <div class="fg"><label>Message</label><textarea placeholder="Tell us about your project…" required></textarea></div>
+      <button type="submit" class="fbtn">Send message →</button>
     </form>
   </div>
 </section>
@@ -1058,229 +942,174 @@ footer p{font-size:.75rem;color:#252530}
 </main>
 
 <footer>
-  <div class="f-logo">A<em>.</em>Tsion</div>
+  <div class="flogo">A<em>.</em>Tsion</div>
   <p>© 2025 Abenezer Tsion — Built with care in Addis Ababa</p>
 </footer>
 
 <script>
-/* ═══════════════════════════════════════════
-   CANVAS — aurora mesh + star field
-═══════════════════════════════════════════ */
+/* ══════════════════════════════════════
+   LOADER
+══════════════════════════════════════ */
+(function(){
+  const loader = document.getElementById('loader');
+  const pct    = document.getElementById('ld-pct');
+  let count = 0;
+  const target = 100;
+  const step   = () => {
+    // accelerating count: slow start, fast end
+    const remaining = target - count;
+    const inc = Math.max(1, Math.floor(remaining * .08));
+    count = Math.min(count + inc, target);
+    if (pct) pct.textContent = count + '%';
+    if (count < target) {
+      setTimeout(step, count < 60 ? 40 : count < 85 ? 28 : 18);
+    }
+  };
+  step();
+
+  window.addEventListener('load', () => {
+    // ensure 100%
+    if (pct) pct.textContent = '100%';
+    count = 100;
+    // small pause so user sees the logo, then dismiss
+    setTimeout(() => {
+      loader.classList.add('out');
+      // after fade, fire hero reveals
+      setTimeout(() => {
+        loader.style.display = 'none';
+        document.querySelectorAll('.hero [data-r]').forEach(el => {
+          const d = parseInt(el.dataset.d || 0);
+          setTimeout(() => el.classList.add('vis'), d);
+        });
+      }, 720);
+    }, 600);
+  });
+})();
+
+/* ══════════════════════════════════════
+   CANVAS BACKGROUND
+══════════════════════════════════════ */
 const cv  = document.getElementById('bg-cv');
 const ctx = cv.getContext('2d');
 let W, H, pts = [];
 let mx = 0, my = 0, smx = 0, smy = 0;
 
-function resize() {
+function resize(){
   W = cv.width  = window.innerWidth;
   H = cv.height = window.innerHeight;
   buildPts();
 }
-
-function buildPts() {
+function buildPts(){
   pts = [];
-  const n = Math.floor(W * H / 18000);
-  for (let i = 0; i < n; i++) {
+  const n = Math.floor(W * H / 20000);
+  for(let i = 0; i < n; i++){
     pts.push({
-      x:  Math.random() * W,
-      y:  Math.random() * H,
-      r:  Math.random() * 1.4 + .2,
-      vx: (Math.random() - .5) * .1,
-      vy: (Math.random() - .5) * .1,
-      a:  Math.random() * .3 + .04,
-      g:  Math.random() < .09
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.3+.18,
+      vx:(Math.random()-.5)*.09, vy:(Math.random()-.5)*.09,
+      a: Math.random()*.26+.04,
+      g: Math.random()<.08
     });
   }
 }
-
 let tick = 0;
-function drawBg() {
-  ctx.clearRect(0, 0, W, H);
-  tick += .0025;
+function frame(){
+  ctx.clearRect(0,0,W,H);
+  tick += .002;
+  smx += (mx - smx)*.03;
+  smy += (my - smy)*.03;
 
-  // smooth cursor follow
-  smx += (mx - smx) * .035;
-  smy += (my - smy) * .035;
+  // aurora
+  [{x:W*.5+Math.sin(tick*.55)*W*.1, y:H*.1+Math.cos(tick*.4)*H*.05, r:W*.38, c:'201,168,76', a:.04},
+   {x:W*.15+Math.cos(tick*.45)*W*.06,y:H*.65,r:W*.28,c:'55,40,110',a:.048},
+   {x:W*.85+Math.sin(tick*.62)*W*.05,y:H*.38,r:W*.24,c:'201,168,76',a:.03}
+  ].forEach(b=>{
+    const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+    g.addColorStop(0,`rgba(${b.c},${b.a})`);
+    g.addColorStop(1,`rgba(${b.c},0)`);
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
+  });
 
-  // aurora blobs
-  const blobs = [
-    { x: W*.5 + Math.sin(tick*.6)*W*.12,  y: H*.1  + Math.cos(tick*.44)*H*.06, r: W*.42, c:'201,168,76',  a:.048 },
-    { x: W*.14 + Math.cos(tick*.5)*W*.06, y: H*.62 + Math.sin(tick*.38)*H*.04, r: W*.3,  c:'55,40,115',   a:.055 },
-    { x: W*.85 + Math.sin(tick*.7)*W*.05, y: H*.35 + Math.cos(tick*.55)*H*.04, r: W*.26, c:'201,168,76',  a:.038 },
-    { x: W*.5  + Math.cos(tick*.3)*W*.08, y: H*.85 + Math.sin(tick*.25)*H*.03, r: W*.22, c:'10,255,217',  a:.022 },
-  ];
-  blobs.forEach(b => {
-    const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-    g.addColorStop(0, `rgba(${b.c},${b.a})`);
-    g.addColorStop(1, `rgba(${b.c},0)`);
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+  // mouse glow
+  const mg=ctx.createRadialGradient(smx,smy,0,smx,smy,240);
+  mg.addColorStop(0,'rgba(201,168,76,.032)');mg.addColorStop(1,'rgba(201,168,76,0)');
+  ctx.fillStyle=mg;ctx.beginPath();ctx.arc(smx,smy,240,0,Math.PI*2);ctx.fill();
+
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.g?`rgba(201,168,76,${p.a*.6})`:`rgba(255,255,255,${p.a})`;
     ctx.fill();
   });
-
-  // cursor blob
-  const cg = ctx.createRadialGradient(smx, smy, 0, smx, smy, 300);
-  cg.addColorStop(0, 'rgba(201,168,76,.042)');
-  cg.addColorStop(1, 'rgba(201,168,76,0)');
-  ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(smx, smy, 300, 0, Math.PI*2); ctx.fill();
-
-  // stars
-  pts.forEach(p => {
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    ctx.fillStyle = p.g
-      ? `rgba(201,168,76,${p.a*.65})`
-      : `rgba(255,255,255,${p.a})`;
-    ctx.fill();
-  });
-  requestAnimationFrame(drawBg);
+  requestAnimationFrame(frame);
 }
-window.addEventListener('resize', resize);
-window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-resize(); drawBg();
+window.addEventListener('resize',resize,{passive:true});
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
+resize(); frame();
 
-/* ═══════════════════════════════════════════
-   CURSOR GLOW ELEMENT
-═══════════════════════════════════════════ */
-const cgl = document.getElementById('cursor-glow');
-window.addEventListener('mousemove', e => {
-  cgl.style.left = e.clientX + 'px';
-  cgl.style.top  = e.clientY + 'px';
-});
-
-/* ═══════════════════════════════════════════
-   ROBOT — physics neck chain
-═══════════════════════════════════════════ */
-const head  = document.getElementById('robot-head');
-const rings = Array.from(document.querySelectorAll('.nr')).reverse();
-
-let rmx = 0, rmy = 0;
-let hs = { x:0, y:0, r:0 };
-const rs = rings.map(() => ({ x:0, y:0, r:0 }));
-
-window.addEventListener('mousemove', e => {
-  rmx = (e.clientX - window.innerWidth  * .5) / (window.innerWidth  * .5);
-  rmy = (e.clientY - window.innerHeight * .5) / (window.innerHeight * .5);
-});
-
-function lerp(a, b, t) { return a + (b - a) * t; }
-
-function robotTick() {
-  const tx  = rmx * 20;
-  const ty  = rmy * 9;
-  const trz = rmx * 8;
-
-  hs.x = lerp(hs.x, tx,  .08);
-  hs.y = lerp(hs.y, ty,  .08);
-  hs.r = lerp(hs.r, trz, .08);
-  head.style.transform = `translate(${hs.x}px,${hs.y}px) rotate(${hs.r}deg)`;
-
-  rings.forEach((ring, i) => {
-    const f  = parseFloat(ring.dataset.f);
-    const s  = rs[i];
-    const sp = .055 + f * .028;
-    s.x = lerp(s.x, tx  * f, sp);
-    s.y = lerp(s.y, ty  * f, sp);
-    s.r = lerp(s.r, trz * f, sp);
-    ring.style.transform = `translate(${s.x}px,${s.y}px) rotate(${s.r}deg)`;
+/* ══════════════════════════════════════
+   SCROLL REVEAL (non-hero elements)
+══════════════════════════════════════ */
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    setTimeout(()=>el.classList.add('vis'), parseInt(el.dataset.d||0));
+    revObs.unobserve(el);
   });
-  requestAnimationFrame(robotTick);
-}
-robotTick();
+},{threshold:.09,rootMargin:'0px 0px -32px 0px'});
 
-/* ═══════════════════════════════════════════
-   SCROLL REVEAL — staggered per section
-═══════════════════════════════════════════ */
-const revealObs = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const el    = entry.target;
-    const delay = parseInt(el.dataset.delay || 0);
-    setTimeout(() => el.classList.add('visible'), delay);
-    revealObs.unobserve(el);
-  });
-}, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('[data-reveal]').forEach(el => {
-  if (el.closest('.hero')) {
-    // hero fires on load
-    const delay = parseInt(el.dataset.delay || 0);
-    setTimeout(() => el.classList.add('visible'), delay + 100);
-  } else {
-    revealObs.observe(el);
-  }
+document.querySelectorAll('[data-r]').forEach(el=>{
+  if(!el.closest('.hero')) revObs.observe(el);
 });
 
-/* ═══════════════════════════════════════════
-   PARALLAX ROBOT — subtle on scroll
-═══════════════════════════════════════════ */
-const robotWrap = document.getElementById('robot-wrap');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (robotWrap) {
-    robotWrap.style.transform = `translateY(${y * .06}px)`;
-  }
-}, { passive: true });
-
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════
    MAGNETIC BUTTONS
-═══════════════════════════════════════════ */
-document.querySelectorAll('.btn').forEach(btn => {
-  btn.addEventListener('mousemove', e => {
-    const r  = btn.getBoundingClientRect();
-    const bx = e.clientX - r.left - r.width  * .5;
-    const by = e.clientY - r.top  - r.height * .5;
-    btn.style.transform = `translate(${bx * .18}px, ${by * .18 - 3}px)`;
+══════════════════════════════════════ */
+document.querySelectorAll('.btn').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const bx=(e.clientX-r.left-r.width*.5)*.15;
+    const by=(e.clientY-r.top-r.height*.5)*.15;
+    btn.style.transform=`translate(${bx}px,${by-3}px)`;
   });
-  btn.addEventListener('mouseleave', () => {
-    btn.style.transform = '';
-  });
+  btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
 });
 
-/* ═══════════════════════════════════════════
-   STAT COUNTER ANIMATION
-═══════════════════════════════════════════ */
-function animateCount(el, target, suffix) {
-  let cur = 0;
-  const step = target / 40;
-  const id = setInterval(() => {
-    cur += step;
-    if (cur >= target) { cur = target; clearInterval(id); }
-    el.querySelector('.stat-n').innerHTML = Math.floor(cur) + '<sup>' + suffix + '</sup>';
-  }, 30);
-}
-const statObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const block = e.target;
-    const txt   = block.querySelector('.stat-n').textContent;
-    const num   = parseInt(txt);
-    if (!isNaN(num)) animateCount(block, num, '+');
-    statObs.unobserve(block);
+/* ══════════════════════════════════════
+   STAT COUNTERS
+══════════════════════════════════════ */
+const cntObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.count);
+    if(!target) return;
+    const n = el.querySelector('.n');
+    let cur = 0;
+    const id = setInterval(()=>{
+      cur += Math.max(1, Math.floor((target-cur)*.12));
+      if(cur>=target){cur=target;clearInterval(id);}
+      n.textContent = cur;
+    },32);
+    cntObs.unobserve(el);
   });
-}, { threshold: .5 });
-document.querySelectorAll('.stat-b').forEach(b => statObs.observe(b));
+},{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>cntObs.observe(el));
 
-/* ═══════════════════════════════════════════
+/* ══════════════════════════════════════
    FORM
-═══════════════════════════════════════════ */
-function submitForm(e) {
+══════════════════════════════════════ */
+function submitForm(e){
   e.preventDefault();
-  const btn = e.target.querySelector('.f-btn');
-  const orig = btn.textContent;
-  btn.textContent = 'Sent ✓';
-  btn.style.background = '#22c55e';
-  btn.style.color = '#fff';
-  setTimeout(() => {
-    btn.textContent = orig;
-    btn.style.background = '';
-    btn.style.color = '';
+  const btn=e.target.querySelector('.fbtn'), orig=btn.textContent;
+  btn.textContent='Sent ✓';btn.style.background='#22c55e';btn.style.color='#fff';
+  setTimeout(()=>{
+    btn.textContent=orig;btn.style.background='';btn.style.color='';
     e.target.reset();
-  }, 3500);
+  },3500);
 }
 </script>
 </body>
